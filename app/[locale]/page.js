@@ -1,5 +1,5 @@
 import HeroSection from '@/components/pages/home/HeroSection';
-import ProductGrid from '@/components/pages/home/ProductGrid';
+import ProductGrid from '@/components/shared/ProductGrid';
 import { constructMetadata } from '@/utils/seo';
 
 // Metadata for the home page
