@@ -2,8 +2,8 @@ export const siteConfig = {
   name: 'GardenHub',
   description:
     'Fresh Indoor Plants, Delivered to Your Home. Discover hand-picked plants perfect for beginners, collectors, and cozy spaces.',
-  url: 'https://gardenhub.vercel.app',
-  ogImage: 'https://gardenhub.vercel.app/gardenhub.png',
+  url: 'https://gardenhub-client.vercel.app',
+  ogImage: 'https://gardenhub-client.vercel.app/gardenhub.png',
   links: {
     twitter: 'https://twitter.com/gardenhub',
     github: 'https://github.com/gardenhub',

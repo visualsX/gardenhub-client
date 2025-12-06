@@ -13,6 +13,7 @@ const outfit = Outfit({
 });
 
 import { defaultMetadata } from '@/config/seo.config';
+import Preloader from '@/components/shared/Preloader';
 
 export const metadata = defaultMetadata;
 
@@ -28,6 +29,7 @@ export default async function RootLayout({ children, params }) {
       <body className={`${outfit.variable} antialiased`}>
         <NextIntlClientProvider>
           <Providers>
+            <Preloader />
             <Header />
             {children}
             <Footer />
