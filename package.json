@@ -1,0 +1,33 @@
+{
+  "name": "gardenhub-admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "biome check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.5",
+    "@tanstack/react-query-devtools": "^5.90.2",
+    "axios": "^1.13.2",
+    "graphql": "^16.12.0",
+    "graphql-request": "^7.3.5",
+    "next": "16.0.1",
+    "next-intl": "^4.4.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.0",
+    "@svgr/webpack": "^8.1.0",
+    "@tailwindcss/postcss": "^4",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^4"
+  }
+}
