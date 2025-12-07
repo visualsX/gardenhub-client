@@ -17,7 +17,7 @@
   --gray-300: #d1d5db;
   --gray-700: #374151;
   --gray-900: #111827;
-  --accent-gray: #EFEFEF;
+  --accent-gray: #efefef;
 }
 
 @theme inline {
@@ -72,4 +72,35 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-green-dark);
+}
+
+/* Custom Scrollbar */
+.slider-scrollbar-thumb ::-webkit-scrollbar {
+  height: 8px;
+}
+
+.slider-scrollbar-thumb ::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+.slider-scrollbar-thumb ::-webkit-scrollbar-thumb {
+  background: var(--primary-green);
+  border-radius: 10px;
+  border: 2px solid var(--gray-400);
+}
+
+.slider-scrollbar-thumb ::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-green-dark);
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }

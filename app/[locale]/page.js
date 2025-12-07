@@ -1,4 +1,7 @@
 import HeroSection from '@/components/pages/home/HeroSection';
+import ShopCollection from '@/components/pages/home/ShopCollection';
+import StatsSection from '@/components/pages/home/StatsSection';
+import TestimonialsSection from '@/components/pages/home/TestimonialsSection';
 import ProductGrid from '@/components/shared/ProductGrid';
 import { constructMetadata } from '@/utils/seo';
 
@@ -42,7 +45,20 @@ export default function Home() {
     <div className="min-h-screen">
       <HeroSection />
       <ProductGrid title="Indoor Plants" products={indoorPlants} />
-      <ProductGrid title="Outdoor Plants" products={indoorPlants} />
+      <ProductGrid
+        parentClassName={'bg-accent-gray'}
+        title="Our indoor best-sellers"
+        titleClassName="text-4xl! text-center"
+        products={indoorPlants}
+      />
+      <ProductGrid
+        title="Best Christmas Collection "
+        titleClassName="text-4xl! text-center"
+        products={indoorPlants}
+      />
+      <ShopCollection />
+      <StatsSection />
+      <TestimonialsSection />
     </div>
   );
 }
