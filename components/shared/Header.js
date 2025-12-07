@@ -15,11 +15,11 @@ export default function Header() {
   const isHomePage = pathname === '/' || /^\/[a-zA-Z-]{2,5}$/.test(pathname);
 
   const navItems = [
-    { label: 'Indoor Plants', href: '/indoor-plants' },
-    { label: 'Outdoor Plants', href: '/outdoor-plants' },
-    { label: 'Deals Bundles', href: '/deals' },
-    { label: 'Accessories', href: '/accessories' },
-    { label: 'Care Essentials', href: '/care' },
+    { label: 'Indoor Plants', href: '/collections/indoor-plants' },
+    { label: 'Outdoor Plants', href: '/collections/outdoor-plants' },
+    { label: 'Deals Bundles', href: '/collections/deals-bundles' },
+    { label: 'Accessories', href: '/collections/accessories' },
+    { label: 'Care Essentials', href: '/collections/care-essentials' },
     { label: 'Contact Us', href: '/contact' },
   ];
 
@@ -54,8 +54,8 @@ export default function Header() {
                 <Link
                   href={item.href}
                   className={`text-sm font-medium transition-colors ${isHomePage
-                      ? 'hover:text-primary text-gray-700'
-                      : 'text-white/90 hover:text-white'
+                    ? 'hover:text-primary text-gray-700'
+                    : 'text-white/90 hover:text-white'
                     }`}
                 >
                   {item.label}

@@ -11,37 +11,37 @@ export default function ShopCollection() {
     {
       id: 1,
       title: 'Indoor Plants',
-      href: '/indoor-plants',
+      href: '/collections/indoor-plants',
       image: 'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
     },
     {
       id: 2,
       title: 'Outdoor Plants',
-      href: '/outdoor-plants',
+      href: '/collections/outdoor-plants',
       image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=800&q=80',
     },
     {
       id: 3,
       title: 'Low Light Plants',
-      href: '/low-light-plants',
+      href: '/collections/low-light-plants',
       image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=800&q=80',
     },
     {
       id: 4,
       title: 'Planters',
-      href: '/accessories',
+      href: '/collections/accessories',
       image: 'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
     },
     {
       id: 5,
       title: 'Indoor Plants',
-      href: '/indoor-plants',
+      href: '/collections/indoor-plants',
       image: 'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
     },
     {
       id: 6,
       title: 'Indoor Plants',
-      href: '/indoor-plants',
+      href: '/collections/indoor-plants',
       image: 'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
     },
   ];
