@@ -1,8 +1,12 @@
+import Link from 'next/link';
+
 export default function ProductCard({ product }) {
     const { name, price, rating, image } = product;
 
     return (
-        <div className="group rounded-3xl bg-white p-3 transition-shadow hover:shadow-xl">
+        <div className="group rounded-3xl bg-white p-3 transition-shadow hover:shadow-xl relative">
+            <Link href="/products/hibiscus-1" className="absolute inset-0 z-10" aria-label={`View ${name}`} />
+
             {/* Product Image */}
             <div className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
                 <img
@@ -25,7 +29,7 @@ export default function ProductCard({ product }) {
                 </div>
 
                 {/* Price and Add to Cart */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between relative z-20">
                     <span className="text-base font-bold text-gray-900">{price}</span>
                     <button
                         className="group/btn flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-[#d0e6d6] text-primary transition-all duration-300 hover:w-32 hover:bg-primary hover:text-white"
