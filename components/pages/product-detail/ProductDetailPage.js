@@ -13,7 +13,7 @@ export default function ProductDetailPage({ product }) {
   if (!product) return null;
 
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <div className="min-h-screen pt-32 pb-20">
       {/* Added pt-24 for fixed header spacing */}
       <div className="max-layout space-y-16">
         {/* Top Section: Gallery & Info */}
@@ -35,10 +35,18 @@ export default function ProductDetailPage({ product }) {
         <ProductDescription description={product.longDescription} careInfo={product.careInfo} />
 
         {/* Other You May Also Like */}
-        <ProductGrid title="Other you may also like" products={product.relatedProducts} />
+        <ProductGrid
+          titleClassName="text-4xl!"
+          title="Other you may also like"
+          products={product.relatedProducts}
+        />
 
         {/* Recently Viewed */}
-        <ProductGrid title="Recently viewed products" products={product.relatedProducts} />
+        <ProductGrid
+          titleClassName="text-4xl!"
+          title="Recently viewed products"
+          products={product.relatedProducts}
+        />
 
         {/* Reviews */}
         <div className="border-t border-gray-100 pt-12">

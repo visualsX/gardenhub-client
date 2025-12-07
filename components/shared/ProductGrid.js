@@ -1,11 +1,11 @@
 import ProductCard from './ProductCard';
 
-export default function ProductGrid({ title, products }) {
+export default function ProductGrid({ title, products, titleClassName = '' }) {
   return (
     <section className="py-16">
       <div className="max-layout">
         {/* Section Title */}
-        <h2 className="mb-12 text-5xl font-bold text-gray-900">{title}</h2>
+        <h2 className={`mb-12 text-5xl font-bold text-gray-900 ${titleClassName}`}>{title}</h2>
 
         {/* Product Grid */}
         <div className="mb-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
