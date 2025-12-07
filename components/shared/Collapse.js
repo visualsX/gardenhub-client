@@ -1,4 +1,5 @@
 'use client';
+import PlusCircleIcon from '@/public/shared/plus-circle.svg';
 
 import { useState } from 'react';
 
@@ -13,11 +14,9 @@ export default function Collapse({ title, children, defaultOpen = false, classNa
       >
         <span className="font-bold text-gray-900">{title}</span>
         <span
-          className={`text-primary ml-4 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-45' : ''}`}
+          className={`text-primary ml-4 transition-transform duration-200 ${isOpen ? 'rotate-45' : ''}`}
         >
-          <svg className="h-3 w-3" fill="none" viewBox="0 0 12 12" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 1v10M1 6h10" />
-          </svg>
+          <PlusCircleIcon />
         </span>
       </button>
       <div
