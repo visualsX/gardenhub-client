@@ -21,7 +21,8 @@ export default function RegisterPage() {
     const handleGoogleLogin = () => {
         const returnUrl = window.location.origin;
         console.log("urls: ", returnUrl)
-        initiateGoogleLoginMutation.mutate({ returnUrl });
+        // initiateGoogleLoginMutation.mutate({ returnUrl });
+        window.open(`https://api.gardenhub.ae/api/Authentication/external-login?provider=Google&returnUrl=https%3A%2F%2Fgardenhub.ae%2Fen%2Fcollections%2Findoor-plantshttp://localhost:3000/`, "_self")
     };
 
     return (
