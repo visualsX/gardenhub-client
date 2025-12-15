@@ -3,6 +3,7 @@ import client from '@/lib/api/client';
 import useAuth from '@/lib/store/auth';
 import { message } from 'antd';
 import { useRouter } from 'next/navigation';
+import { API_ENDPOINTS } from '@/lib/api/endpoints';
 
 export const useLogin = () => {
     const setAuth = useAuth((state) => state.setAuth);
@@ -10,7 +11,7 @@ export const useLogin = () => {
 
     return useMutation({
         mutationFn: async (credentials) => {
-            const { data } = await client.post('/Authentication/login', credentials);
+            const { data } = await client.post(API_ENDPOINTS.LOGIN, credentials);
             return data;
         },
         onSuccess: (data) => {
@@ -30,7 +31,7 @@ export const useRegister = () => {
 
     return useMutation({
         mutationFn: async (userData) => {
-            const { data } = await client.post('/Authentication/register', userData);
+            const { data } = await client.post(API_ENDPOINTS.REGISTER, userData);
             return data;
         },
         onSuccess: (data) => {
@@ -48,7 +49,7 @@ export const useInitiateGoogleLogin = () => {
     return useMutation({
         mutationFn: async ({ returnUrl }) => {
             // Call the endpoint to get the redirect URL
-            const { data } = await client.get('/Authentication/external-login', {
+            const { data } = await client.get(API_ENDPOINTS.EXTERNAL_LOGIN, {
                 params: {
                     provider: 'Google',
                     returnUrl,
@@ -77,7 +78,7 @@ export const useGoogleLogin = () => {
 
     return useMutation({
         mutationFn: async (code) => {
-            const { data } = await client.post('/Authentication/login-with-code', {
+            const { data } = await client.post(API_ENDPOINTS.LOGIN_WITH_CODE, {
                 code
             });
             return data;
