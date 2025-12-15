@@ -12,7 +12,8 @@ export default function RegisterPage() {
 
     const onFinish = (values) => {
         registerMutation.mutate({
-            name: values.name,
+            firstName: values.firstName,
+            lastName: values.lastName,
             email: values.email,
             password: values.password
         });
@@ -48,14 +49,24 @@ export default function RegisterPage() {
                         requiredMark={false}
                         size="large"
                     >
-                        <Form.Item
-                            className='mb-0'
-                            label="Full Name"
-                            name="name"
-                            rules={[{ required: true, message: 'Please input your name!' }]}
-                        >
-                            <Input placeholder="John Doe" />
-                        </Form.Item>
+                        <div className="flex items-center gap-x-2">
+                            <Form.Item
+                                className='mb-0'
+                                label="First Name"
+                                name="firstName"
+                                rules={[{ required: true, message: 'Please input your name!' }]}
+                            >
+                                <Input placeholder="John Doe" />
+                            </Form.Item>
+                            <Form.Item
+                                className='mb-0'
+                                label="Last Name"
+                                name="lastName"
+                                rules={[{ required: true, message: 'Please input your name!' }]}
+                            >
+                                <Input placeholder="John Doe" />
+                            </Form.Item>
+                        </div>
 
                         <Form.Item
                             className='mb-0'

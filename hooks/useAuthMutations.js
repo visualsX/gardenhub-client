@@ -10,7 +10,7 @@ export const useLogin = () => {
 
     return useMutation({
         mutationFn: async (credentials) => {
-            const { data } = await client.post('/auth/login', credentials);
+            const { data } = await client.post('/Authentication/login', credentials);
             return data;
         },
         onSuccess: (data) => {
@@ -30,13 +30,13 @@ export const useRegister = () => {
 
     return useMutation({
         mutationFn: async (userData) => {
-            const { data } = await client.post('/auth/register', userData);
+            const { data } = await client.post('/Authentication/register', userData);
             return data;
         },
         onSuccess: (data) => {
             setAuth(data.user, data.token);
             message.success('Registration successful!');
-            router.push('/login');
+            router.push('/auth/login');
         },
         onError: (error) => {
             message.error(error.response?.data?.message || 'Registration failed');
