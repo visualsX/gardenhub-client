@@ -3,7 +3,7 @@ import ShopCollection from '@/components/pages/home/ShopCollection';
 import StatsSection from '@/components/pages/home/StatsSection';
 import TestimonialsSection from '@/components/pages/home/TestimonialsSection';
 import ProductGrid from '@/components/shared/ProductGrid';
-import { constructMetadata } from '@/utils/seo';
+import { constructMetadata } from '@/lib/utils/seo';
 
 // Metadata for the home page
 export const metadata = constructMetadata({

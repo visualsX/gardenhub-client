@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Divider } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
 import { useLogin, useInitiateGoogleLogin } from '@/hooks/useAuthMutations';
 
@@ -22,85 +21,99 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Sign in to your account
-                </h2>
-                <p className="mt-2 text-center text-sm text-gray-600">
-                    Or{' '}
-                    <Link href="/register" className="font-medium text-green-600 hover:text-green-500">
-                        start your 14-day free trial
-                    </Link>
-                </p>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50/50 px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+                <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-green-100/40 blur-3xl opacity-60"></div>
+                <div className="absolute -bottom-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-green-100/40 blur-3xl opacity-60"></div>
             </div>
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                    <Form
-                        name="login"
-                        layout="vertical"
-                        onFinish={onFinish}
-                        requiredMark={false}
-                        size="large"
+            <div className="w-full max-w-md space-y-8 bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/50">
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+                        Welcome Back
+                    </h2>
+                    <p className="mt-2 text-sm text-gray-600">
+                        Please sign in to your account
+                    </p>
+                </div>
+
+                <Form
+                    name="login"
+                    layout="vertical"
+                    onFinish={onFinish}
+                    requiredMark={false}
+                    size="large"
+                    className="mt-8 space-y-6"
+                >
+                    <Form.Item
+                        label={<span className="text-gray-700 font-medium">Email Address</span>}
+                        name="email"
+                        rules={[
+                            { required: true, message: 'Please input your email!' },
+                            { type: 'email', message: 'Please enter a valid email!' }
+                        ]}
                     >
-                        <Form.Item
-                            label="Email address"
-                            name="email"
-                            rules={[
-                                { required: true, message: 'Please input your email!' },
-                                { type: 'email', message: 'Please enter a valid email!' }
-                            ]}
+                        <Input
+                            placeholder="you@example.com"
+                            className="rounded-xl px-4 py-3 bg-gray-50 border-gray-200 hover:border-green-500 focus:border-green-500 transition-all duration-200"
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        label={<span className="text-gray-700 font-medium">Password</span>}
+                        name="password"
+                        rules={[{ required: true, message: 'Please input your password!' }]}
+                    >
+                        <Input.Password
+                            placeholder="••••••••"
+                            className="rounded-xl px-4 py-3 bg-gray-50 border-gray-200 hover:border-green-500 focus:border-green-500 transition-all duration-200"
+                        />
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            block
+                            loading={loginMutation.isPending}
+                            className="h-12 rounded-xl bg-green-700 hover:bg-green-800 border-none shadow-lg shadow-green-700/20 text-base font-semibold transition-all duration-300 transform hover:-translate-y-0.5"
                         >
-                            <Input placeholder="you@example.com" />
-                        </Form.Item>
+                            Sign in
+                        </Button>
+                    </Form.Item>
+                </Form>
 
-                        <Form.Item
-                            label="Password"
-                            name="password"
-                            rules={[{ required: true, message: 'Please input your password!' }]}
-                        >
-                            <Input.Password placeholder="••••••••" />
-                        </Form.Item>
-
-                        <Form.Item>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                block
-                                loading={loginMutation.isPending}
-                                className="bg-green-600 hover:bg-green-700"
-                            >
-                                Sign in
-                            </Button>
-                        </Form.Item>
-                    </Form>
-
-                    <div className="mt-6">
-                        <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300" />
-                            </div>
-                            <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">
-                                    Or continue with
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className="mt-6">
-                            <Button
-                                block
-                                icon={<GoogleOutlined />}
-                                onClick={handleGoogleLogin}
-                                size="large"
-                                loading={initiateGoogleLoginMutation.isPending}
-                            >
-                                Google
-                            </Button>
-                        </div>
+                <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-200" />
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                        <span className="px-4 bg-white text-gray-500 font-medium">
+                            Or continue with
+                        </span>
                     </div>
                 </div>
+
+                <div className="mt-6">
+                    <Button
+                        block
+                        icon={<GoogleOutlined className="text-lg" />}
+                        onClick={handleGoogleLogin}
+                        size="large"
+                        loading={initiateGoogleLoginMutation.isPending}
+                        className="h-12 rounded-xl border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-medium transition-all duration-200"
+                    >
+                        Google
+                    </Button>
+                </div>
+
+                <p className="mt-8 text-center text-sm text-gray-600">
+                    Don't have an account?{' '}
+                    <Link href="/auth/register" className="font-semibold text-green-700 hover:text-green-600 transition-colors">
+                        Create an account
+                    </Link>
+                </p>
             </div>
         </div>
     );

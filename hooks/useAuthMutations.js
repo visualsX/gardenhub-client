@@ -35,7 +35,6 @@ export const useRegister = () => {
             return data;
         },
         onSuccess: (data) => {
-            setAuth(data.user, data.token);
             message.success('Registration successful!');
             router.push('/auth/login');
         },

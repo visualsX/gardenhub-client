@@ -72,12 +72,13 @@ export default function Header() {
             >
               {isHomePage ? <SearchIcon /> : <SearchWhiteIcon />}
             </button>
-            <button
+            <Link
+              href="/auth/login"
               className={`hover:text-primary text-gray-700 transition-colors`}
               aria-label="Account"
             >
               {isHomePage ? <UserIcon /> : <UserWhiteIcon />}
-            </button>
+            </Link>
             <button
               className={`hover:text-primary text-gray-700 transition-colors`}
               aria-label="Shopping Cart"
