@@ -34,51 +34,51 @@ export default function RegisterPage() {
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
                     Already have an account?{' '}
-                    <Link href="/login" className="font-medium text-green-600 hover:text-green-500">
+                    <Link href={"/auth/login"} className="font-medium text-green-600 hover:text-green-500">
                         Sign in
                     </Link>
                 </p>
             </div>
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                     <Form
                         name="register"
                         layout="vertical"
                         onFinish={onFinish}
                         requiredMark={false}
-                        size="large"
+                        className='grid grid-cols-2 gap-x-4'
                     >
-                        <div className="flex items-center gap-x-2">
-                            <Form.Item
-                                className='mb-0'
-                                label="First Name"
-                                name="firstName"
-                                rules={[{ required: true, message: 'Please input your name!' }]}
-                            >
-                                <Input placeholder="John Doe" />
-                            </Form.Item>
-                            <Form.Item
-                                className='mb-0'
-                                label="Last Name"
-                                name="lastName"
-                                rules={[{ required: true, message: 'Please input your name!' }]}
-                            >
-                                <Input placeholder="John Doe" />
-                            </Form.Item>
-                        </div>
-
                         <Form.Item
                             className='mb-0'
-                            label="Email address"
-                            name="email"
-                            rules={[
-                                { required: true, message: 'Please input your email!' },
-                                { type: 'email', message: 'Please enter a valid email!' }
-                            ]}
+                            label="First Name"
+                            name="firstName"
+                            rules={[{ required: true, message: 'Please input your name!' }]}
                         >
-                            <Input placeholder="you@example.com" />
+                            <Input placeholder="John Doe" />
                         </Form.Item>
+                        <Form.Item
+                            className='mb-0'
+                            label="Last Name"
+                            name="lastName"
+                            rules={[{ required: true, message: 'Please input your name!' }]}
+                        >
+                            <Input placeholder="John Doe" />
+                        </Form.Item>
+
+                        <div className="col-span-2">
+                            <Form.Item
+                                className='mb-0'
+                                label="Email address"
+                                name="email"
+                                rules={[
+                                    { required: true, message: 'Please input your email!' },
+                                    { type: 'email', message: 'Please enter a valid email!' }
+                                ]}
+                            >
+                                <Input placeholder="you@example.com" />
+                            </Form.Item>
+                        </div>
 
                         <Form.Item
                             className='mb-0'
@@ -110,7 +110,7 @@ export default function RegisterPage() {
                             <Input.Password placeholder="••••••••" />
                         </Form.Item>
 
-                        <Form.Item>
+                        <div className="col-span-2">
                             <Button
                                 type="primary"
                                 htmlType="submit"
@@ -120,7 +120,7 @@ export default function RegisterPage() {
                             >
                                 Sign up
                             </Button>
-                        </Form.Item>
+                        </div>
                     </Form>
 
                     <div className="mt-6">

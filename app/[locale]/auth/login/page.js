@@ -28,7 +28,7 @@ export default function LoginPage() {
                 <div className="absolute -bottom-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-green-100/40 blur-3xl opacity-60"></div>
             </div>
 
-            <div className="w-full max-w-md space-y-8 bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/50">
+            <div className="w-full max-w-lg space-y-8 bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/50">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900">
                         Welcome Back
@@ -43,15 +43,13 @@ export default function LoginPage() {
                     layout="vertical"
                     onFinish={onFinish}
                     requiredMark={false}
-                    size="large"
-                    className="mt-8 space-y-6"
+                    className="mt-8 space-y-4"
                 >
                     <Form.Item
-                        label={<span className="text-gray-700 font-medium">Email Address</span>}
-                        name="email"
+                        label={<span className="text-gray-700 font-medium">Username</span>}
+                        name="username"
                         rules={[
-                            { required: true, message: 'Please input your email!' },
-                            { type: 'email', message: 'Please enter a valid email!' }
+                            { required: true, message: 'Please input your username!' },
                         ]}
                     >
                         <Input
@@ -71,17 +69,15 @@ export default function LoginPage() {
                         />
                     </Form.Item>
 
-                    <Form.Item>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            block
-                            loading={loginMutation.isPending}
-                            className="h-12 rounded-xl bg-green-700 hover:bg-green-800 border-none shadow-lg shadow-green-700/20 text-base font-semibold transition-all duration-300 transform hover:-translate-y-0.5"
-                        >
-                            Sign in
-                        </Button>
-                    </Form.Item>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        block
+                        loading={loginMutation.isPending}
+                        className="h-12 rounded-xl bg-green-700 hover:bg-green-800 border-none shadow-lg shadow-green-700/20 text-base font-semibold transition-all duration-300 transform hover:-translate-y-0.5"
+                    >
+                        Sign in
+                    </Button>
                 </Form>
 
                 <div className="relative">

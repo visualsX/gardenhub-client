@@ -11,11 +11,21 @@ export const useLogin = () => {
 
     return useMutation({
         mutationFn: async (credentials) => {
-            const { data } = await client.post(API_ENDPOINTS.LOGIN, credentials);
+            const data = await client.post(API_ENDPOINTS.LOGIN, credentials);
             return data;
         },
         onSuccess: (data) => {
-            setAuth(data.user, data.token);
+            console.log("data::::", data);
+            // Map the API response to the store's expected format
+            setAuth({ id: data.userId, name: data.userName, email: data.userName }, data.token);
+
+            // Set token in cookie (expires in 7 days)
+            if (typeof window !== 'undefined') {
+                const expires = new Date();
+                expires.setDate(expires.getDate() + 7);
+                document.cookie = `token=${data.token}; path=/; expires=${expires.toUTCString()}; SameSite=Strict; Secure`;
+            }
+
             message.success('Login successful!');
             router.push('/');
         },
@@ -31,7 +41,7 @@ export const useRegister = () => {
 
     return useMutation({
         mutationFn: async (userData) => {
-            const { data } = await client.post(API_ENDPOINTS.REGISTER, userData);
+            const data = await client.post(API_ENDPOINTS.REGISTER, userData);
             return data;
         },
         onSuccess: (data) => {
@@ -48,7 +58,7 @@ export const useInitiateGoogleLogin = () => {
     return useMutation({
         mutationFn: async ({ returnUrl }) => {
             // Call the endpoint to get the redirect URL
-            const { data } = await client.get(API_ENDPOINTS.EXTERNAL_LOGIN, {
+            const data = await client.get(API_ENDPOINTS.EXTERNAL_LOGIN, {
                 params: {
                     provider: 'Google',
                     returnUrl,
@@ -77,7 +87,7 @@ export const useGoogleLogin = () => {
 
     return useMutation({
         mutationFn: async (code) => {
-            const { data } = await client.post(API_ENDPOINTS.LOGIN_WITH_CODE, {
+            const data = await client.post(API_ENDPOINTS.LOGIN_WITH_CODE, {
                 code
             });
             return data;
@@ -85,6 +95,14 @@ export const useGoogleLogin = () => {
         onSuccess: (data) => {
             // Response: { userId, token, userName, isFirstTimeAccess }
             setAuth({ id: data.userId, name: data.userName }, data.token);
+
+            // Set token in cookie (expires in 7 days)
+            if (typeof window !== 'undefined') {
+                const expires = new Date();
+                expires.setDate(expires.getDate() + 7);
+                document.cookie = `token=${data.token}; path=/; expires=${expires.toUTCString()}; SameSite=Strict; Secure`;
+            }
+
             message.success(`Welcome ${data.userName}!`);
             router.push('/');
         },
