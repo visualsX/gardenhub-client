@@ -77,15 +77,15 @@ export const useGoogleLogin = () => {
 
     return useMutation({
         mutationFn: async (code) => {
-            const { data } = await client.post('/auth/login-with-code', {
-                code,
-                provider: 'google'
+            const { data } = await client.post('/Authentication/login-with-code', {
+                code
             });
             return data;
         },
         onSuccess: (data) => {
-            setAuth(data.user, data.token);
-            message.success('Google login successful!');
+            // Response: { userId, token, userName, isFirstTimeAccess }
+            setAuth({ id: data.userId, name: data.userName }, data.token);
+            message.success(`Welcome ${data.userName}!`);
             router.push('/');
         },
         onError: (error) => {

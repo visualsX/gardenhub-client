@@ -19,10 +19,10 @@ export default function RegisterPage() {
     };
 
     const handleGoogleLogin = () => {
-        const returnUrl = window.location.origin;
-        console.log("urls: ", returnUrl)
-        // initiateGoogleLoginMutation.mutate({ returnUrl });
-        window.open(`https://api.gardenhub.ae/api/Authentication/external-login?provider=Google&returnUrl=https%3A%2F%2Fgardenhub.ae%2Fen%2Fcollections%2Findoor-plantshttp://localhost:3000/`, "_self")
+        // We use the real API URL for external login as requested
+        const returnUrl = `${window.location.origin}/auth/google/callback`;
+        const apiUrl = "https://api.gardenhub.ae/api"; // Or process.env.NEXT_PUBLIC_API_URL
+        window.open(`${apiUrl}/Authentication/external-login?provider=Google&returnUrl=${encodeURIComponent(returnUrl)}`, "_self");
     };
 
     return (
@@ -49,6 +49,7 @@ export default function RegisterPage() {
                         size="large"
                     >
                         <Form.Item
+                            className='mb-0'
                             label="Full Name"
                             name="name"
                             rules={[{ required: true, message: 'Please input your name!' }]}
@@ -57,6 +58,7 @@ export default function RegisterPage() {
                         </Form.Item>
 
                         <Form.Item
+                            className='mb-0'
                             label="Email address"
                             name="email"
                             rules={[
@@ -68,6 +70,7 @@ export default function RegisterPage() {
                         </Form.Item>
 
                         <Form.Item
+                            className='mb-0'
                             label="Password"
                             name="password"
                             rules={[{ required: true, message: 'Please input your password!' }]}
@@ -76,6 +79,7 @@ export default function RegisterPage() {
                         </Form.Item>
 
                         <Form.Item
+                            className='mb-0'
                             label="Confirm Password"
                             name="confirmPassword"
                             dependencies={['password']}

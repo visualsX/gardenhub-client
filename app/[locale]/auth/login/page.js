@@ -16,8 +16,9 @@ export default function LoginPage() {
     };
 
     const handleGoogleLogin = () => {
-        const returnUrl = typeof window !== 'undefined' ? `${window.location.origin}/auth/google/callback` : '';
-        initiateGoogleLoginMutation.mutate({ returnUrl });
+        const returnUrl = `${window.location.origin}/auth/google/callback`;
+        const apiUrl = "https://api.gardenhub.ae/api";
+        window.open(`${apiUrl}/Authentication/external-login?provider=Google&returnUrl=${encodeURIComponent(returnUrl)}`, "_self");
     };
 
     return (
