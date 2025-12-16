@@ -28,7 +28,7 @@ export default function Header() {
       className={
         isHomePage
           ? 'fixed top-4 right-0 left-0 z-50'
-          : 'fixed top-0 right-0 left-0 z-50 w-full bg-[#1e3d2a] text-white shadow-md'
+          : 'fixed top-0 right-0 left-0 z-50 w-full bg-primary-dark text-white shadow-md'
       }
     >
       <div className={isHomePage ? 'max-layout' : ''}>
