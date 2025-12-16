@@ -73,14 +73,18 @@ const products = [
 ];
 
 export default function CategoryPage() {
-  const { slug } = useParams();
+  const params = useParams();
+  const slug = params?.slug;
+
+  // With [...slug], slug is an array. We usually want the last segment for the specific category title/ID.
+  const currentSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
   // Format slug for title (e.g., "indoor-plants" -> "Indoor Plants")
-  const title = slug
-    ? slug
-        .split('-')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ')
+  const title = currentSlug
+    ? currentSlug
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
     : '';
 
   const [sortBy, setSortBy] = useState('best-selling');
