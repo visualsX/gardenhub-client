@@ -3,7 +3,7 @@ import './globals.css';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import '@ant-design/v5-patch-for-react-19';
+// import '@ant-design/v5-patch-for-react-19';
 
 const outfit = Outfit({
     variable: '--font-outfit',
@@ -11,7 +11,7 @@ const outfit = Outfit({
 });
 
 import { defaultMetadata } from '@/config/seo.config';
-import Preloader from '@/components/shared/Preloader';
+
 import Providers from '../providers';
 import { App } from '@/theme/antd-provider';
 
@@ -30,7 +30,6 @@ export default async function RootLayout({ children, params }) {
                 <NextIntlClientProvider>
                     <App>
                         <Providers>
-                            <Preloader />
                             {children}
                         </Providers>
                     </App>

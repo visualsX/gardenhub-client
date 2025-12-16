@@ -1,19 +1,14 @@
-import { Outfit } from 'next/font/google';
-import { hasLocale, NextIntlClientProvider } from 'next-intl';
+import { hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import Header from '@/components/shared/Header';
+import Header from '@/components/shared/header/Header';
 import Footer from '@/components/shared/Footer';
 
-const outfit = Outfit({
-  variable: '--font-outfit',
-  subsets: ['latin'],
-});
-
 import { defaultMetadata } from '@/config/seo.config';
-import Preloader from '@/components/shared/Preloader';
 
 export const metadata = defaultMetadata;
+
+import { fetchMenuData } from '@/lib/api/ssr-calls/server-menu';
 
 export default async function RootLayout({ children, params }) {
   // Ensure that the incoming `locale` is valid
@@ -22,9 +17,12 @@ export default async function RootLayout({ children, params }) {
     notFound();
   }
 
+  // Fetch menu data on the server
+  const menuData = await fetchMenuData();
+
   return (
     <div>
-      <Header />
+      <Header initialMenuData={menuData} />
       {children}
       <Footer />
     </div>

@@ -8,19 +8,41 @@ import BagIcon from '@/public/shared/bag.svg';
 import SearchWhiteIcon from '@/public/shared/search-white.svg';
 import UserWhiteIcon from '@/public/shared/user-white.svg';
 import BagWhiteIcon from '@/public/shared/bag-white.svg';
+import { useMenu } from '@/hooks/useMenu';
 
-export default function Header() {
+import MenuDropdown from './MenuDropdown';
+
+export default function Header({ initialMenuData }) {
   const pathname = usePathname();
   // Check if homepage (root / or localized root /en, /ar, etc)
   const isHomePage = pathname === '/' || /^\/[a-zA-Z-]{2,5}$/.test(pathname);
 
-  const navItems = [
-    { label: 'Indoor Plants', href: '/collections/indoor-plants' },
-    { label: 'Outdoor Plants', href: '/collections/outdoor-plants' },
-    { label: 'Deals Bundles', href: '/collections/deals-bundles' },
-    { label: 'Accessories', href: '/collections/accessories' },
-    { label: 'Care Essentials', href: '/collections/care-essentials' },
-    { label: 'Contact Us', href: '/contact' },
+  // Fetch menu data with initial data for SSR
+  const { data: menuItems = [] } = useMenu(initialMenuData);
+
+  const renderMenuItem = (category) => {
+    // If category has children, render a dropdown
+    if (category.children && category.children.length > 0) {
+      // Adding pathname to the key forces the component to remount on route change,
+      // which effectively resets the hover state/animation without needing complex state management.
+      return <MenuDropdown key={`${category.id}-${pathname}`} category={category} isHomePage={isHomePage} />;
+    }
+
+    // Static link if no children
+    return (
+      <Link
+        key={category.id}
+        href={`/collections/${category.slug}`}
+        className={`text-sm font-medium transition-colors ${isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
+          }`}
+      >
+        {category.name}
+      </Link>
+    );
+  };
+
+  const staticLinks = [
+    { label: 'Contact Us', href: '/contact', id: 'contact' },
   ];
 
   return (
@@ -49,16 +71,22 @@ export default function Header() {
 
           {/* Navigation Links */}
           <ul className="hidden items-center gap-8 md:flex">
-            {navItems.map((item) => (
-              <li key={item.href}>
+            {/* Dynamic Menu Items */}
+            {menuItems.map((category) => (
+              <li key={category.id} className="h-full">
+                {renderMenuItem(category)}
+              </li>
+            ))}
+
+            {/* Static Links */}
+            {staticLinks.map((link) => (
+              <li key={link.id}>
                 <Link
-                  href={item.href}
-                  className={`text-sm font-medium transition-colors ${isHomePage
-                    ? 'hover:text-primary text-gray-700'
-                    : 'text-white/90 hover:text-white'
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors ${isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
                     }`}
                 >
-                  {item.label}
+                  {link.label}
                 </Link>
               </li>
             ))}
