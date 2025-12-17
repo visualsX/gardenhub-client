@@ -21,7 +21,7 @@ export default function ProductDetailPage({ product }) {
           <ProductGallery images={product.images} />
           <div className="">
             <ProductInfo product={product} />
-            <BundleSection bundles={product.bundles} />
+            <BundleSection bundles={product.bundles || []} />
             <FeaturesSection />
           </div>
         </div>
@@ -32,28 +32,36 @@ export default function ProductDetailPage({ product }) {
 
       <div className="">
         {/* Description & Care */}
-        <ProductDescription description={product.longDescription} careInfo={product.careInfo} />
+        <ProductDescription
+          description={product.longDescription || product.detailedDescription || product.shortDescription}
+          careInfo={product.careInfo || {
+            difficulty: 'Easy',
+            light: 'Bright indirect light',
+            water: 'Every 1-2 weeks',
+            petFriendly: 'Yes'
+          }}
+        />
 
         {/* Other You May Also Like */}
         <ProductGrid
           titleClassName="text-4xl!"
           title="Other you may also like"
-          products={product.relatedProducts}
+          products={product.relatedProducts || []}
         />
 
         {/* Recently Viewed */}
         <ProductGrid
           titleClassName="text-4xl!"
           title="Recently viewed products"
-          products={product.relatedProducts}
+          products={product.relatedProducts || []}
         />
 
         {/* Reviews */}
         <div className="border-t border-gray-100 pt-12">
           <ReviewsSection
-            reviews={product.reviewsList}
-            rating={product.rating}
-            totalReviews={product.reviews}
+            reviews={product.reviewsList || []}
+            rating={product.rating || 0}
+            totalReviews={product.reviews || 0}
           />
         </div>
       </div>

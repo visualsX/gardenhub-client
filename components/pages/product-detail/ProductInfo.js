@@ -1,12 +1,104 @@
 'use client';
 
-import { useState } from 'react';
+import { useVariantSelection } from '@/hooks/product-detail/useVariantSelection';
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 
 export default function ProductInfo({ product }) {
-  const [quantity, setQuantity] = useState(1);
-  const [selectedHeight, setSelectedHeight] = useState(product.heightOptions[1]); // Default middle option
-  const [selectedOrigin, setSelectedOrigin] = useState(product.originOptions[1]);
-  const [selectedColor, setSelectedColor] = useState(product.colorOptions[1]);
+  const {
+    selectedOptions,
+    quantity,
+    availableStock,
+    currentPrice,
+    isAvailable,
+    allOptionsSelected,
+    canAddToCart,
+    handleOptionSelect,
+    incrementQuantity,
+    decrementQuantity,
+    isOptionDisabled,
+  } = useVariantSelection(product);
+
+  if (!product) return null;
+
+  // Render option buttons (text or color)
+  const renderOption = (option) => {
+    const hasColors = option.values.some((v) => v.colorHex);
+
+    return (
+      <div key={option.name}>
+        <label className="mb-2 block font-medium text-gray-900">{option.name}:</label>
+        <div className="flex flex-wrap gap-3">
+          {option.values.map((optionValue, i) => {
+            const isSelected = selectedOptions[option.name] === optionValue.value;
+            const isDisabled = isOptionDisabled(option.name, optionValue.value);
+
+            if (hasColors && optionValue.colorHex) {
+              // Render color swatch
+              return (
+                <button
+                  key={i}
+                  disabled={isDisabled}
+                  onClick={() => handleOptionSelect(option.name, optionValue.value)}
+                  className={`group relative h-12 w-12 rounded-full border-2 transition-all 
+                    ${isSelected
+                      ? 'border-green-800 ring-2 ring-green-800 ring-offset-2'
+                      : 'border-gray-200 hover:border-gray-300'
+                    }
+                    ${isDisabled ? 'opacity-40 cursor-not-allowed grayscale' : ''}
+                  `}
+                  title={`${optionValue.value}${isDisabled ? ' (Out of Stock)' : ''}`}
+                >
+                  <div
+                    className="h-full w-full rounded-full"
+                    style={{ backgroundColor: optionValue.colorHex }}
+                  />
+                  {isDisabled && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="h-0.5 w-full bg-gray-500 rotate-45 transform" />
+                    </div>
+                  )}
+                  {isSelected && !isDisabled && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg
+                        className="h-5 w-5 text-white drop-shadow-lg"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </button>
+              );
+            }
+
+            // Render text button
+            return (
+              <button
+                key={i}
+                disabled={isDisabled}
+                onClick={() => handleOptionSelect(option.name, optionValue.value)}
+                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all 
+                  ${isSelected
+                    ? 'border-green-800 bg-green-50 text-green-900'
+                    : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
+                  }
+                  ${isDisabled ? 'opacity-50 cursor-not-allowed bg-gray-100 text-gray-400 decoration-slice line-through' : ''}
+                `}
+              >
+                {optionValue.value}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -19,112 +111,84 @@ export default function ProductInfo({ product }) {
             </svg>
           ))}
         </div>
-        <span className="text-sm font-medium text-gray-900">{product.reviews} Reviews</span>
+        <span className="text-sm font-medium text-gray-900">5.0 Reviews</span>
       </div>
 
-      {/* Title & Price */}
+      {/* Title */}
       <div>
         <h1 className="text-5xl font-bold text-gray-900">{product.name}</h1>
-        <div className="mt-2 inline-block rounded-md bg-gray-100 px-3 py-1 text-sm font-medium text-gray-600">
-          {product.scientificName}
-        </div>
       </div>
 
-      <p className="text-gray-600">{product.description}</p>
+      {/* Description */}
+      <p className="text-gray-600">{product.shortDescription}</p>
 
+      {/* Price */}
       <div className="text-2xl font-bold text-gray-900">
-        {product.currency} {product.price}
+        {product.hasVariants && allOptionsSelected ? (
+          <>AED {currentPrice}</>
+        ) : product.hasVariants ? (
+          <span className="text-lg text-gray-500">Select options to see price</span>
+        ) : (
+          <>AED {currentPrice}</>
+        )}
       </div>
 
-      {/* Options */}
-      <div className="space-y-6">
-        {/* Height */}
-        <div>
-          <label className="mb-2 block font-medium text-gray-900">Height:</label>
-          <div className="flex flex-wrap gap-3">
-            {product.heightOptions.map((opt) => (
-              <button
-                key={opt}
-                onClick={() => setSelectedHeight(opt)}
-                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all ${
-                  selectedHeight === opt
-                    ? 'border-green-800 bg-green-50 text-green-900'
-                    : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
+      {/* Options - only show if product has variants */}
+      {product.hasVariants && product.options && (
+        <div className="space-y-6">
+          {product.options.map((option) => renderOption(option))}
         </div>
+      )}
 
-        {/* Origin */}
-        <div>
-          <label className="mb-2 block font-medium text-gray-900">Origin:</label>
-          <div className="flex flex-wrap gap-3">
-            {product.originOptions.map((opt, i) => (
-              <button
-                key={i}
-                onClick={() => setSelectedOrigin(opt)}
-                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all ${
-                  selectedOrigin === opt
-                    ? 'border-green-800 bg-green-50 text-green-900'
-                    : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
+      {/* Stock Status */}
+      {allOptionsSelected && (
+        <div className="text-sm">
+          {isAvailable ? (
+            <span className="text-green-600 font-medium">
+              In Stock ({availableStock} available)
+            </span>
+          ) : (
+            <span className="text-red-600 font-medium">Out of Stock</span>
+          )}
         </div>
-
-        {/* Color */}
-        <div>
-          <label className="mb-2 block font-medium text-gray-900">Color:</label>
-          <div className="flex flex-wrap gap-3">
-            {product.colorOptions.map((opt, i) => (
-              <button
-                key={i}
-                onClick={() => setSelectedColor(opt)}
-                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all ${
-                  selectedColor === opt
-                    ? 'border-green-800 bg-green-50 text-green-900'
-                    : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+      )}
 
       {/* Quantity & Add to Cart */}
       <div>
         <label className="mb-2 block font-medium text-gray-900">Quantity</label>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-200 text-xl font-bold text-gray-600 transition-colors hover:bg-gray-300"
-            >
-              -
-            </button>
+            <Button
+              icon={<MinusOutlined />}
+              onClick={decrementQuantity}
+              disabled={quantity <= 1 || !allOptionsSelected}
+              className="flex h-12 w-12 items-center justify-center"
+            />
             <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-gray-100 bg-white text-xl font-bold text-gray-900 shadow-sm">
               {quantity}
             </div>
-            <button
-              onClick={() => setQuantity(quantity + 1)}
-              className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-200 text-xl font-bold text-gray-600 transition-colors hover:bg-gray-300"
-            >
-              +
-            </button>
+            <Button
+              icon={<PlusOutlined />}
+              onClick={incrementQuantity}
+              disabled={quantity >= availableStock || !allOptionsSelected}
+              className="flex h-12 w-12 items-center justify-center"
+            />
           </div>
         </div>
       </div>
 
-      <button className="w-full rounded-full bg-green-800 py-4 text-lg font-bold text-white transition-colors hover:bg-green-900">
-        Add to Cart
+      <button
+        disabled={!canAddToCart}
+        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart
+          ? 'bg-green-800 hover:bg-green-900'
+          : 'bg-gray-300 cursor-not-allowed'
+          }`}
+      >
+        {!allOptionsSelected
+          ? 'Select Options'
+          : !isAvailable
+            ? 'Out of Stock'
+            : 'Add to Cart'}
       </button>
     </div>
   );
