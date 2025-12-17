@@ -12,39 +12,30 @@ export const metadata = constructMetadata({
     'Shop the best indoor plants, accessories, and care essentials delivered to your door.',
 });
 
-// Sample product data
-const indoorPlants = [
-  {
-    name: 'Snake Plant Bundle',
-    price: 'AED75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=500',
-  },
-  {
-    name: 'Snake Plant Bundle',
-    price: 'AED75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=500',
-  },
-  {
-    name: 'Snake Plant Bundle',
-    price: 'AED75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=500',
-  },
-  {
-    name: 'Snake Plant Bundle',
-    price: 'AED75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=500',
-  },
-];
+import { fetchFeaturedProducts } from '@/lib/api/ssr-calls/server-homepage';
 
-export default function Home() {
+
+export default async function Home() {
+  // Fetch Indoor Plants
+  const indoorPlantsData = await fetchFeaturedProducts({
+    collectionType: 'sale', // Using 'sale' as per valid enum or comment in query file
+    limit: 4,
+    categorySlug: 'indoor',
+  });
+
+  console.log("indoorplants: ", indoorPlantsData)
+  // Map API response to ProductGrid format
+  const indoorPlants = indoorPlantsData.map(product => ({
+    ...product,
+    price: `AED ${product.salePrice > 0 ? product.salePrice : product.price}`, // Handle sale price if needed
+    rating: 5, // Default rating for now as API doesn't return it
+  }));
+
   return (
     <div className="min-h-screen">
       <HeroSection />
       <ProductGrid title="Indoor Plants" products={indoorPlants} />
+
       <ProductGrid
         parentClassName={'bg-accent-gray'}
         title="Our indoor best-sellers"

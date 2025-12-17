@@ -1,19 +1,26 @@
 import Link from 'next/link';
 
 export default function ProductCard({ product }) {
-    const { name, price, rating, image } = product;
+    const { name, price, rating, mainImageUrl, slug } = product;
 
     return (
         <div className="group rounded-3xl bg-white p-3 transition-shadow hover:shadow-xl relative">
-            <Link href="/products/hibiscus-1" className="absolute inset-0 z-10" aria-label={`View ${name}`} />
+            <Link href={`/products/${slug}`} className="absolute inset-0 z-10" aria-label={`View ${name}`} />
 
             {/* Product Image */}
-            <div className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
+            <div className="aspect-square overflow-hidden rounded-2xl bg-gray-100 relative group">
                 <img
-                    src={image}
+                    src={mainImageUrl || "/all/image-placeholder.svg"}
                     alt={name}
-                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                    className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 ${product.hoverImage ? 'group-hover:opacity-0 transition-opacity duration-300' : ''}`}
                 />
+                {product.hoverImage && (
+                    <img
+                        src={product.hoverImage}
+                        alt={`${name} hover`}
+                        className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-500"
+                    />
+                )}
             </div>
 
             {/* Product Info */}

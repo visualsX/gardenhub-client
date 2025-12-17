@@ -4,73 +4,10 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import FilterSidebar from '@/components/pages/category/FilterSidebar';
 import ProductCard from '@/components/shared/ProductCard';
+import ProductCardSkeleton from '@/components/shared/ProductCardSkeleton';
+import { useProductsByCategory } from '@/hooks/useProductsByCategory';
 
-// Temporary mock data
-const products = [
-  {
-    id: 1,
-    name: 'Snake Plant Bundle',
-    price: 'AED 75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
-  },
-  {
-    id: 2,
-    name: 'Snake Plant Bundle',
-    price: 'AED 75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=800&q=80',
-  },
-  {
-    id: 3,
-    name: 'Snake Plant Bundle',
-    price: 'AED 75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=800&q=80',
-  },
-  {
-    id: 4,
-    name: 'Snake Plant Bundle',
-    price: 'AED 75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
-  },
-  {
-    id: 5,
-    name: 'Snake Plant Bundle',
-    price: 'AED 75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=800&q=80',
-  },
-  {
-    id: 6,
-    name: 'Snake Plant Bundle',
-    price: 'AED 75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=800&q=80',
-  },
-  {
-    id: 7,
-    name: 'Snake Plant Bundle',
-    price: 'AED 75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
-  },
-  {
-    id: 8,
-    name: 'Snake Plant Bundle',
-    price: 'AED 75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=800&q=80',
-  },
-  {
-    id: 9,
-    name: 'Snake Plant Bundle',
-    price: 'AED 75.00',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=800&q=80',
-  },
-];
+
 
 export default function CategoryPage() {
   const params = useParams();
@@ -88,6 +25,7 @@ export default function CategoryPage() {
     : '';
 
   const [sortBy, setSortBy] = useState('best-selling');
+  const { data: products = [], isLoading: loading, isError } = useProductsByCategory(currentSlug);
 
   return (
     <div className="min-h-screen pt-32 pb-20">
@@ -137,11 +75,33 @@ export default function CategoryPage() {
 
           {/* Product Grid */}
           <div className="flex-1">
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {[...Array(6)].map((_, i) => (
+                  <ProductCardSkeleton key={i} />
+                ))}
+              </div>
+            ) : isError ? (
+              <div className="flex flex-col items-center justify-center py-20 text-center">
+                <p className="mb-4 text-lg font-medium text-gray-900">Failed to load products</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="rounded-full bg-green-600 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700"
+                >
+                  Retry
+                </button>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-20 text-center">
+                <p className="text-lg font-medium text-gray-500">No products found in this category.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
