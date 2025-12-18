@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import ProductGallery from './ProductGallery';
 import ProductInfo from './ProductInfo';
 import BundleSection from './BundleSection';
@@ -8,8 +9,23 @@ import FAQBanner from './FAQBanner';
 import ProductDescription from './ProductDescription';
 import ReviewsSection from './ReviewsSection';
 import ProductGrid from '@/components/shared/ProductGrid';
+import { useRecentlyViewedStore } from '@/lib/store/useRecentlyViewedStore';
 
 export default function ProductDetailPage({ product }) {
+  const addToRecentlyViewed = useRecentlyViewedStore((state) => state.addToRecentlyViewed);
+  const recentlyViewed = useRecentlyViewedStore((state) => state.recentlyViewed);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (product) {
+      addToRecentlyViewed(product);
+    }
+  }, [product, addToRecentlyViewed]);
+
   if (!product) return null;
 
   return (
@@ -50,11 +66,13 @@ export default function ProductDetailPage({ product }) {
         />
 
         {/* Recently Viewed */}
-        <ProductGrid
-          titleClassName="text-4xl!"
-          title="Recently viewed products"
-          products={product.relatedProducts || []}
-        />
+        {isMounted && recentlyViewed.length > 0 && (
+          <ProductGrid
+            titleClassName="text-4xl!"
+            title="Recently viewed products"
+            products={recentlyViewed}
+          />
+        )}
 
         {/* Reviews */}
         <div className="border-t border-gray-100 pt-12">
