@@ -1,5 +1,5 @@
 import ProductDetailPage from '@/components/pages/product-detail/ProductDetailPage';
-import { getProductBySlug } from '@/lib/api/ssr-calls/server-products';
+import { getProductBySlug, getRelatedProducts } from '@/lib/api/ssr-calls/server-products';
 import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }) {
@@ -42,6 +42,11 @@ export default async function Page({ params }) {
     console.log('Extracted slug:', slug);
     const product = await getProductBySlug(slug);
     console.log('Product fetched:', product ? 'SUCCESS' : 'NULL');
+
+    if (product) {
+        const relatedProducts = await getRelatedProducts(product.id, 8);
+        product.relatedProducts = relatedProducts;
+    }
 
     if (!product) {
         console.log('Calling notFound() because product is null');
