@@ -3,6 +3,9 @@
 import { useVariantSelection } from '@/hooks/product-detail/useVariantSelection';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import { useState, useEffect } from 'react';
+import { useProductAddons } from '@/hooks/product-detail/useProductAddons';
+import ProductAddons from './addons';
 
 export default function ProductInfo({ product }) {
   const {
@@ -17,7 +20,83 @@ export default function ProductInfo({ product }) {
     incrementQuantity,
     decrementQuantity,
     isOptionDisabled,
+    selectedVariant,
   } = useVariantSelection(product);
+
+  // Fetch addons based on product and selected variant
+  const { data: addons } = useProductAddons(product?.id, selectedVariant?.id);
+
+  // State for selected addons
+  const [selectedAddons, setSelectedAddons] = useState([]);
+
+  // Reset selected addons when variant changes
+  useEffect(() => {
+    setSelectedAddons([]);
+  }, [selectedVariant?.id]);
+
+  // Auto-select default addons when addons load
+  useEffect(() => {
+    if (addons && addons.length > 0) {
+      const defaultAddons = [];
+
+      addons.forEach((addonGroup) => {
+        const defaultOption = addonGroup.options.find(option => option.isDefault);
+
+        if (defaultOption) {
+          defaultAddons.push({
+            assignmentId: addonGroup.productAddonAssignmentId,
+            optionId: defaultOption.id,
+            name: defaultOption.name,
+            price: defaultOption.price,
+            salePrice: defaultOption.salePrice,
+          });
+        }
+      });
+
+      if (defaultAddons.length > 0) {
+        setSelectedAddons(defaultAddons);
+      }
+    }
+  }, [addons]);
+
+  // Handle addon selection (single selection per addon group)
+  const handleSelectAddon = (assignmentId, option) => {
+    setSelectedAddons((prev) => {
+      const existingIndex = prev.findIndex(
+        (s) => s.assignmentId === assignmentId && s.optionId === option.id
+      );
+
+      if (existingIndex >= 0) {
+        // Deselect if clicking the same option
+        return prev.filter((s) => s.assignmentId !== assignmentId);
+      }
+
+      // Replace any existing selection for this addon group
+      const filtered = prev.filter((s) => s.assignmentId !== assignmentId);
+      return [
+        ...filtered,
+        {
+          assignmentId,
+          optionId: option.id,
+          name: option.name,
+          price: option.price,
+          salePrice: option.salePrice,
+        },
+      ];
+    });
+  };
+
+  // Handle add to cart with addons
+  const handleAddToCart = () => {
+    const payload = {
+      productId: product.id,
+      variantId: selectedVariant?.id,
+      quantity,
+      addons: selectedAddons,
+    };
+    console.log('Add to Cart Payload:', payload);
+    // TODO: Integrate with cart store
+  };
 
   if (!product) return null;
 
@@ -140,6 +219,13 @@ export default function ProductInfo({ product }) {
         </div>
       )}
 
+      {/* Product Addons - show after variant selection */}
+      <ProductAddons
+        addons={addons}
+        selectedAddons={selectedAddons}
+        onSelectAddon={handleSelectAddon}
+      />
+
       {/* Stock Status */}
       {allOptionsSelected && (
         <div className="text-sm">
@@ -179,6 +265,7 @@ export default function ProductInfo({ product }) {
 
       <button
         disabled={!canAddToCart}
+        onClick={handleAddToCart}
         className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart
           ? 'bg-green-800 hover:bg-green-900'
           : 'bg-gray-300 cursor-not-allowed'

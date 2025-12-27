@@ -33,7 +33,7 @@ export default function ProductDetailPage({ product }) {
       {/* Added pt-24 for fixed header spacing */}
       <div className="max-layout space-y-16">
         {/* Top Section: Gallery & Info */}
-        <div className="grid gap-12 lg:grid-cols-2">
+        <div className="grid gap-12 grid-cols-1 lg:grid-cols-2">
           <ProductGallery images={product.images} />
           <div className="">
             <ProductInfo product={product} />
