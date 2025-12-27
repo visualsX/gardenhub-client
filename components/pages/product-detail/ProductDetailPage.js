@@ -66,11 +66,11 @@ export default function ProductDetailPage({ product }) {
         />
 
         {/* Recently Viewed */}
-        {isMounted && recentlyViewed.length > 0 && (
+        {isMounted && recentlyViewed.filter(p => p.slug !== product.slug).length > 0 && (
           <ProductGrid
             titleClassName="text-4xl!"
             title="Recently viewed products"
-            products={recentlyViewed}
+            products={recentlyViewed.filter(p => p.slug !== product.slug)}
           />
         )}
 

@@ -25,13 +25,13 @@ export const useRecentlyViewed = () => {
                 // Determine if we should move it to top? commonly yes.
                 // Filter out existing and add to front
                 const others = prev.filter((p) => p.slug !== product.slug);
-                const updated = [formatProductForStorage(product), ...others].slice(0, 10);
+                const updated = [formatProductForStorage(product), ...others].slice(0, 8);
                 localStorage.setItem('recently_viewed', JSON.stringify(updated));
                 return updated;
             }
 
             // Add to front, limit to 10
-            const updated = [formatProductForStorage(product), ...prev].slice(0, 10);
+            const updated = [formatProductForStorage(product), ...prev].slice(0, 8);
             localStorage.setItem('recently_viewed', JSON.stringify(updated));
             return updated;
         });
