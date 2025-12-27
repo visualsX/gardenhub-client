@@ -17,9 +17,9 @@ export default function AddonCard({
     return (
         <div
             onClick={() => onSelect(addonGroup.productAddonAssignmentId, option)}
-            className={`relative min-w-[180px] cursor-pointer rounded-xl border-2 p-4 transition-all ${isSelected
-                    ? 'border-green-700 bg-green-50'
-                    : 'border-gray-200 hover:border-gray-300'
+            className={`relative min-w-[180px] cursor-pointer rounded-2xl border-2 p-2 transition-all ${isSelected
+                ? 'border-green-700 bg-green-50'
+                : 'border-gray-200 hover:border-gray-300'
                 }`}
         >
             {/* Discount Badge */}
@@ -35,7 +35,7 @@ export default function AddonCard({
                     e.stopPropagation();
                     onExpand(option, addonGroup);
                 }}
-                className="absolute left-2 top-2 rounded bg-white p-1 shadow hover:bg-gray-100 transition-colors"
+                className="absolute left-4 top-4 z-10 rounded-2xl bg-white p-1 shadow hover:bg-gray-100 transition-colors"
             >
                 <svg
                     className="h-4 w-4 text-gray-600"
@@ -53,7 +53,7 @@ export default function AddonCard({
             </button>
 
             {/* Image */}
-            <div className="relative mb-3 aspect-square overflow-hidden rounded-lg bg-gray-100">
+            <div className="relative mb-3 aspect-square overflow-hidden rounded-2xl bg-red-100">
                 {option.imageUrl ? (
                     <Image
                         src={option.imageUrl}
