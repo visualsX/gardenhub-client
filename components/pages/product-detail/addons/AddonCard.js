@@ -53,7 +53,7 @@ export default function AddonCard({
             </button>
 
             {/* Image */}
-            <div className="relative mb-3 aspect-square overflow-hidden rounded-2xl bg-red-100">
+            <div className="relative mb-3 aspect-square overflow-hidden rounded-2xl bg-gray-100">
                 {option.imageUrl ? (
                     <Image
                         src={option.imageUrl}
