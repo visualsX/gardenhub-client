@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function FAQBanner() {
   return (
     <div className="relative my-12 overflow-hidden bg-gray-900 py-32 text-white">
@@ -16,9 +18,9 @@ export default function FAQBanner() {
           <h2 className="mb-2 text-4xl font-bold">Got Questions?</h2>
           <p className="text-lg text-gray-200">We got the answers.</p>
         </div>
-        <button className="text-primary rounded-full bg-white px-8 py-3 font-bold transition-transform hover:scale-105">
+        <Link href="/faq" className="text-primary rounded-full bg-white px-8 py-3 font-bold transition-transform hover:scale-105">
           View All FAQs
-        </button>
+        </Link>
       </div>
     </div>
   );
