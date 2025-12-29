@@ -25,7 +25,13 @@ export default function Header({ initialMenuData }) {
     if (category.children && category.children.length > 0) {
       // Adding pathname to the key forces the component to remount on route change,
       // which effectively resets the hover state/animation without needing complex state management.
-      return <MenuDropdown key={`${category.id}-${pathname}`} category={category} isHomePage={isHomePage} />;
+      return (
+        <MenuDropdown
+          key={`${category.id}-${pathname}`}
+          category={category}
+          isHomePage={isHomePage}
+        />
+      );
     }
 
     // Static link if no children
@@ -33,24 +39,23 @@ export default function Header({ initialMenuData }) {
       <Link
         key={category.id}
         href={`/collections/${category.slug}`}
-        className={`text-sm font-medium transition-colors ${isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
-          }`}
+        className={`text-sm font-medium transition-colors ${
+          isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
+        }`}
       >
         {category.name}
       </Link>
     );
   };
 
-  const staticLinks = [
-    { label: 'Contact Us', href: '/contact', id: 'contact' },
-  ];
+  const staticLinks = [{ label: 'Contact Us', href: '/contact', id: 'contact' }];
 
   return (
     <header
       className={
         isHomePage
           ? 'fixed top-4 right-0 left-0 z-50'
-          : 'fixed top-0 right-0 left-0 z-50 w-full bg-primary-dark text-white shadow-md'
+          : 'bg-primary-dark fixed top-0 right-0 left-0 z-50 w-full text-white shadow-md'
       }
     >
       <div className={isHomePage ? 'max-layout' : ''}>
@@ -83,8 +88,11 @@ export default function Header({ initialMenuData }) {
               <li key={link.id}>
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
-                    }`}
+                  className={`text-sm font-medium transition-colors ${
+                    isHomePage
+                      ? 'hover:text-primary text-gray-700'
+                      : 'text-white/90 hover:text-white'
+                  }`}
                 >
                   {link.label}
                 </Link>

@@ -33,7 +33,7 @@ export default function ProductDetailPage({ product }) {
       {/* Added pt-24 for fixed header spacing */}
       <div className="max-layout space-y-16">
         {/* Top Section: Gallery & Info */}
-        <div className="grid gap-12 grid-cols-1 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           <ProductGallery images={product.images} />
           <div className="">
             <ProductInfo product={product} />
@@ -49,13 +49,17 @@ export default function ProductDetailPage({ product }) {
       <div className="">
         {/* Description & Care */}
         <ProductDescription
-          description={product.longDescription || product.detailedDescription || product.shortDescription}
-          careInfo={product.careInfo || {
-            difficulty: 'Easy',
-            light: 'Bright indirect light',
-            water: 'Every 1-2 weeks',
-            petFriendly: 'Yes'
-          }}
+          description={
+            product.longDescription || product.detailedDescription || product.shortDescription
+          }
+          careInfo={
+            product.careInfo || {
+              difficulty: 'Easy',
+              light: 'Bright indirect light',
+              water: 'Every 1-2 weeks',
+              petFriendly: 'Yes',
+            }
+          }
         />
 
         {/* Other You May Also Like */}
@@ -66,11 +70,11 @@ export default function ProductDetailPage({ product }) {
         />
 
         {/* Recently Viewed */}
-        {isMounted && recentlyViewed.filter(p => p.slug !== product.slug).length > 0 && (
+        {isMounted && recentlyViewed.filter((p) => p.slug !== product.slug).length > 0 && (
           <ProductGrid
             titleClassName="text-4xl!"
             title="Recently viewed products"
-            products={recentlyViewed.filter(p => p.slug !== product.slug)}
+            products={recentlyViewed.filter((p) => p.slug !== product.slug)}
           />
         )}
 

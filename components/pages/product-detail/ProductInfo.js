@@ -40,7 +40,7 @@ export default function ProductInfo({ product }) {
       const defaultAddons = [];
 
       addons.forEach((addonGroup) => {
-        const defaultOption = addonGroup.options.find(option => option.isDefault);
+        const defaultOption = addonGroup.options.find((option) => option.isDefault);
 
         if (defaultOption) {
           defaultAddons.push({
@@ -119,13 +119,11 @@ export default function ProductInfo({ product }) {
                   key={i}
                   disabled={isDisabled}
                   onClick={() => handleOptionSelect(option.name, optionValue.value)}
-                  className={`group relative h-12 w-12 rounded-full border-2 transition-all 
-                    ${isSelected
+                  className={`group relative h-12 w-12 rounded-full border-2 transition-all ${
+                    isSelected
                       ? 'border-green-800 ring-2 ring-green-800 ring-offset-2'
                       : 'border-gray-200 hover:border-gray-300'
-                    }
-                    ${isDisabled ? 'opacity-40 cursor-not-allowed grayscale' : ''}
-                  `}
+                  } ${isDisabled ? 'cursor-not-allowed opacity-40 grayscale' : ''} `}
                   title={`${optionValue.value}${isDisabled ? ' (Out of Stock)' : ''}`}
                 >
                   <div
@@ -134,7 +132,7 @@ export default function ProductInfo({ product }) {
                   />
                   {isDisabled && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="h-0.5 w-full bg-gray-500 rotate-45 transform" />
+                      <div className="h-0.5 w-full rotate-45 transform bg-gray-500" />
                     </div>
                   )}
                   {isSelected && !isDisabled && (
@@ -162,13 +160,11 @@ export default function ProductInfo({ product }) {
                 key={i}
                 disabled={isDisabled}
                 onClick={() => handleOptionSelect(option.name, optionValue.value)}
-                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all 
-                  ${isSelected
+                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all ${
+                  isSelected
                     ? 'border-green-800 bg-green-50 text-green-900'
                     : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
-                  }
-                  ${isDisabled ? 'opacity-50 cursor-not-allowed bg-gray-100 text-gray-400 decoration-slice line-through' : ''}
-                `}
+                } ${isDisabled ? 'cursor-not-allowed bg-gray-100 decoration-slice text-gray-400 line-through opacity-50' : ''} `}
               >
                 {optionValue.value}
               </button>
@@ -214,9 +210,7 @@ export default function ProductInfo({ product }) {
 
       {/* Options - only show if product has variants */}
       {product.hasVariants && product.options && (
-        <div className="space-y-6">
-          {product.options.map((option) => renderOption(option))}
-        </div>
+        <div className="space-y-6">{product.options.map((option) => renderOption(option))}</div>
       )}
 
       {/* Product Addons - show after variant selection */}
@@ -230,11 +224,11 @@ export default function ProductInfo({ product }) {
       {allOptionsSelected && (
         <div className="text-sm">
           {isAvailable ? (
-            <span className="text-green-600 font-medium">
+            <span className="font-medium text-green-600">
               In Stock ({availableStock} available)
             </span>
           ) : (
-            <span className="text-red-600 font-medium">Out of Stock</span>
+            <span className="font-medium text-red-600">Out of Stock</span>
           )}
         </div>
       )}
@@ -266,16 +260,11 @@ export default function ProductInfo({ product }) {
       <button
         disabled={!canAddToCart}
         onClick={handleAddToCart}
-        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart
-          ? 'bg-green-800 hover:bg-green-900'
-          : 'bg-gray-300 cursor-not-allowed'
-          }`}
+        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${
+          canAddToCart ? 'bg-green-800 hover:bg-green-900' : 'cursor-not-allowed bg-gray-300'
+        }`}
       >
-        {!allOptionsSelected
-          ? 'Select Options'
-          : !isAvailable
-            ? 'Out of Stock'
-            : 'Add to Cart'}
+        {!allOptionsSelected ? 'Select Options' : !isAvailable ? 'Out of Stock' : 'Add to Cart'}
       </button>
     </div>
   );

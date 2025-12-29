@@ -3,19 +3,19 @@ import graphqlClient from '@/lib/api/graphql-client';
 import { PRODUCTS_QUERIES } from '@/lib/api/queries/products.queries';
 
 export const useProductAddons = (productId, variantId) => {
-    return useQuery({
-        queryKey: ['product-addons', productId, variantId],
-        queryFn: async () => {
-            if (!productId) return [];
+  return useQuery({
+    queryKey: ['product-addons', productId, variantId],
+    queryFn: async () => {
+      if (!productId) return [];
 
-            const data = await graphqlClient.request(PRODUCTS_QUERIES.GET_PRODUCT_ADDONS, {
-                productId,
-                variantId: variantId || null,
-            });
+      const data = await graphqlClient.request(PRODUCTS_QUERIES.GET_PRODUCT_ADDONS, {
+        productId,
+        variantId: variantId || null,
+      });
 
-            return data?.productAddonsForDisplay || [];
-        },
-        enabled: !!productId,
-        staleTime: 1000 * 60 * 5, // 5 minutes
-    });
+      return data?.productAddonsForDisplay || [];
+    },
+    enabled: !!productId,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 };

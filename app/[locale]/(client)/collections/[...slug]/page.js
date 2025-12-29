@@ -7,8 +7,6 @@ import ProductCard from '@/components/shared/ProductCard';
 import ProductCardSkeleton from '@/components/shared/ProductCardSkeleton';
 import { useProductsByCategory } from '@/hooks/useProductsByCategory';
 
-
-
 export default function CategoryPage() {
   const params = useParams();
   const slug = params?.slug;
@@ -19,9 +17,9 @@ export default function CategoryPage() {
   // Format slug for title (e.g., "indoor-plants" -> "Indoor Plants")
   const title = currentSlug
     ? currentSlug
-      .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ')
+        .split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
     : '';
 
   const [sortBy, setSortBy] = useState('best-selling');
@@ -93,7 +91,9 @@ export default function CategoryPage() {
               </div>
             ) : products.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-20 text-center">
-                <p className="text-lg font-medium text-gray-500">No products found in this category.</p>
+                <p className="text-lg font-medium text-gray-500">
+                  No products found in this category.
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
