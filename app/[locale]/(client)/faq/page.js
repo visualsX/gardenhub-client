@@ -164,14 +164,14 @@ export default function FAQPage() {
             <div className="space-y-3">
               <a
                 href="mailto:abc@gmail.com"
-                className="flex items-center gap-3 text-sm font-medium text-gray-900 hover:text-green-700"
+                className="flex items-center gap-3 text-sm font-medium text-gray-900! hover:text-green-700!"
               >
                 <MailIcon />
                 abc@gmail.com
               </a>
               <a
                 href="tel:+94389223444"
-                className="flex items-center gap-3 text-sm font-medium text-gray-900 hover:text-green-700"
+                className="flex items-center gap-3 text-sm font-medium text-gray-900! hover:text-green-700!"
               >
                 <CallIcon />
                 +94389223444
@@ -195,7 +195,7 @@ export default function FAQPage() {
               <div className="mt-6">
                 <Link
                   href="/shop"
-                  className="inline-flex items-center rounded-full border border-white/30 bg-white/20 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-gray-900"
+                  className="inline-flex items-center rounded-full border border-white/30 bg-white/20! px-6 py-3 text-sm font-semibold text-white! backdrop-blur-sm transition-colors hover:bg-white! hover:text-gray-900!"
                 >
                   Explore Collections
                 </Link>
