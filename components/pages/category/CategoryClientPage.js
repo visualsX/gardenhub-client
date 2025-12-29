@@ -4,10 +4,11 @@ import { useState } from 'react';
 import FilterSidebar from '@/components/shared/filter-sidebar/FilterSidebar';
 import ProductCard from '@/components/shared/ProductCard';
 import ProductCardSkeleton from '@/components/shared/ProductCardSkeleton';
-import { useProductsByCategory } from '@/hooks/useProductsByCategory';
+import ProductToolbar from '@/components/shared/filter-sidebar/ProductToolbar';
+import { useInfiniteShopProducts } from '@/hooks/useInfiniteShopProducts';
 import { useShopFilters } from '@/hooks/useShopFilters';
 
-export default function CategoryClientPage({ currentSlug, initialFilters }) {
+export default function CategoryClientPage({ currentSlug, initialFilters, initialProducts, initialTotalCount }) {
     // Format slug for title (e.g., "indoor-plants" -> "Indoor Plants")
     const title = currentSlug
         ? currentSlug
@@ -16,8 +17,29 @@ export default function CategoryClientPage({ currentSlug, initialFilters }) {
             .join(' ')
         : '';
 
-    const [sortBy, setSortBy] = useState('best-selling');
-    const { data: products = [], isLoading: loading, isError } = useProductsByCategory(currentSlug);
+    const [filter, setFilter] = useState({
+        categorySlug: currentSlug,
+        inStockOnly: true,
+        featuredOnly: false,
+        onSaleOnly: false,
+        minPrice: 0,
+        maxPrice: 5000,
+        filterSlugs: [],
+        sortBy: 'newest',
+        searchQuery: '',
+    });
+
+    const { data: productData, isLoading: loading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+        useInfiniteShopProducts({
+            pageSize: 12,
+            filter: filter,
+        });
+
+    const products = productData?.pages.flatMap((page) => page.edges.map((edge) => edge.node)) || [];
+
+    // Use initial products if no client data has loaded yet
+    const displayProducts = productData ? products : (initialProducts || []);
+    const displayTotalCount = productData?.pages?.[0]?.totalCount ?? initialTotalCount;
 
     const { data: filters = [] } = useShopFilters(currentSlug, initialFilters);
 
@@ -26,46 +48,21 @@ export default function CategoryClientPage({ currentSlug, initialFilters }) {
             <div className="max-layout">
                 <h1 className="mb-8 text-center text-4xl font-bold text-gray-900">{title}</h1>
 
-                {/* Toolbar */}
-                <div className="mb-8 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <svg
-                            className="h-5 w-5 text-gray-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                            />
-                        </svg>
-                        <span className="text-sm font-medium text-gray-900">Filter by:</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <label htmlFor="sort-by" className="text-sm font-medium text-gray-900">
-                            Sort by:
-                        </label>
-                        <select
-                            id="sort-by"
-                            value={sortBy}
-                            onChange={(e) => setSortBy(e.target.value)}
-                            className="cursor-pointer bg-transparent text-sm font-medium text-gray-600 focus:outline-none"
-                        >
-                            <option value="best-selling">Best selling</option>
-                            <option value="price-low-high">Price: Low to High</option>
-                            <option value="price-high-low">Price: High to Low</option>
-                            <option value="newest">Newest</option>
-                        </select>
-                    </div>
-                </div>
+                <ProductToolbar
+                    totalCount={displayTotalCount}
+                    sortBy={filter.sortBy}
+                    onSortChange={(value) => setFilter(prev => ({ ...prev, sortBy: value }))}
+                    onSearch={(value) => setFilter(prev => ({ ...prev, searchQuery: value }))}
+                    searchPlaceholder={`Search in ${title}...`}
+                />
 
                 <div className="flex gap-12">
                     {/* Sidebar */}
-                    <FilterSidebar filters={filters} />
+                    <FilterSidebar
+                        filters={filters}
+                        filter={filter}
+                        onFilterChange={(newFilter) => setFilter(prev => ({ ...prev, ...newFilter }))}
+                    />
 
                     {/* Product Grid */}
                     <div className="flex-1">
@@ -85,18 +82,32 @@ export default function CategoryClientPage({ currentSlug, initialFilters }) {
                                     Retry
                                 </button>
                             </div>
-                        ) : products.length === 0 ? (
+                        ) : displayProducts.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-20 text-center">
                                 <p className="text-lg font-medium text-gray-500">
                                     No products found in this category.
                                 </p>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                                {products.map((product) => (
-                                    <ProductCard key={product.id} product={product} />
-                                ))}
-                            </div>
+                            <>
+                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                    {displayProducts.map((product) => (
+                                        <ProductCard key={product.id} product={product} />
+                                    ))}
+                                </div>
+
+                                {hasNextPage && (
+                                    <div className="mt-8 flex justify-center">
+                                        <button
+                                            onClick={() => fetchNextPage()}
+                                            disabled={isFetchingNextPage}
+                                            className="rounded-full border border-green-600 px-6 py-2 text-sm font-medium text-green-600 transition-colors hover:bg-green-50 disabled:opacity-50"
+                                        >
+                                            {isFetchingNextPage ? 'Loading...' : 'Load More'}
+                                        </button>
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

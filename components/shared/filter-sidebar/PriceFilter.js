@@ -3,9 +3,15 @@
 import { useState, useEffect } from 'react';
 import { Slider, InputNumber } from 'antd';
 
-export default function PriceFilter({ onChange, min = 0, max = 5000 }) {
+export default function PriceFilter({ onChange, min = 0, max = 5000, initialRange }) {
     // Use local state for immediate feedback, propagate changes on afterChange
-    const [range, setRange] = useState([min, max]);
+    const [range, setRange] = useState(initialRange || [min, max]);
+
+    useEffect(() => {
+        if (initialRange) {
+            setRange(initialRange);
+        }
+    }, [initialRange]);
 
     useEffect(() => {
         // Reset range if props change significantly, though usually min/max are static

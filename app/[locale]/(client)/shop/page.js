@@ -12,6 +12,13 @@ export default async function Shop() {
   const initialFilters = await getShopFilters(null);
 
   const initialProducts = initialData.edges?.map((edge) => edge.node) || [];
+  const initialTotalCount = initialData.totalCount || 0;
 
-  return <ShopPage initialProducts={initialProducts} initialFilters={initialFilters} />;
+  return (
+    <ShopPage
+      initialProducts={initialProducts}
+      initialFilters={initialFilters}
+      initialTotalCount={initialTotalCount}
+    />
+  );
 }

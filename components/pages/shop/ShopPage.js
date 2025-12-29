@@ -1,19 +1,32 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useInfiniteShopProducts } from '@/hooks/useInfiniteShopProducts';
 import ProductCard from '@/components/shared/ProductCard';
 import ProductCardSkeleton from '@/components/shared/ProductCardSkeleton';
 import FilterSidebar from '@/components/shared/filter-sidebar/FilterSidebar';
+import ProductToolbar from '@/components/shared/filter-sidebar/ProductToolbar';
 import { useShopFilters } from '@/hooks/useShopFilters';
 
-export default function ShopPage({ initialProducts, initialFilters }) {
+export default function ShopPage({ initialProducts, initialFilters, initialTotalCount }) {
   const loadMoreRef = useRef(null);
+  const [filter, setFilter] = useState({
+    inStockOnly: true,
+    featuredOnly: false,
+    onSaleOnly: false,
+    minPrice: 0,
+    maxPrice: 5000,
+    filterSlugs: [],
+    sortBy: 'newest',
+    searchQuery: '',
+  });
+
   const { data: filters = [] } = useShopFilters(null, initialFilters);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
     useInfiniteShopProducts({
       pageSize: 12,
+      filter: filter,
     });
 
   // Intersection Observer for infinite scroll
@@ -41,17 +54,29 @@ export default function ShopPage({ initialProducts, initialFilters }) {
   // Flatten all pages into single products array
   const products = data?.pages.flatMap((page) => page.edges.map((edge) => edge.node)) || [];
 
-  // Use initial products if no data yet
-  const displayProducts = products.length > 0 ? products : initialProducts;
+  // Use initial products if no client data has loaded yet
+  const displayProducts = data ? products : initialProducts;
+  const displayTotalCount = data?.pages?.[0]?.totalCount ?? initialTotalCount;
 
   return (
     <div className="min-h-screen pt-32 pb-20">
       <div className="max-layout">
         <h1 className="mb-8 text-center text-4xl font-bold text-gray-900">Shop All Products</h1>
 
+        <ProductToolbar
+          totalCount={displayTotalCount}
+          sortBy={filter.sortBy}
+          onSortChange={(value) => setFilter(prev => ({ ...prev, sortBy: value }))}
+          onSearch={(value) => setFilter(prev => ({ ...prev, searchQuery: value }))}
+        />
+
         <div className="flex gap-12">
           {/* Sidebar */}
-          <FilterSidebar filters={filters} />
+          <FilterSidebar
+            filters={filters}
+            filter={filter}
+            onFilterChange={(newFilter) => setFilter(prev => ({ ...prev, ...newFilter }))}
+          />
 
           {/* Product Grid */}
           <div className="flex-1">
