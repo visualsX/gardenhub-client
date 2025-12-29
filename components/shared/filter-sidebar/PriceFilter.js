@@ -35,13 +35,15 @@ export default function PriceFilter({ onChange, min = 0, max = 5000 }) {
                 max={max}
                 value={range}
                 onChange={handleSliderChange}
-                onAfterChange={handleAfterChange}
-                trackStyle={[{ backgroundColor: 'var(--primary-green, #4CAF50)' }]}
-                handleStyle={[
-                    { borderColor: 'var(--primary-green, #4CAF50)', backgroundColor: 'var(--primary-green, #4CAF50)' },
-                    { borderColor: 'var(--primary-green, #4CAF50)', backgroundColor: 'var(--primary-green, #4CAF50)' },
-                ]}
-                railStyle={{ backgroundColor: '#E0E0E0' }}
+                onChangeComplete={handleAfterChange}
+            // styles={{
+            //     track: { backgroundColor: 'var(--primary-green, #4CAF50)' },
+            //     handle: {
+            //         borderColor: 'var(--primary-green, #4CAF50)',
+            //         backgroundColor: 'var(--primary-green, #4CAF50)',
+            //     },
+            //     rail: { backgroundColor: '#E0E0E0' }
+            // }}
             />
 
             <div className="mt-4 flex items-center justify-between gap-2">
