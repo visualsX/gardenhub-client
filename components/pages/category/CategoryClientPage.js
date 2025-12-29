@@ -46,11 +46,11 @@ export default function CategoryClientPage({ currentSlug, initialFilters, initia
     return (
         <div className="min-h-screen pt-32 pb-20">
             <div className="max-layout">
-                <h1 className="mb-8 text-center text-4xl font-bold text-gray-900">{title}</h1>
-
                 <ProductToolbar
+                    title={title}
                     totalCount={displayTotalCount}
                     sortBy={filter.sortBy}
+                    searchQuery={filter.searchQuery}
                     onSortChange={(value) => setFilter(prev => ({ ...prev, sortBy: value }))}
                     onSearch={(value) => setFilter(prev => ({ ...prev, searchQuery: value }))}
                     searchPlaceholder={`Search in ${title}...`}

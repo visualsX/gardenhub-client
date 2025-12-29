@@ -39,9 +39,8 @@ export default function Header({ initialMenuData }) {
       <Link
         key={category.id}
         href={`/collections/${category.slug}`}
-        className={`text-sm font-medium transition-colors ${
-          isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
-        }`}
+        className={`text-sm font-medium transition-colors ${isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
+          }`}
       >
         {category.name}
       </Link>
@@ -77,7 +76,7 @@ export default function Header({ initialMenuData }) {
           {/* Navigation Links */}
           <ul className="hidden items-center gap-8 md:flex">
             {/* Dynamic Menu Items */}
-            {menuItems.map((category) => (
+            {menuItems?.map((category) => (
               <li key={category.id} className="h-full">
                 {renderMenuItem(category)}
               </li>
@@ -88,11 +87,10 @@ export default function Header({ initialMenuData }) {
               <li key={link.id}>
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${
-                    isHomePage
-                      ? 'hover:text-primary text-gray-700'
-                      : 'text-white/90 hover:text-white'
-                  }`}
+                  className={`text-sm font-medium transition-colors ${isHomePage
+                    ? 'hover:text-primary text-gray-700'
+                    : 'text-white/90 hover:text-white'
+                    }`}
                 >
                   {link.label}
                 </Link>
