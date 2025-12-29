@@ -24,7 +24,7 @@ export default async function Home() {
 
   console.log('indoorplants: ', indoorPlantsData);
   // Map API response to ProductGrid format
-  const indoorPlants = indoorPlantsData.map((product) => ({
+  const indoorPlants = indoorPlantsData?.map((product) => ({
     ...product,
     price: `AED ${product.salePrice > 0 ? product.salePrice : product.price}`, // Handle sale price if needed
     rating: 5, // Default rating for now as API doesn't return it

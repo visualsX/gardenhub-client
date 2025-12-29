@@ -68,7 +68,7 @@ export default function Header({ initialMenuData }) {
           {/* Logo */}
           <Link
             href="/"
-            className={`text-2xl font-bold ${isHomePage ? 'text-gray-900' : 'text-white'}`}
+            className={`text-2xl font-bold ${isHomePage ? 'text-gray-900!' : 'text-white!'}`}
           >
             GardenHub
           </Link>
@@ -88,8 +88,8 @@ export default function Header({ initialMenuData }) {
                 <Link
                   href={link.href}
                   className={`text-sm font-medium transition-colors ${isHomePage
-                    ? 'hover:text-primary text-gray-700'
-                    : 'text-white/90 hover:text-white'
+                    ? 'hover:text-primary! text-gray-700!'
+                    : 'text-white/90! hover:text-white!'
                     }`}
                 >
                   {link.label}

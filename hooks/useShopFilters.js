@@ -11,5 +11,6 @@ export const useShopFilters = (categorySlug, initialData) => {
         },
         initialData,
         staleTime: 1000 * 60 * 60, // 1 hour
+        throwOnError: true,
     });
 };

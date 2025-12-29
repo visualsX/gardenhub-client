@@ -1,4 +1,4 @@
-import { ConfigProvider, Menu, theme } from 'antd';
+import { ConfigProvider, App as AntdApp, theme } from 'antd';
 
 export const App = ({ children }) => {
   // Define your custom theme configuration
@@ -31,5 +31,9 @@ export const App = ({ children }) => {
     },
   };
 
-  return <ConfigProvider theme={customTheme}>{children}</ConfigProvider>;
+  return (
+    <ConfigProvider theme={customTheme}>
+      <AntdApp>{children}</AntdApp>
+    </ConfigProvider>
+  );
 };

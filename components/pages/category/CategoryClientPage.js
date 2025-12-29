@@ -72,16 +72,6 @@ export default function CategoryClientPage({ currentSlug, initialFilters, initia
                                     <ProductCardSkeleton key={i} />
                                 ))}
                             </div>
-                        ) : isError ? (
-                            <div className="flex flex-col items-center justify-center py-20 text-center">
-                                <p className="mb-4 text-lg font-medium text-gray-900">Failed to load products</p>
-                                <button
-                                    onClick={() => window.location.reload()}
-                                    className="rounded-full bg-green-600 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700"
-                                >
-                                    Retry
-                                </button>
-                            </div>
                         ) : displayProducts.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-20 text-center">
                                 <p className="text-lg font-medium text-gray-500">

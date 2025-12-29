@@ -50,5 +50,6 @@ export function useInfiniteShopProducts({ pageSize = 12, filter = {} } = {}) {
     },
     initialPageParam: null,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    throwOnError: true,
   });
 }
