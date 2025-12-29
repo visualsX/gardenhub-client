@@ -1,4 +1,4 @@
-import { getShopProducts } from '@/lib/api/ssr-calls/server-shop';
+import { getShopProducts, getShopFilters } from '@/lib/api/ssr-calls/server-shop';
 import ShopPage from '@/components/pages/shop/ShopPage';
 
 export const metadata = {
@@ -9,8 +9,9 @@ export const metadata = {
 export default async function Shop() {
   // Fetch initial products server-side for SEO
   const initialData = await getShopProducts({ first: 12 });
+  const initialFilters = await getShopFilters(null);
 
   const initialProducts = initialData.edges?.map((edge) => edge.node) || [];
 
-  return <ShopPage initialProducts={initialProducts} />;
+  return <ShopPage initialProducts={initialProducts} initialFilters={initialFilters} />;
 }
