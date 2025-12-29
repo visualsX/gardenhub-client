@@ -68,15 +68,15 @@ export default function MenuDropdown({ category, isHomePage }) {
       // White Header
       return {
         container: 'bg-white/95 backdrop-blur-md border-gray-200',
-        link: 'text-gray-600 hover:text-primary hover:bg-gray-50',
-        iconColor: 'text-gray-400',
+        link: 'text-gray-600! hover:text-primary! hover:bg-gray-100!',
+        iconColor: 'text-gray-400!',
       };
     } else {
       // Green Header
       return {
         container: 'bg-primary-dark/95 backdrop-blur-md border-white/10',
-        link: 'text-white/90 hover:text-white hover:bg-white/10',
-        iconColor: 'text-white/50',
+        link: 'text-white/90! hover:text-white! hover:bg-white/10!',
+        iconColor: 'text-white/50!',
       };
     }
   }, [isHomePage]);
@@ -85,17 +85,15 @@ export default function MenuDropdown({ category, isHomePage }) {
     <div className="group relative flex h-full items-center">
       {/* Top Level Trigger - Disabled Link if it has children (which it does here) */}
       <div
-        className={`flex cursor-default items-center gap-1 text-sm font-medium transition-colors ${
-          isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
-        }`}
+        className={`flex cursor-default items-center gap-1 text-sm font-medium transition-colors ${isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
+          }`}
       >
         {category.name}
         <svg
-          className={`h-2.5 w-2.5 transition-transform duration-200 group-hover:rotate-180 ${
-            isHomePage
-              ? 'group-hover:text-primary text-gray-500'
-              : 'text-white/70 group-hover:text-white'
-          }`}
+          className={`h-2.5 w-2.5 transition-transform duration-200 group-hover:rotate-180 ${isHomePage
+            ? 'group-hover:text-primary text-gray-500'
+            : 'text-white/70 group-hover:text-white'
+            }`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
