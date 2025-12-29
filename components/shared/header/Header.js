@@ -11,9 +11,12 @@ import BagWhiteIcon from '@/public/shared/bag-white.svg';
 import { useMenu } from '@/hooks/useMenu';
 
 import MenuDropdown from './MenuDropdown';
+import SearchOverlay from './SearchOverlay';
+import { useState } from 'react';
 
 export default function Header({ initialMenuData }) {
   const pathname = usePathname();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   // Check if homepage (root / or localized root /en, /ar, etc)
   const isHomePage = pathname === '/' || /^\/[a-zA-Z-]{2,5}$/.test(pathname);
 
@@ -103,6 +106,7 @@ export default function Header({ initialMenuData }) {
             <button
               className={`hover:text-primary text-gray-700 transition-colors`}
               aria-label="Search"
+              onClick={() => setIsSearchOpen(true)}
             >
               {isHomePage ? <SearchIcon /> : <SearchWhiteIcon />}
             </button>
@@ -122,6 +126,8 @@ export default function Header({ initialMenuData }) {
           </div>
         </nav>
       </div>
+
+      <SearchOverlay open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   );
 }
