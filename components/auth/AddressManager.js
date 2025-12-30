@@ -64,8 +64,8 @@ export default function AddressManager({ initialData }) {
         const payload = {
             ...values,
             customerId: customerId || "string",
-            isDefaultShipping: values.isDefault || false,
-            isDefaultBilling: values.isDefault || false,
+            isDefaultShipping: values.isDefaultBilling || false,
+            isDefaultBilling: values.isDefaultShipping || false,
         };
 
         if (editingAddress) {
