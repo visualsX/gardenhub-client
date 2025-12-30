@@ -9,6 +9,7 @@ import SearchWhiteIcon from '@/public/shared/search-white.svg';
 import UserWhiteIcon from '@/public/shared/user-white.svg';
 import BagWhiteIcon from '@/public/shared/bag-white.svg';
 import { useMenu } from '@/hooks/useMenu';
+import useAuth from '@/lib/store/auth';
 
 import MenuDropdown from './MenuDropdown';
 import SearchOverlay from './SearchOverlay';
@@ -42,9 +43,8 @@ export default function Header({ initialMenuData }) {
       <Link
         key={category.id}
         href={`/collections/${category.slug}`}
-        className={`text-sm font-medium transition-colors ${
-          isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
-        }`}
+        className={`text-sm font-medium transition-colors ${isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
+          }`}
       >
         {category.name}
       </Link>
@@ -91,11 +91,10 @@ export default function Header({ initialMenuData }) {
               <li key={link.id}>
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${
-                    isHomePage
-                      ? 'hover:text-primary! text-gray-700!'
-                      : 'text-white/90! hover:text-white!'
-                  }`}
+                  className={`text-sm font-medium transition-colors ${isHomePage
+                    ? 'hover:text-primary! text-gray-700!'
+                    : 'text-white/90! hover:text-white!'
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -113,7 +112,7 @@ export default function Header({ initialMenuData }) {
               {isHomePage ? <SearchIcon /> : <SearchWhiteIcon />}
             </button>
             <Link
-              href="/auth/login"
+              href={useAuth.getState().token ? '/auth/accounts/profile' : '/auth/login'}
               className={`hover:text-primary text-gray-700 transition-colors`}
               aria-label="Account"
             >
