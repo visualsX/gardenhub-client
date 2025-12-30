@@ -9,10 +9,10 @@ export default async function CategoryPage({ params }) {
   // Fetch filters and initial products server-side
   const [filters, productData] = await Promise.all([
     getShopFilters(currentSlug),
-    getShopProducts({ first: 12, filter: { categorySlug: currentSlug } })
+    getShopProducts({ first: 12, filter: { categorySlug: currentSlug } }),
   ]);
 
-  const initialProducts = productData?.edges?.map(edge => edge.node) || [];
+  const initialProducts = productData?.edges?.map((edge) => edge.node) || [];
 
   return (
     <CategoryClientPage

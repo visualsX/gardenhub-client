@@ -42,8 +42,9 @@ export default function Header({ initialMenuData }) {
       <Link
         key={category.id}
         href={`/collections/${category.slug}`}
-        className={`text-sm font-medium transition-colors ${isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
-          }`}
+        className={`text-sm font-medium transition-colors ${
+          isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
+        }`}
       >
         {category.name}
       </Link>
@@ -90,10 +91,11 @@ export default function Header({ initialMenuData }) {
               <li key={link.id}>
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${isHomePage
-                    ? 'hover:text-primary! text-gray-700!'
-                    : 'text-white/90! hover:text-white!'
-                    }`}
+                  className={`text-sm font-medium transition-colors ${
+                    isHomePage
+                      ? 'hover:text-primary! text-gray-700!'
+                      : 'text-white/90! hover:text-white!'
+                  }`}
                 >
                   {link.label}
                 </Link>

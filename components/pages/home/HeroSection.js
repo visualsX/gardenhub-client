@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function HeroSection() {
   return (
@@ -30,10 +30,16 @@ export default function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href={"/shop"} className="bg-primary! hover:border-primary-dark hover:bg-primary-dark! border-primary rounded-full border-2 px-8 py-3 font-semibold text-white! transition-all">
+              <Link
+                href={'/shop'}
+                className="bg-primary! hover:border-primary-dark hover:bg-primary-dark! border-primary rounded-full border-2 px-8 py-3 font-semibold text-white! transition-all"
+              >
                 Shop Plants
               </Link>
-              <Link href={"/collections"} className="rounded-full border-2 border-gray-500 bg-transparent px-8 py-3 font-semibold text-white! backdrop-blur-[2px] transition-all hover:backdrop-blur-xs">
+              <Link
+                href={'/collections'}
+                className="rounded-full border-2 border-gray-500 bg-transparent px-8 py-3 font-semibold text-white! backdrop-blur-[2px] transition-all hover:backdrop-blur-xs"
+              >
                 Explore Collections
               </Link>
             </div>

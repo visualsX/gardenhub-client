@@ -6,7 +6,12 @@ import FilterAccordion from '../../pages/category/FilterAccordion';
 import PriceFilter from './PriceFilter';
 
 export default function FilterSidebar({ filters = [], filter, onFilterChange }) {
-  const { inStockOnly = true, featuredOnly = false, onSaleOnly = false, filterSlugs = [] } = filter || {};
+  const {
+    inStockOnly = true,
+    featuredOnly = false,
+    onSaleOnly = false,
+    filterSlugs = [],
+  } = filter || {};
 
   const handleInStockChange = (checked) => {
     onFilterChange?.({ inStockOnly: checked });
@@ -25,9 +30,7 @@ export default function FilterSidebar({ filters = [], filter, onFilterChange }) 
   };
 
   const handleCheckboxChange = (slug, checked) => {
-    const newSlugs = checked
-      ? [...filterSlugs, slug]
-      : filterSlugs.filter((s) => s !== slug);
+    const newSlugs = checked ? [...filterSlugs, slug] : filterSlugs.filter((s) => s !== slug);
     onFilterChange?.({ filterSlugs: newSlugs });
   };
 
@@ -36,11 +39,7 @@ export default function FilterSidebar({ filters = [], filter, onFilterChange }) 
       <div className="space-y-3">
         <div className="bg-accent-gray flex items-center justify-between rounded-xl px-4 py-3">
           <span className="text-sm font-bold text-gray-900">In stock only</span>
-          <Switch
-            checked={inStockOnly}
-            onChange={handleInStockChange}
-            className="custom-switch"
-          />
+          <Switch checked={inStockOnly} onChange={handleInStockChange} className="custom-switch" />
         </div>
 
         {/* Featured Toggle */}
@@ -56,11 +55,7 @@ export default function FilterSidebar({ filters = [], filter, onFilterChange }) 
         {/* On Sale Toggle */}
         <div className="bg-accent-gray flex items-center justify-between rounded-xl px-4 py-3">
           <span className="text-sm font-bold text-gray-900">On Sale</span>
-          <Switch
-            checked={onSaleOnly}
-            onChange={handleOnSaleChange}
-            className="custom-switch"
-          />
+          <Switch checked={onSaleOnly} onChange={handleOnSaleChange} className="custom-switch" />
         </div>
 
         {/* Price Filter */}
@@ -78,7 +73,10 @@ export default function FilterSidebar({ filters = [], filter, onFilterChange }) 
           <FilterAccordion key={filter.name} title={filter.name}>
             <div className="space-y-2 pb-2">
               {filter.options.map((option) => (
-                <div key={option.slug} className="flex items-center justify-between text-sm text-gray-600 hover:text-gray-900">
+                <div
+                  key={option.slug}
+                  className="flex items-center justify-between text-sm text-gray-600 hover:text-gray-900"
+                >
                   <Checkbox
                     className="custom-checkbox"
                     checked={filterSlugs.includes(option.slug)}
@@ -86,7 +84,7 @@ export default function FilterSidebar({ filters = [], filter, onFilterChange }) 
                   >
                     {option.value}
                   </Checkbox>
-                  <span className="text-gray-400 text-xs">({option.productCount})</span>
+                  <span className="text-xs text-gray-400">({option.productCount})</span>
                 </div>
               ))}
             </div>

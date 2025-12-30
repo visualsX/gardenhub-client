@@ -65,8 +65,8 @@ export default function ShopPage({ initialProducts, initialFilters, initialTotal
           totalCount={displayTotalCount}
           sortBy={filter.sortBy}
           searchQuery={filter.searchQuery}
-          onSortChange={(value) => setFilter(prev => ({ ...prev, sortBy: value }))}
-          onSearch={(value) => setFilter(prev => ({ ...prev, searchQuery: value }))}
+          onSortChange={(value) => setFilter((prev) => ({ ...prev, sortBy: value }))}
+          onSearch={(value) => setFilter((prev) => ({ ...prev, searchQuery: value }))}
         />
 
         <div className="flex gap-12">
@@ -74,7 +74,7 @@ export default function ShopPage({ initialProducts, initialFilters, initialTotal
           <FilterSidebar
             filters={filters}
             filter={filter}
-            onFilterChange={(newFilter) => setFilter(prev => ({ ...prev, ...newFilter }))}
+            onFilterChange={(newFilter) => setFilter((prev) => ({ ...prev, ...newFilter }))}
           />
 
           {/* Product Grid */}
