@@ -3,46 +3,81 @@
 import React, { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useGoogleLogin } from '@/hooks/useAuthMutations';
-import { Spin, Button } from 'antd';
+import { Spin, Button, Card, Typography } from 'antd';
+import { ExclamationCircleFilled, SafetyCertificateTwoTone } from '@ant-design/icons';
+const { Title, Text } = Typography;
 
 export default function GoogleCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const googleLoginMutation = useGoogleLogin();
 
+  const errorParam = searchParams.get('error');
+  const code = searchParams.get('code');
+
   useEffect(() => {
-    const code = searchParams.get('code');
     if (code) {
-      // Prevent double calling if strict mode or re-renders
-      // React Query's mutation can be called multiple times but usually we want to trigger it once.
-      // We can check if it's already idle or pending.
       if (googleLoginMutation.isIdle) {
         googleLoginMutation.mutate(code);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]); // Depend only on Params to trigger once
+  }, [code, googleLoginMutation]);
+
+  // Determine if we have an error (either from params or mutation)
+  const hasError = errorParam || googleLoginMutation.isError;
+  let errorTitle = 'Authentication Failed';
+  let errorDescription = errorParam || googleLoginMutation.error?.response?.data?.message || 'We could not sign you in with Google. Please try again.';
+
+  if (errorDescription && decodeURIComponent(errorDescription).includes('LockedOut')) {
+    errorTitle = 'Account Permanently Deleted';
+    errorDescription = 'This email address is associated with an account that has been permanently deleted. Access is restricted. Please sign up using a different email address.';
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
-      <div className="rounded-lg bg-white p-8 text-center shadow-md">
-        {googleLoginMutation.isError ? (
-          <div className="text-red-600">
-            <h3 className="text-lg font-medium">Login Failed</h3>
-            <p className="mt-2 text-sm text-gray-500">
-              {googleLoginMutation.error?.response?.data?.message || 'Authentication failed'}
-            </p>
-            <Button type="link" onClick={() => router.push('/login')} className="mt-4">
+      <Card className="border-with-radius w-full max-w-md shadow-xl">
+        {hasError ? (
+          <div className="flex flex-col items-center text-center py-6">
+            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
+              <ExclamationCircleFilled className="text-3xl text-red-500!" />
+            </div>
+
+            <Title level={3} className="mb-2 text-gray-900!">
+              {errorTitle}
+            </Title>
+
+            <Text className="mb-8 block max-w-xs text-gray-500">
+              {errorDescription}
+            </Text>
+
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => router.push('/auth/login')}
+              className="w-full bg-primary hover:bg-primary-dark h-11"
+            >
               Return to Login
             </Button>
           </div>
         ) : (
-          <div className="flex flex-col items-center">
-            <Spin size="large" className="mb-4" />
-            <p className="font-medium text-gray-900">Authenticating with Google...</p>
+          <div className="flex flex-col items-center py-12">
+            <Spin size="large" className="mb-6" />
+            <Title level={4} className="text-gray-700! m-0!">
+              Verifying credentials...
+            </Title>
+            <Text className="mt-2 text-gray-400">
+              Please wait while we log you in safely
+            </Text>
           </div>
         )}
-      </div>
+      </Card>
+
+      {!hasError && (
+        <div className="mt-8 flex items-center justify-center gap-2 text-gray-400">
+          <SafetyCertificateTwoTone twoToneColor="#52c41a" className="text-lg" />
+          <span className="text-xs font-medium uppercase tracking-wider">Secure Connection</span>
+        </div>
+      )}
     </div>
   );
 }
