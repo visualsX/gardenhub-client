@@ -104,7 +104,7 @@ export default function Header({ initialMenuData }) {
           {/* Action Icons */}
           <div className="flex items-center gap-6">
             <button
-              className={`hover:text-primary text-gray-700 transition-colors`}
+              className={`hover:text-primary cursor-pointer text-gray-700 transition-colors`}
               aria-label="Search"
               onClick={() => setIsSearchOpen(true)}
             >
