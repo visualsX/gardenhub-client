@@ -59,7 +59,7 @@ export const useAddAddress = () => {
         onSuccess: () => {
             message.success('Address added successfully');
             queryClient.invalidateQueries({ queryKey: ['customerProfile'] });
-            queryClient.invalidateQueries({ queryKey: ['customerAddresses'] });
+            // queryClient.invalidateQueries({ queryKey: ['customerAddresses'] });
         },
         onError: (error) => {
             message.error(error.response?.data?.message || 'Failed to add address');
@@ -78,7 +78,7 @@ export const useUpdateAddress = () => {
         onSuccess: () => {
             message.success('Address updated successfully');
             queryClient.invalidateQueries({ queryKey: ['customerProfile'] });
-            queryClient.invalidateQueries({ queryKey: ['customerAddresses'] });
+            // queryClient.invalidateQueries({ queryKey: ['customerAddresses'] });
         },
         onError: (error) => {
             message.error(error.response?.data?.message || 'Failed to update address');
@@ -97,7 +97,7 @@ export const useDeleteAddress = () => {
         onSuccess: () => {
             message.success('Address deleted successfully');
             queryClient.invalidateQueries({ queryKey: ['customerProfile'] });
-            queryClient.invalidateQueries({ queryKey: ['customerAddresses'] });
+            // queryClient.invalidateQueries({ queryKey: ['customerAddresses'] });
         },
         onError: (error) => {
             message.error(error.response?.data?.message || 'Failed to delete address');
@@ -105,24 +105,46 @@ export const useDeleteAddress = () => {
     });
 };
 
-export const useSetDefaultAddress = () => {
+export const useSetDefaultBillingAddress = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: async (id) => {
             // Endpoint logic: PATCH /api/Customer/address/{id}/default
             const response = await client.patch(
-                `${API_ENDPOINTS.CUSTOMER.ADDRESS}/${id}${API_ENDPOINTS.CUSTOMER.DEFAULT_ADDRESS}`
+                `${API_ENDPOINTS.CUSTOMER.ADDRESS}/${id}${API_ENDPOINTS.CUSTOMER.DEFAULT_BILLING_ADDRESS}`
             );
             return response;
         },
         onSuccess: () => {
-            message.success('Default address updated');
+            message.success('Default billing address updated');
             queryClient.invalidateQueries({ queryKey: ['customerProfile'] });
-            queryClient.invalidateQueries({ queryKey: ['customerAddresses'] });
+            // queryClient.invalidateQueries({ queryKey: ['customerAddresses'] });
         },
         onError: (error) => {
-            message.error(error.response?.data?.message || 'Failed to set default address');
+            message.error(error.response?.data?.message || 'Failed to set default billing address');
+        },
+    });
+};
+
+export const useSetDefaultShippingAddress = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id) => {
+            // Endpoint logic: PATCH /api/Customer/address/{id}/default
+            const response = await client.patch(
+                `${API_ENDPOINTS.CUSTOMER.ADDRESS}/${id}${API_ENDPOINTS.CUSTOMER.DEFAULT_SHIPPING_ADDRESS}`
+            );
+            return response;
+        },
+        onSuccess: () => {
+            message.success('Default shipping address updated');
+            queryClient.invalidateQueries({ queryKey: ['customerProfile'] });
+            // queryClient.invalidateQueries({ queryKey: ['customerAddresses'] });
+        },
+        onError: (error) => {
+            message.error(error.response?.data?.message || 'Failed to set default shipping address');
         },
     });
 };

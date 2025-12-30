@@ -13,11 +13,16 @@ import useAuth from '@/lib/store/auth';
 
 import MenuDropdown from './MenuDropdown';
 import SearchOverlay from './SearchOverlay';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Header({ initialMenuData }) {
   const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   // Check if homepage (root / or localized root /en, /ar, etc)
   const isHomePage = pathname === '/' || /^\/[a-zA-Z-]{2,5}$/.test(pathname);
 
@@ -112,7 +117,7 @@ export default function Header({ initialMenuData }) {
               {isHomePage ? <SearchIcon /> : <SearchWhiteIcon />}
             </button>
             <Link
-              href={useAuth.getState().token ? '/auth/accounts/profile' : '/auth/login'}
+              href={isMounted && useAuth.getState().token ? '/auth/accounts/profile' : '/auth/login'}
               className={`hover:text-primary text-gray-700 transition-colors`}
               aria-label="Account"
             >
