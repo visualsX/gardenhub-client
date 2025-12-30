@@ -1,12 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCustomerProfile } from '@/hooks/useCustomerProfile';
 import { useUpdateProfile, useDeleteAccount } from '@/hooks/useCustomerMutations';
 import { Input, Button, Form, Modal, Spin } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
-const { confirm } = Modal;
 
 export default function ProfileForm({ initialProfile }) {
     const [form] = Form.useForm();
@@ -18,6 +17,9 @@ export default function ProfileForm({ initialProfile }) {
     // Mutations
     const updateProfile = useUpdateProfile();
     const deleteAccount = useDeleteAccount();
+
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [deleteConfirmationText, setDeleteConfirmationText] = useState('');
 
     useEffect(() => {
         if (customerProfile) {
@@ -39,19 +41,7 @@ export default function ProfileForm({ initialProfile }) {
         });
     };
 
-    const showDeleteConfirm = () => {
-        confirm({
-            title: 'Are you sure you want to delete your account?',
-            icon: <ExclamationCircleFilled />,
-            content: 'This action cannot be undone. All your data will be permanently removed.',
-            okText: 'Yes, Delete',
-            okType: 'danger',
-            cancelText: 'No',
-            onOk() {
-                deleteAccount.mutate();
-            },
-        });
-    };
+
 
     // If loading initially without cache (should rarely happen if SSR worked), show spinner
     if (isLoading && !customerProfile) {
@@ -126,12 +116,69 @@ export default function ProfileForm({ initialProfile }) {
                     danger
                     size="large"
                     className="mt-4"
-                    onClick={showDeleteConfirm}
+                    onClick={() => setIsDeleteModalOpen(true)}
                     loading={deleteAccount.isPending}
                 >
                     Delete Account
                 </Button>
             </div>
+
+            <Modal
+                title={
+                    <div className="flex items-center gap-2 text-red-600">
+                        <ExclamationCircleFilled /> Delete Account
+                    </div>
+                }
+                open={isDeleteModalOpen}
+                onCancel={() => {
+                    setIsDeleteModalOpen(false);
+                    setDeleteConfirmationText('');
+                }}
+                footer={[
+                    <Button
+                        key="cancel"
+                        onClick={() => {
+                            setIsDeleteModalOpen(false);
+                            setDeleteConfirmationText('');
+                        }}
+                    >
+                        Cancel
+                    </Button>,
+                    <Button
+                        key="delete"
+                        danger
+                        type="primary"
+                        loading={deleteAccount.isPending}
+                        disabled={deleteConfirmationText !== customerProfile?.email}
+                        onClick={() => deleteAccount.mutate()}
+                    >
+                        I understand, delete my account
+                    </Button>
+                ]}
+            >
+                <div className="space-y-4 pt-2">
+                    <div className="rounded-md border border-red-100 bg-red-50 p-4 text-red-800">
+                        <p className="font-medium">Unexpected bad things will happen if you don’t read this!</p>
+                        <ul className="ml-5 list-disc text-sm">
+                            <li>This will permanently delete your <span className="font-semibold">GardenHub</span> account.</li>
+                            <li>All your data, including orders and saved addresses, will be wiped immediately.</li>
+                            <li>This action cannot be undone.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <p className="mb-2 text-sm text-gray-600">
+                            To confirm, type <span className="font-mono font-bold text-gray-900">{customerProfile?.email}</span> in the box below
+                        </p>
+                        <Input
+                            value={deleteConfirmationText}
+                            onChange={(e) => setDeleteConfirmationText(e.target.value)}
+                            placeholder={customerProfile?.email}
+                            className="w-full"
+                        />
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 }
