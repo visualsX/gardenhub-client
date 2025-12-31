@@ -55,11 +55,9 @@ body {
   @apply mx-auto w-full max-w-[1440px] px-3 md:px-4;
 }
 
-
 .border-with-radius {
-  @apply border-gray-200 overflow-hidden rounded-2xl border bg-white;
+  @apply overflow-hidden rounded-2xl border border-gray-200 bg-white;
 }
-
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {

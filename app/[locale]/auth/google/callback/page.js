@@ -26,18 +26,22 @@ export default function GoogleCallbackPage() {
   // Determine if we have an error (either from params or mutation)
   const hasError = errorParam || googleLoginMutation.isError;
   let errorTitle = 'Authentication Failed';
-  let errorDescription = errorParam || googleLoginMutation.error?.response?.data?.message || 'We could not sign you in with Google. Please try again.';
+  let errorDescription =
+    errorParam ||
+    googleLoginMutation.error?.response?.data?.message ||
+    'We could not sign you in with Google. Please try again.';
 
   if (errorDescription && decodeURIComponent(errorDescription).includes('LockedOut')) {
     errorTitle = 'Account Permanently Deleted';
-    errorDescription = 'This email address is associated with an account that has been permanently deleted. Access is restricted. Please sign up using a different email address.';
+    errorDescription =
+      'This email address is associated with an account that has been permanently deleted. Access is restricted. Please sign up using a different email address.';
   }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
       <Card className="border-with-radius w-full max-w-md shadow-xl">
         {hasError ? (
-          <div className="flex flex-col items-center text-center py-6">
+          <div className="flex flex-col items-center py-6 text-center">
             <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
               <ExclamationCircleFilled className="text-3xl text-red-500!" />
             </div>
@@ -46,15 +50,13 @@ export default function GoogleCallbackPage() {
               {errorTitle}
             </Title>
 
-            <Text className="mb-8 block max-w-xs text-gray-500">
-              {errorDescription}
-            </Text>
+            <Text className="mb-8 block max-w-xs text-gray-500">{errorDescription}</Text>
 
             <Button
               type="primary"
               size="large"
               onClick={() => router.push('/auth/login')}
-              className="w-full bg-primary hover:bg-primary-dark h-11"
+              className="bg-primary hover:bg-primary-dark h-11 w-full"
             >
               Return to Login
             </Button>
@@ -62,12 +64,10 @@ export default function GoogleCallbackPage() {
         ) : (
           <div className="flex flex-col items-center py-12">
             <Spin size="large" className="mb-6" />
-            <Title level={4} className="text-gray-700! m-0!">
+            <Title level={4} className="m-0! text-gray-700!">
               Verifying credentials...
             </Title>
-            <Text className="mt-2 text-gray-400">
-              Please wait while we log you in safely
-            </Text>
+            <Text className="mt-2 text-gray-400">Please wait while we log you in safely</Text>
           </div>
         )}
       </Card>
@@ -75,7 +75,7 @@ export default function GoogleCallbackPage() {
       {!hasError && (
         <div className="mt-8 flex items-center justify-center gap-2 text-gray-400">
           <SafetyCertificateTwoTone twoToneColor="#52c41a" className="text-lg" />
-          <span className="text-xs font-medium uppercase tracking-wider">Secure Connection</span>
+          <span className="text-xs font-medium tracking-wider uppercase">Secure Connection</span>
         </div>
       )}
     </div>
