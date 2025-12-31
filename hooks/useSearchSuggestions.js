@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import graphqlClient from '@/lib/api/graphql-client';
+import graphqlClient from '@/lib/api/client-config/graphql-client';
 import { SEARCH_QUERIES } from '@/lib/api/queries/search.query';
 
 export const useSearchSuggestions = (query, limit = 5) => {

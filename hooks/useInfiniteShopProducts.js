@@ -1,13 +1,8 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { GraphQLClient } from 'graphql-request';
-import { API_URLS } from '@/lib/const/urls';
 import { SHOP_QUERIES } from '@/lib/api/queries/shop.queries';
-
-const graphQLClient = new GraphQLClient(API_URLS.GRAPHQL_BASE, {
-  headers: {},
-});
+import graphqlClient from '@/lib/api/client-config/graphql-client';
 
 /**
  * Client-side function to fetch shop products
@@ -19,7 +14,7 @@ async function fetchShopProducts({ first = 12, after = null, filter = {} } = {})
     filter,
   };
 
-  const data = await graphQLClient.request(SHOP_QUERIES.FILTERED_PRODUCTS, variables);
+  const data = await graphqlClient.request(SHOP_QUERIES.FILTERED_PRODUCTS, variables);
 
   return data.filteredProducts || { edges: [], totalCount: 0, pageInfo: {} };
 }

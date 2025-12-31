@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function ProductCard({ product }) {
   const { name, price, rating, mainImageUrl, slug } = product;
-
+  console.log('Product in ProductCard:', product);
   return (
     <div className="group relative rounded-3xl bg-white p-3 transition-shadow hover:shadow-xl">
       <Link
@@ -22,7 +22,7 @@ export default function ProductCard({ product }) {
           <img
             src={product.hoverImage}
             alt={`${name} hover`}
-            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity transition-transform duration-300 duration-500 group-hover:scale-110 group-hover:opacity-100"
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:scale-110 group-hover:opacity-100"
           />
         )}
       </div>

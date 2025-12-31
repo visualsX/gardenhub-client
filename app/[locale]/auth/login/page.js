@@ -4,11 +4,10 @@ import React from 'react';
 import Link from 'next/link';
 import { Form, Input, Button, Divider } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
-import { useLogin, useInitiateGoogleLogin } from '@/hooks/useAuthMutations';
+import { useLogin } from '@/hooks/useAuthMutations';
 
 export default function LoginPage() {
   const loginMutation = useLogin();
-  const initiateGoogleLoginMutation = useInitiateGoogleLogin();
 
   const onFinish = (values) => {
     loginMutation.mutate(values);
@@ -84,7 +83,6 @@ export default function LoginPage() {
             icon={<GoogleOutlined className="text-lg" />}
             onClick={handleGoogleLogin}
             size="large"
-            loading={initiateGoogleLoginMutation.isPending}
             className="h-12 rounded-xl border-gray-200 font-medium text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
           >
             Google

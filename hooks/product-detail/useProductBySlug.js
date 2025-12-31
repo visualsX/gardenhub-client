@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import graphqlClient from '@/lib/api/graphql-client';
+import graphqlClient from '@/lib/api/client-config/graphql-client';
 import { PRODUCTS_QUERIES } from '@/lib/api/queries/products.queries';
 
 export const useProductBySlug = (slug, initialData) => {

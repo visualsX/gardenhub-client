@@ -4,11 +4,10 @@ import React from 'react';
 import Link from 'next/link';
 import { Form, Input, Button } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
-import { useRegister, useInitiateGoogleLogin } from '@/hooks/useAuthMutations';
+import { useRegister } from '@/hooks/useAuthMutations';
 
 export default function RegisterPage() {
   const registerMutation = useRegister();
-  const initiateGoogleLoginMutation = useInitiateGoogleLogin();
 
   const onFinish = (values) => {
     registerMutation.mutate({
@@ -139,13 +138,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="mt-6">
-              <Button
-                block
-                icon={<GoogleOutlined />}
-                onClick={handleGoogleLogin}
-                size="large"
-                loading={initiateGoogleLoginMutation.isPending}
-              >
+              <Button block icon={<GoogleOutlined />} onClick={handleGoogleLogin} size="large">
                 Google
               </Button>
             </div>

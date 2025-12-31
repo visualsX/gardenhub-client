@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import graphqlClient from '@/lib/api/graphql-client';
+import graphqlClient from '@/lib/api/client-config/graphql-client';
 import { MENU_QUERIES } from '@/lib/api/queries';
 
 export const useMenu = (initialData) => {
