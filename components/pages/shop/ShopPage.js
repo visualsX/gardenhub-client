@@ -59,7 +59,6 @@ export default function ShopPage({ initialProducts, initialFilters, initialTotal
   // Use initial products if no client data has loaded yet
   const displayProducts = data ? products : initialProducts;
   const displayTotalCount = data?.pages?.[0]?.totalCount ?? initialTotalCount;
-  console.log('displayProducts', displayProducts);
 
   return (
     <div className="min-h-screen pt-32 pb-20">

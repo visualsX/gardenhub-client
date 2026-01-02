@@ -5,7 +5,6 @@ function ProductCard({ product }) {
   const { name, rating, mainImageUrl, slug } = product;
 
   const actualPrice = product.salePrice || product.price;
-  console.log("product: ", product)
   return (
     <div className="group relative rounded-3xl bg-white p-3 transition-shadow hover:shadow-xl">
       <Link
