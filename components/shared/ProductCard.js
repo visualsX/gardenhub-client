@@ -1,8 +1,11 @@
+import { memo } from 'react';
 import Link from 'next/link';
 
-export default function ProductCard({ product }) {
-  const { name, price, rating, mainImageUrl, slug } = product;
-  console.log('Product in ProductCard:', product);
+function ProductCard({ product }) {
+  const { name, rating, mainImageUrl, slug } = product;
+
+  const actualPrice = product.salePrice || product.price;
+  console.log("product: ", product)
   return (
     <div className="group relative rounded-3xl bg-white p-3 transition-shadow hover:shadow-xl">
       <Link
@@ -13,6 +16,9 @@ export default function ProductCard({ product }) {
 
       {/* Product Image */}
       <div className="group relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
+        {product.salePrice > product.price && <div className="absolute top-3 right-3 z-20 rounded bg-red-500/20 px-2 py-1 text-xs font-bold text-red-500 shadow-sm backdrop-blur-[1px]">
+          On Sale
+        </div>}
         <img
           src={mainImageUrl || '/all/image-placeholder.svg'}
           alt={name}
@@ -41,7 +47,7 @@ export default function ProductCard({ product }) {
 
         {/* Price and Add to Cart */}
         <div className="relative z-20 flex items-center justify-between">
-          <span className="text-base font-bold text-gray-900">{price}</span>
+          <span className="text-base font-bold text-gray-900">{actualPrice}</span>
           <button
             className="group/btn text-primary hover:bg-primary flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-[#d0e6d6] transition-all duration-300 hover:w-32 hover:text-white"
             aria-label="Add to cart"
@@ -63,3 +69,5 @@ export default function ProductCard({ product }) {
     </div>
   );
 }
+
+export default memo(ProductCard);
