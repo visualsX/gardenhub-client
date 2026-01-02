@@ -51,12 +51,15 @@ export default function ShopPage({ initialProducts, initialFilters, initialTotal
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+
+
   // Flatten all pages into single products array
   const products = data?.pages.flatMap((page) => page.edges.map((edge) => edge.node)) || [];
 
   // Use initial products if no client data has loaded yet
   const displayProducts = data ? products : initialProducts;
   const displayTotalCount = data?.pages?.[0]?.totalCount ?? initialTotalCount;
+  console.log('displayProducts', displayProducts);
 
   return (
     <div className="min-h-screen pt-32 pb-20">
