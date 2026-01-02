@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useCustomerProfile } from '@/hooks/useCustomerProfile';
 import { useUpdateProfile, useDeleteAccount } from '@/hooks/useCustomerMutations';
-import { Input, Button, Form, Modal, Spin } from 'antd';
+import { Input, Button, Form, Modal, Spin, Skeleton } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 export default function ProfileForm({ initialProfile }) {
@@ -20,15 +20,15 @@ export default function ProfileForm({ initialProfile }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteConfirmationText, setDeleteConfirmationText] = useState('');
 
-  useEffect(() => {
-    if (customerProfile) {
-      form.setFieldsValue({
-        firstName: customerProfile.firstName,
-        lastName: customerProfile.lastName,
-        email: customerProfile.email,
-      });
-    }
-  }, [customerProfile, form]);
+  // useEffect(() => {
+  //   if (customerProfile) {
+  //     form.setFieldsValue({
+  //       firstName: customerProfile.firstName,
+  //       lastName: customerProfile.lastName,
+  //       email: customerProfile.email,
+  //     });
+  //   }
+  // }, [customerProfile, form]);
 
   const onFinish = (values) => {
     const { firstName, lastName, email } = values;
@@ -62,34 +62,41 @@ export default function ProfileForm({ initialProfile }) {
         onFinish={onFinish}
         requiredMark={false}
         className="space-y-4"
+        initialValues={{
+          firstName: customerProfile.firstName,
+          lastName: customerProfile.lastName,
+          email: customerProfile.email,
+        }}
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Form.Item
-            name="firstName"
-            label="First Name"
-            rules={[{ required: true, message: 'Please enter your first name' }]}
-          >
-            <Input size="large" placeholder="John" />
-          </Form.Item>
-          <Form.Item
-            name="lastName"
-            label="Last Name"
-            rules={[{ required: true, message: 'Please enter your last name' }]}
-          >
-            <Input size="large" placeholder="Doe" />
-          </Form.Item>
-        </div>
+        <Skeleton loading={isLoading}>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Form.Item
+              name="firstName"
+              label="First Name"
+              rules={[{ required: true, message: 'Please enter your first name' }]}
+            >
+              <Input size="large" placeholder="John" />
+            </Form.Item>
+            <Form.Item
+              name="lastName"
+              label="Last Name"
+              rules={[{ required: true, message: 'Please enter your last name' }]}
+            >
+              <Input size="large" placeholder="Doe" />
+            </Form.Item>
+          </div>
 
-        <Form.Item
-          name="email"
-          label="Email Address"
-          rules={[
-            { required: true, message: 'Please enter your email' },
-            { type: 'email', message: 'Please enter a valid email' },
-          ]}
-        >
-          <Input size="large" placeholder="john@example.com" disabled />
-        </Form.Item>
+          <Form.Item
+            name="email"
+            label="Email Address"
+            rules={[
+              { required: true, message: 'Please enter your email' },
+              { type: 'email', message: 'Please enter a valid email' },
+            ]}
+          >
+            <Input size="large" placeholder="john@example.com" disabled />
+          </Form.Item>
+        </Skeleton>
 
         <div className="pt-4">
           <Button
