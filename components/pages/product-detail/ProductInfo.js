@@ -23,8 +23,15 @@ export default function ProductInfo({ product }) {
     selectedVariant,
   } = useVariantSelection(product);
 
+  // Determine if we should fetch addons
+  const hasAddons = selectedVariant ? selectedVariant.hasAddons : product?.hasAddons;
+
   // Fetch addons based on product and selected variant
-  const { data: addons } = useProductAddons(product?.id, selectedVariant?.id);
+  const { data: addons, isLoading: isAddonsLoading } = useProductAddons(
+    product?.id,
+    selectedVariant?.id,
+    !!hasAddons
+  );
 
   // State for selected addons
   const [selectedAddons, setSelectedAddons] = useState([]);
@@ -119,11 +126,10 @@ export default function ProductInfo({ product }) {
                   key={i}
                   disabled={isDisabled}
                   onClick={() => handleOptionSelect(option.name, optionValue.value)}
-                  className={`group relative h-12 w-12 rounded-full border-2 transition-all ${
-                    isSelected
-                      ? 'border-green-800 ring-2 ring-green-800 ring-offset-2'
-                      : 'border-gray-200 hover:border-gray-300'
-                  } ${isDisabled ? 'cursor-not-allowed opacity-40 grayscale' : ''} `}
+                  className={`group relative h-12 w-12 rounded-full border-2 transition-all ${isSelected
+                    ? 'border-green-800 ring-2 ring-green-800 ring-offset-2'
+                    : 'border-gray-200 hover:border-gray-300'
+                    } ${isDisabled ? 'cursor-not-allowed opacity-40 grayscale' : ''} `}
                   title={`${optionValue.value}${isDisabled ? ' (Out of Stock)' : ''}`}
                 >
                   <div
@@ -160,11 +166,10 @@ export default function ProductInfo({ product }) {
                 key={i}
                 disabled={isDisabled}
                 onClick={() => handleOptionSelect(option.name, optionValue.value)}
-                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all ${
-                  isSelected
-                    ? 'border-green-800 bg-green-50 text-green-900'
-                    : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
-                } ${isDisabled ? 'cursor-not-allowed bg-gray-100 decoration-slice text-gray-400 line-through opacity-50' : ''} `}
+                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all ${isSelected
+                  ? 'border-green-800 bg-green-50 text-green-900'
+                  : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
+                  } ${isDisabled ? 'cursor-not-allowed bg-gray-100 box-decoration-slice text-gray-400 line-through opacity-50' : ''} `}
               >
                 {optionValue.value}
               </button>
@@ -216,6 +221,7 @@ export default function ProductInfo({ product }) {
       {/* Product Addons - show after variant selection */}
       <ProductAddons
         addons={addons}
+        isLoading={isAddonsLoading}
         selectedAddons={selectedAddons}
         onSelectAddon={handleSelectAddon}
       />
@@ -260,9 +266,8 @@ export default function ProductInfo({ product }) {
       <button
         disabled={!canAddToCart}
         onClick={handleAddToCart}
-        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${
-          canAddToCart ? 'bg-green-800 hover:bg-green-900' : 'cursor-not-allowed bg-gray-300'
-        }`}
+        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart ? 'bg-green-800 hover:bg-green-900' : 'cursor-not-allowed bg-gray-300'
+          }`}
       >
         {!allOptionsSelected ? 'Select Options' : !isAvailable ? 'Out of Stock' : 'Add to Cart'}
       </button>

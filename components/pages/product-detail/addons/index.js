@@ -3,12 +3,31 @@
 import { useState } from 'react';
 import AddonGroup from './AddonGroup';
 import AddonDetailModal from './AddonDetailModal';
+import AddonCardSkeleton from './AddonCardSkeleton';
 
-export default function ProductAddons({ addons, selectedAddons, onSelectAddon }) {
+export default function ProductAddons({ addons, isLoading, selectedAddons, onSelectAddon }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAddonDetail, setSelectedAddonDetail] = useState(null);
 
-  // Early return AFTER all hooks
+  // Show skeleton while loading
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        {[1].map((i) => (
+          <div key={i} className="space-y-4">
+            <div className="h-6 w-32 animate-pulse rounded bg-gray-200"></div>
+            <div className="flex gap-4 overflow-hidden">
+              {[1, 2, 3].map((j) => (
+                <AddonCardSkeleton key={j} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Early return if no addons
   if (!addons || addons.length === 0) return null;
 
   const handleExpandClick = (option, addonGroup) => {

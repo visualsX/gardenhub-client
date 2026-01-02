@@ -9,16 +9,16 @@ export default function ProductGallery({ images }) {
     images && images.length > 0
       ? images
       : [
-          'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=800&q=80',
-          'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
-          'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=800&q=80',
-          'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
-        ];
+        'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=800&q=80',
+        'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
+        'https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=800&q=80',
+        'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&q=80',
+      ];
 
   const [activeImage, setActiveImage] = useState(displayImages[0]);
 
   return (
-    <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-gray-100">
+    <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-gray-100 border border-gray-300">
       {/* Main Image */}
       <img src={activeImage} alt="Product View" className="h-full w-full object-cover" />
 
@@ -28,9 +28,8 @@ export default function ProductGallery({ images }) {
           <button
             key={index}
             onClick={() => setActiveImage(img)}
-            className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border-2 transition-all ${
-              activeImage === img ? 'border-primary' : 'border-transparent'
-            }`}
+            className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border-2 transition-all ${activeImage === img ? 'border-primary' : 'border-transparent'
+              }`}
           >
             <img src={img} alt={`Thumbnail ${index + 1}`} className="h-full w-full object-cover" />
           </button>
