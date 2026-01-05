@@ -10,6 +10,9 @@ import UserWhiteIcon from '@/public/shared/user-white.svg';
 import BagWhiteIcon from '@/public/shared/bag-white.svg';
 import { useMenu } from '@/hooks/useMenu';
 import useAuth from '@/lib/store/auth';
+import useCartStore from '@/lib/store/cart';
+import CartDrawer from '@/components/shared/cart/CartDrawer';
+// import CartTestButton from '@/components/shared/cart/CartTestButton';
 
 import MenuDropdown from './MenuDropdown';
 import SearchOverlay from './SearchOverlay';
@@ -19,6 +22,10 @@ export default function Header({ initialMenuData }) {
   const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const { openDrawer, getItemCount } = useCartStore();
+
+  // Only get cart count after mount to avoid hydration mismatch
+  const cartItemCount = isMounted ? getItemCount() : 0;
 
   useEffect(() => {
     setIsMounted(true);
@@ -48,9 +55,8 @@ export default function Header({ initialMenuData }) {
       <Link
         key={category.id}
         href={`/collections/${category.slug}`}
-        className={`text-sm font-medium transition-colors ${
-          isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
-        }`}
+        className={`text-sm font-medium transition-colors ${isHomePage ? 'hover:text-primary text-gray-700' : 'text-white/90 hover:text-white'
+          }`}
       >
         {category.name}
       </Link>
@@ -97,11 +103,10 @@ export default function Header({ initialMenuData }) {
               <li key={link.id}>
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${
-                    isHomePage
-                      ? 'hover:text-primary! text-gray-700!'
-                      : 'text-white/90! hover:text-white!'
-                  }`}
+                  className={`text-sm font-medium transition-colors ${isHomePage
+                    ? 'hover:text-primary! text-gray-700!'
+                    : 'text-white/90! hover:text-white!'
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -128,16 +133,24 @@ export default function Header({ initialMenuData }) {
               {isHomePage ? <UserIcon /> : <UserWhiteIcon />}
             </Link>
             <button
-              className={`hover:text-primary text-gray-700 transition-colors`}
+              onClick={openDrawer}
+              className={`hover:text-primary relative text-gray-700 transition-colors`}
               aria-label="Shopping Cart"
             >
               {isHomePage ? <BagIcon /> : <BagWhiteIcon />}
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+                  {cartItemCount > 9 ? '9+' : cartItemCount}
+                </span>
+              )}
             </button>
           </div>
         </nav>
       </div>
 
       <SearchOverlay open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <CartDrawer />
+      {/* <CartTestButton /> */}
     </header>
   );
 }

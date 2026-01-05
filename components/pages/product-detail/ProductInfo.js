@@ -2,12 +2,15 @@
 
 import { useVariantSelection } from '@/hooks/product-detail/useVariantSelection';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { useState, useEffect } from 'react';
 import { useProductAddons } from '@/hooks/product-detail/useProductAddons';
 import ProductAddons from './addons';
+import useCartStore from '@/lib/store/cart';
 
 export default function ProductInfo({ product }) {
+  const { addToCart, openDrawer } = useCartStore();
+
   const {
     selectedOptions,
     quantity,
@@ -95,14 +98,42 @@ export default function ProductInfo({ product }) {
 
   // Handle add to cart with addons
   const handleAddToCart = () => {
-    const payload = {
-      productId: product.id,
-      variantId: selectedVariant?.id,
-      quantity,
+    // Calculate total price including addons
+    let totalPrice = parseFloat(currentPrice);
+    const addonDetails = selectedAddons.map((addon) => {
+      const addonPrice = addon.salePrice > 0 ? addon.salePrice : addon.price;
+      totalPrice += parseFloat(addonPrice);
+      return `${addon.name} (+AED ${addonPrice.toFixed(2)})`;
+    });
+
+    // Build variant display name
+    let variantName = null;
+    if (product.hasVariants && selectedVariant) {
+      const optionValues = Object.entries(selectedOptions)
+        .map(([key, value]) => value)
+        .join(' / ');
+      variantName = optionValues;
+    }
+
+    // Add to cart
+    addToCart({
+      id: product.id,
+      variantId: selectedVariant?.id || 'no-variant',
+      name: product.name,
+      variant: variantName,
+      price: parseFloat(currentPrice),
+      salePrice: 0, // Price already reflects sale price if applicable
+      quantity: quantity,
+      image: product.images?.[0] || '/all/image-placeholder.svg',
       addons: selectedAddons,
-    };
-    console.log('Add to Cart Payload:', payload);
-    // TODO: Integrate with cart store
+      addonDetails: addonDetails.length > 0 ? addonDetails.join(', ') : null,
+    });
+
+    // Show success message
+    message.success(`Added ${quantity} ${quantity > 1 ? 'items' : 'item'} to cart!`);
+
+    // Open cart drawer
+    openDrawer();
   };
 
   if (!product) return null;
