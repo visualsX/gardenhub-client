@@ -4,10 +4,14 @@ import useAuth from '@/lib/store/auth';
 import { message } from 'antd';
 import { useRouter } from 'next/navigation';
 import { API_ENDPOINTS } from '@/lib/const/endpoints';
+import { useSyncCart } from '@/hooks/cart/useCart';
+import useCartStore from '@/lib/store/cart';
 
 export const useLogin = () => {
   const setAuth = useAuth((state) => state.setAuth);
   const router = useRouter();
+  const syncCart = useSyncCart();
+  const { items, sessionToken } = useCartStore();
 
   return useMutation({
     mutationFn: async (credentials) => {
@@ -26,6 +30,12 @@ export const useLogin = () => {
       }
 
       message.success('Login successful!');
+
+      // Sync cart if there are local items
+      if (items.length > 0) {
+        syncCart.mutate({ sessionToken, items });
+      }
+
       router.push('/');
     },
     onError: (error) => {
@@ -81,6 +91,8 @@ export const useRegister = () => {
 export const useGoogleLogin = () => {
   const setAuth = useAuth((state) => state.setAuth);
   const router = useRouter();
+  const syncCart = useSyncCart();
+  const { items, sessionToken } = useCartStore();
 
   return useMutation({
     mutationFn: async (code) => {
@@ -101,6 +113,12 @@ export const useGoogleLogin = () => {
       }
 
       message.success(`Welcome ${data.userName}!`);
+
+      // Sync cart if there are local items
+      if (items.length > 0) {
+        syncCart.mutate({ sessionToken, items });
+      }
+
       router.push('/');
     },
     onError: (error) => {

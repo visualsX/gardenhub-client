@@ -5,6 +5,7 @@ import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useState, useEffect } from 'react';
 import { useProductAddons } from '@/hooks/product-detail/useProductAddons';
+import { useAddToCart } from '@/hooks/cart/useCart';
 import ProductAddons from './addons';
 
 export default function ProductInfo({ product }) {
@@ -22,6 +23,7 @@ export default function ProductInfo({ product }) {
     isOptionDisabled,
     selectedVariant,
   } = useVariantSelection(product);
+  const addToCart = useAddToCart();
 
   // Determine if we should fetch addons
   const hasAddons = selectedVariant ? selectedVariant.hasAddons : product?.hasAddons;
@@ -95,14 +97,16 @@ export default function ProductInfo({ product }) {
 
   // Handle add to cart with addons
   const handleAddToCart = () => {
-    const payload = {
+    addToCart.mutate({
       productId: product.id,
-      variantId: selectedVariant?.id,
+      productVariantId: selectedVariant?.id,
       quantity,
-      addons: selectedAddons,
-    };
-    console.log('Add to Cart Payload:', payload);
-    // TODO: Integrate with cart store
+      addons: selectedAddons.map((addon) => ({
+        globalAddonOptionId: addon.optionId,
+        quantity: 1, // Defaulting to 1 for now, as UI doesn't have addon quantity
+      })),
+      productInfo: product,
+    });
   };
 
   if (!product) return null;
@@ -264,12 +268,36 @@ export default function ProductInfo({ product }) {
       </div>
 
       <button
-        disabled={!canAddToCart}
+        disabled={!canAddToCart || addToCart.isPending}
         onClick={handleAddToCart}
-        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart ? 'bg-green-800 hover:bg-green-900' : 'cursor-not-allowed bg-gray-300'
-          }`}
+        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart && !addToCart.isPending ? 'bg-green-800 hover:bg-green-900' : 'cursor-not-allowed bg-gray-300'
+          } flex items-center justify-center gap-2`}
       >
-        {!allOptionsSelected ? 'Select Options' : !isAvailable ? 'Out of Stock' : 'Add to Cart'}
+        {addToCart.isPending && (
+          <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+              fill="none"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+        )}
+        {!allOptionsSelected
+          ? 'Select Options'
+          : !isAvailable
+            ? 'Out of Stock'
+            : addToCart.isPending
+              ? 'Adding...'
+              : 'Add to Cart'}
       </button>
     </div>
   );
