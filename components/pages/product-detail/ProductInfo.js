@@ -2,12 +2,18 @@
 
 import { useVariantSelection } from '@/hooks/product-detail/useVariantSelection';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { useState, useEffect } from 'react';
 import { useProductAddons } from '@/hooks/product-detail/useProductAddons';
 import ProductAddons from './addons';
+import useCartStore from '@/lib/store/cart';
+
+import { useAddToCart } from '@/hooks/cart/useCart';
 
 export default function ProductInfo({ product }) {
+  const { openDrawer } = useCartStore();
+  const addToCartMutation = useAddToCart();
+
   const {
     selectedOptions,
     quantity,
@@ -95,14 +101,47 @@ export default function ProductInfo({ product }) {
 
   // Handle add to cart with addons
   const handleAddToCart = () => {
-    const payload = {
+    // Calculate total price including addons
+    let totalPrice = parseFloat(currentPrice);
+    const addonDetails = selectedAddons.map((addon) => {
+      const addonPrice = addon.salePrice > 0 ? addon.salePrice : addon.price;
+      totalPrice += parseFloat(addonPrice);
+      return `${addon.name} (+AED ${addonPrice.toFixed(2)})`;
+    });
+
+    // Build variant display name
+    let variantName = null;
+    if (product.hasVariants && selectedVariant) {
+      const optionValues = Object.entries(selectedOptions)
+        .map(([key, value]) => value)
+        .join(' / ');
+      variantName = optionValues;
+    }
+
+    // Add to cart
+    addToCartMutation.mutate({
       productId: product.id,
-      variantId: selectedVariant?.id,
-      quantity,
+      productVariantId: selectedVariant?.id || null, // Ensure explicit null if no variant
+      quantity: quantity,
       addons: selectedAddons,
-    };
-    console.log('Add to Cart Payload:', payload);
-    // TODO: Integrate with cart store
+      productInfo: { // Payload for local store fallback
+        id: product.id,
+        variantId: selectedVariant?.id || 'no-variant',
+        name: product.name,
+        variant: variantName,
+        price: parseFloat(currentPrice),
+        salePrice: 0,
+        quantity: quantity,
+        image: product.images?.[0] || '/all/image-placeholder.svg',
+        addons: selectedAddons,
+        addonDetails: addonDetails.length > 0 ? addonDetails.join(', ') : null,
+      }
+    }, {
+      onSuccess: () => {
+        // Open cart drawer on success
+        openDrawer();
+      }
+    });
   };
 
   if (!product) return null;
@@ -264,12 +303,12 @@ export default function ProductInfo({ product }) {
       </div>
 
       <button
-        disabled={!canAddToCart}
+        disabled={!canAddToCart || addToCartMutation.isPending}
         onClick={handleAddToCart}
-        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart ? 'bg-green-800 hover:bg-green-900' : 'cursor-not-allowed bg-gray-300'
+        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart && !addToCartMutation.isPending ? 'bg-green-800 hover:bg-green-900' : 'cursor-not-allowed bg-gray-300'
           }`}
       >
-        {!allOptionsSelected ? 'Select Options' : !isAvailable ? 'Out of Stock' : 'Add to Cart'}
+        {addToCartMutation.isPending ? 'Adding...' : !allOptionsSelected ? 'Select Options' : !isAvailable ? 'Out of Stock' : 'Add to Cart'}
       </button>
     </div>
   );
