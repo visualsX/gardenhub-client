@@ -4,6 +4,7 @@ import StatsSection from '@/components/pages/home/StatsSection';
 import TestimonialsSection from '@/components/pages/home/TestimonialsSection';
 import ProductGrid from '@/components/shared/ProductGrid';
 import { constructMetadata } from '@/lib/utils/seo';
+import HomeBanner from '@/components/pages/home/HomeBanner';
 
 // Metadata for the home page
 export const metadata = constructMetadata({
@@ -12,7 +13,7 @@ export const metadata = constructMetadata({
     'Shop the best indoor plants, accessories, and care essentials delivered to your door.',
 });
 
-import { fetchFeaturedProducts } from '@/lib/api/ssr-calls/server-homepage';
+import { fetchFeaturedProducts, fetchActiveBanners } from '@/lib/api/ssr-calls/server-homepage';
 
 export default async function Home() {
   // Fetch Indoor Plants
@@ -21,6 +22,9 @@ export default async function Home() {
     limit: 4,
     categorySlug: 'indoor',
   });
+
+  // Fetch Active Banners
+  const activeBanners = await fetchActiveBanners();
 
   console.log('indoorplants: ', indoorPlantsData);
   // Map API response to ProductGrid format
@@ -32,7 +36,8 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen">
-      <HeroSection />
+      <HomeBanner initialBanners={activeBanners} />
+      {/* <HeroSection /> */}
       <ProductGrid title="Indoor Plants" products={indoorPlants} />
 
       <ProductGrid

@@ -10,6 +10,11 @@ const nextConfig = {
         hostname: 'api.gardenhub.ae',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'example.com',
+        pathname: '/**',
+      },
     ],
   },
   webpack(config) {
