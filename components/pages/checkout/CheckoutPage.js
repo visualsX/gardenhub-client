@@ -177,10 +177,10 @@ export default function CheckoutPage() {
                 paymentMethodId: selectedPaymentMethodId,
                 items: items.map(item => ({
                     productId: item.productId || item.id,
-                    productVariantId: item.productVariantId || item.variantId || 0,
+                    productVariantId: item.productVariantId || item.variantId || null,
                     quantity: item.quantity,
                     addons: item.addons?.map(addon => ({
-                        globalAddonOptionId: addon.globalAddonOptionId || addon.id || 0,
+                        globalAddonOptionId: addon.globalAddonOptionId || addon.id || null,
                         quantity: addon.quantity || 1
                     })) || []
                 }))
