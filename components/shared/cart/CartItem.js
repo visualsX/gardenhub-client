@@ -1,20 +1,29 @@
 'use client';
 
 import Image from 'next/image';
-import useCartStore from '@/lib/store/cart';
 
-export default function CartItem({ item, compact = false }) {
-    const { updateQuantity, removeFromCart } = useCartStore();
+export default function CartItem({ item, compact = false, onRemove, onUpdateQuantity }) {
 
-    const price = item.salePrice > 0 ? item.salePrice : item.price;
-    const itemTotal = (price * item.quantity).toFixed(2);
+    // Backend Response Field || Local Store Field
+    const name = item.productName || item.name;
+    const imageUrl = item.imageUrl || item.image || '/all/image-placeholder.svg';
+    const variantLabel = item.variantAttributes || item.variant;
+    const addonLabel = item.addonDetails; // Check if backend returns formatted addons string or array, screenshot shows addons: [], so maybe irrelevant for now or managed locally
+
+    // Price Logic
+    const unitPrice = item.salePrice > 0 ? item.salePrice : item.price;
+    // Backend provides itemTotal, otherwise calculate
+    const total = item.itemTotal ? parseFloat(item.itemTotal).toFixed(2) : (unitPrice * item.quantity).toFixed(2);
 
     const handleQuantityChange = (newQuantity) => {
-        updateQuantity(item.id, item.variantId, newQuantity);
+        if (newQuantity < 1) return;
+        if (onUpdateQuantity) {
+            onUpdateQuantity(newQuantity);
+        }
     };
 
     const handleRemove = () => {
-        removeFromCart(item.id, item.variantId);
+        if (onRemove) onRemove();
     };
 
     if (compact) {
@@ -24,8 +33,8 @@ export default function CartItem({ item, compact = false }) {
                 {/* Image */}
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-white">
                     <img
-                        src={item.image || '/all/image-placeholder.svg'}
-                        alt={item.name}
+                        src={imageUrl}
+                        alt={name}
                         className="h-full w-full object-cover"
                     />
                 </div>
@@ -33,12 +42,12 @@ export default function CartItem({ item, compact = false }) {
                 {/* Details */}
                 <div className="flex flex-1 flex-col justify-between">
                     <div>
-                        <h4 className="text-sm font-semibold text-gray-900 line-clamp-1">{item.name}</h4>
-                        {item.variant && (
-                            <p className="text-xs text-gray-500 mt-1">{item.variant}</p>
+                        <h4 className="text-sm font-semibold text-gray-900 line-clamp-1">{name}</h4>
+                        {variantLabel && (
+                            <p className="text-xs text-gray-500 mt-1">{variantLabel}</p>
                         )}
-                        {item.addonDetails && (
-                            <p className="text-xs text-gray-500 mt-1">+ {item.addonDetails}</p>
+                        {addonLabel && (
+                            <p className="text-xs text-gray-500 mt-1">+ {addonLabel}</p>
                         )}
                     </div>
 
@@ -67,7 +76,7 @@ export default function CartItem({ item, compact = false }) {
                         </div>
 
                         {/* Price */}
-                        <span className="text-sm font-bold text-primary">AED {itemTotal}</span>
+                        <span className="text-sm font-bold text-primary">AED {total}</span>
                     </div>
                 </div>
 
@@ -91,8 +100,8 @@ export default function CartItem({ item, compact = false }) {
             {/* Image */}
             <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-xl bg-gray-100">
                 <img
-                    src={item.image || '/all/image-placeholder.svg'}
-                    alt={item.name}
+                    src={imageUrl}
+                    alt={name}
                     className="h-full w-full object-cover transition-transform duration-300 hover:scale-110"
                 />
             </div>
@@ -100,14 +109,14 @@ export default function CartItem({ item, compact = false }) {
             {/* Details */}
             <div className="flex flex-1 flex-col justify-between">
                 <div>
-                    <h3 className="text-lg font-bold text-gray-900">{item.name}</h3>
-                    {item.variant && (
-                        <p className="text-sm text-gray-500 mt-1">Variant: {item.variant}</p>
+                    <h3 className="text-lg font-bold text-gray-900">{name}</h3>
+                    {variantLabel && (
+                        <p className="text-sm text-gray-500 mt-1">Variant: {variantLabel}</p>
                     )}
-                    {item.addonDetails && (
-                        <p className="text-sm text-gray-500 mt-1">Addons: {item.addonDetails}</p>
+                    {addonLabel && (
+                        <p className="text-sm text-gray-500 mt-1">Addons: {addonLabel}</p>
                     )}
-                    <p className="text-base font-semibold text-primary mt-2">AED {price.toFixed(2)}</p>
+                    <p className="text-base font-semibold text-primary mt-2">AED {parseFloat(unitPrice).toFixed(2)}</p>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -153,7 +162,7 @@ export default function CartItem({ item, compact = false }) {
             {/* Item Total */}
             <div className="flex flex-col items-end justify-between">
                 <span className="text-xs font-medium text-gray-500">Total</span>
-                <span className="text-2xl font-bold text-primary">AED {itemTotal}</span>
+                <span className="text-2xl font-bold text-primary">AED {total}</span>
             </div>
         </div>
     );

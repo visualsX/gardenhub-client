@@ -1,20 +1,23 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import client from '@/lib/api/client-config/client';
 import useAuth from '@/lib/store/auth';
 import { message } from 'antd';
 import { useRouter } from 'next/navigation';
 import { API_ENDPOINTS } from '@/lib/const/endpoints';
+import useCartStore from '@/lib/store/cart';
 
 export const useLogin = () => {
   const setAuth = useAuth((state) => state.setAuth);
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const { items, clearCart } = useCartStore();
 
   return useMutation({
     mutationFn: async (credentials) => {
       const data = await client.post(API_ENDPOINTS.AUTH.LOGIN, credentials);
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       // Map the API response to the store's expected format
       setAuth({ id: data.userId, name: data.userName, email: data.userName }, data.token);
 
@@ -26,6 +29,37 @@ export const useLogin = () => {
       }
 
       message.success('Login successful!');
+
+      // Sync cart if there are local items
+      if (items.length > 0) {
+        try {
+          message.loading({ content: 'Syncing cart...', key: 'cartSync' });
+
+          const promises = items.map(item =>
+            client.post(API_ENDPOINTS.CART.ADD, {
+              productId: item.id || item.productId, // Handle both id formats
+              productVariantId: item.variantId || item.productVariantId || null,
+              quantity: item.quantity,
+              addons: item.addons || []
+            }, {
+              headers: { Authorization: `Bearer ${data.token}` }
+            })
+          );
+
+          await Promise.all(promises);
+
+          clearCart();
+          message.success({ content: 'Cart synced!', key: 'cartSync' });
+        } catch (error) {
+          console.error("Cart sync failed", error);
+          message.error({ content: 'Failed to sync some cart items', key: 'cartSync' });
+        }
+      }
+
+      // Invalidate queries to fetch fresh cart from backend
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({ queryKey: ['cartCount'] });
+
       router.push('/');
     },
     onError: (error) => {
@@ -81,6 +115,8 @@ export const useRegister = () => {
 export const useGoogleLogin = () => {
   const setAuth = useAuth((state) => state.setAuth);
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const { items, clearCart } = useCartStore();
 
   return useMutation({
     mutationFn: async (code) => {
@@ -89,7 +125,7 @@ export const useGoogleLogin = () => {
       });
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       // Response: { userId, token, userName, isFirstTimeAccess }
       setAuth({ id: data.userId, name: data.userName }, data.token);
 
@@ -101,6 +137,37 @@ export const useGoogleLogin = () => {
       }
 
       message.success(`Welcome ${data.userName}!`);
+
+      // Sync cart if there are local items
+      if (items.length > 0) {
+        try {
+          message.loading({ content: 'Syncing cart...', key: 'cartSync' });
+
+          const promises = items.map(item =>
+            client.post(API_ENDPOINTS.CART.ADD, {
+              productId: item.id || item.productId,
+              productVariantId: item.variantId || item.productVariantId || null,
+              quantity: item.quantity,
+              addons: item.addons || []
+            }, {
+              headers: { Authorization: `Bearer ${data.token}` }
+            })
+          );
+
+          await Promise.all(promises);
+
+          clearCart();
+          message.success({ content: 'Cart synced!', key: 'cartSync' });
+        } catch (error) {
+          console.error("Cart sync failed", error);
+          message.error({ content: 'Failed to sync some cart items', key: 'cartSync' });
+        }
+      }
+
+      // Invalidate queries to fetch fresh cart from backend
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({ queryKey: ['cartCount'] });
+
       router.push('/');
     },
     onError: (error) => {

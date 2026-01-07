@@ -4,11 +4,18 @@ import { Drawer } from 'antd';
 import { useRouter } from 'next/navigation';
 import useCartStore from '@/lib/store/cart';
 import CartItem from './CartItem';
+import { useCart, useRemoveCartItem, useUpdateCartItem } from '@/hooks/cart/useCart';
+import { Spin } from 'antd';
 
 export default function CartDrawer() {
     const router = useRouter();
-    const { items, isDrawerOpen, closeDrawer, getCartTotal } = useCartStore();
-    const totals = getCartTotal();
+    const { isDrawerOpen, closeDrawer } = useCartStore(); // Only UI state from store
+    const { data: cartData, isLoading } = useCart();
+    const { mutate: removeItem } = useRemoveCartItem();
+    const { mutate: updateItem } = useUpdateCartItem();
+
+    const items = cartData?.items || [];
+    const subtotal = cartData?.subtotal || 0;
 
     const handleViewCart = () => {
         closeDrawer();
@@ -72,9 +79,30 @@ export default function CartDrawer() {
                 <div className="flex h-full flex-col">
                     {/* Cart Items */}
                     <div className="flex-1 space-y-3 overflow-y-auto px-6 py-6">
-                        {items.map((item) => (
-                            <CartItem key={`${item.id}-${item.variantId || 'default'}`} item={item} compact />
-                        ))}
+                        {isLoading ? (
+                            <div className="flex h-full items-center justify-center">
+                                <Spin />
+                            </div>
+                        ) : (
+                            items.map((item) => (
+                                <CartItem
+                                    key={`${item.id || item.productId}-${item.variantId || item.productVariantId || 'default'}`}
+                                    item={item}
+                                    compact
+                                    onRemove={() => removeItem({
+                                        cartItemId: item.cartItemId || item.id, // API uses cartItemId/id, Store uses productId
+                                        productId: item.id || item.productId,
+                                        productVariantId: item.variantId || item.productVariantId
+                                    })}
+                                    onUpdateQuantity={(newQty) => updateItem({
+                                        cartItemId: item.cartItemId || item.id,
+                                        productId: item.id || item.productId,
+                                        productVariantId: item.variantId || item.productVariantId,
+                                        quantity: newQty
+                                    })}
+                                />
+                            ))
+                        )}
                     </div>
 
                     {/* Cart Footer */}
@@ -82,7 +110,7 @@ export default function CartDrawer() {
                         {/* Subtotal */}
                         <div className="mb-4 flex items-center justify-between">
                             <span className="text-base font-semibold text-gray-700">Subtotal</span>
-                            <span className="text-xl font-bold text-primary">AED {totals.subtotal}</span>
+                            <span className="text-xl font-bold text-primary">AED {subtotal.toFixed(2)}</span>
                         </div>
 
                         <p className="mb-4 text-xs text-gray-500 text-center">

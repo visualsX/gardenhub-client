@@ -1,10 +1,8 @@
 'use client';
 
-import useCartStore from '@/lib/store/cart';
-
-export default function CartSummary({ showPromoCode = false }) {
-    const { getCartTotal } = useCartStore();
-    const totals = getCartTotal();
+export default function CartSummary({ showPromoCode = false, totals }) {
+    // Totals passed from parent (CartPage) to ensure consistency with API data
+    if (!totals) return null;
 
     return (
         <div className="rounded-2xl bg-white p-6 shadow-lg">

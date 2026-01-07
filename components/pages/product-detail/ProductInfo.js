@@ -8,8 +8,11 @@ import { useProductAddons } from '@/hooks/product-detail/useProductAddons';
 import ProductAddons from './addons';
 import useCartStore from '@/lib/store/cart';
 
+import { useAddToCart } from '@/hooks/cart/useCart';
+
 export default function ProductInfo({ product }) {
-  const { addToCart, openDrawer } = useCartStore();
+  const { openDrawer } = useCartStore();
+  const addToCartMutation = useAddToCart();
 
   const {
     selectedOptions,
@@ -116,24 +119,29 @@ export default function ProductInfo({ product }) {
     }
 
     // Add to cart
-    addToCart({
-      id: product.id,
-      variantId: selectedVariant?.id || 'no-variant',
-      name: product.name,
-      variant: variantName,
-      price: parseFloat(currentPrice),
-      salePrice: 0, // Price already reflects sale price if applicable
+    addToCartMutation.mutate({
+      productId: product.id,
+      productVariantId: selectedVariant?.id || null, // Ensure explicit null if no variant
       quantity: quantity,
-      image: product.images?.[0] || '/all/image-placeholder.svg',
       addons: selectedAddons,
-      addonDetails: addonDetails.length > 0 ? addonDetails.join(', ') : null,
+      productInfo: { // Payload for local store fallback
+        id: product.id,
+        variantId: selectedVariant?.id || 'no-variant',
+        name: product.name,
+        variant: variantName,
+        price: parseFloat(currentPrice),
+        salePrice: 0,
+        quantity: quantity,
+        image: product.images?.[0] || '/all/image-placeholder.svg',
+        addons: selectedAddons,
+        addonDetails: addonDetails.length > 0 ? addonDetails.join(', ') : null,
+      }
+    }, {
+      onSuccess: () => {
+        // Open cart drawer on success
+        openDrawer();
+      }
     });
-
-    // Show success message
-    message.success(`Added ${quantity} ${quantity > 1 ? 'items' : 'item'} to cart!`);
-
-    // Open cart drawer
-    openDrawer();
   };
 
   if (!product) return null;
@@ -295,12 +303,12 @@ export default function ProductInfo({ product }) {
       </div>
 
       <button
-        disabled={!canAddToCart}
+        disabled={!canAddToCart || addToCartMutation.isPending}
         onClick={handleAddToCart}
-        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart ? 'bg-green-800 hover:bg-green-900' : 'cursor-not-allowed bg-gray-300'
+        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart && !addToCartMutation.isPending ? 'bg-green-800 hover:bg-green-900' : 'cursor-not-allowed bg-gray-300'
           }`}
       >
-        {!allOptionsSelected ? 'Select Options' : !isAvailable ? 'Out of Stock' : 'Add to Cart'}
+        {addToCartMutation.isPending ? 'Adding...' : !allOptionsSelected ? 'Select Options' : !isAvailable ? 'Out of Stock' : 'Add to Cart'}
       </button>
     </div>
   );

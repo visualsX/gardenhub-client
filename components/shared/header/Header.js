@@ -12,6 +12,7 @@ import { useMenu } from '@/hooks/useMenu';
 import useAuth from '@/lib/store/auth';
 import useCartStore from '@/lib/store/cart';
 import CartDrawer from '@/components/shared/cart/CartDrawer';
+import { useCartCount } from '@/hooks/cart/useCart';
 // import CartTestButton from '@/components/shared/cart/CartTestButton';
 
 import MenuDropdown from './MenuDropdown';
@@ -22,10 +23,11 @@ export default function Header({ initialMenuData }) {
   const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { openDrawer, getItemCount } = useCartStore();
+  const { openDrawer } = useCartStore();
+  const { data: cartCountData } = useCartCount();
 
   // Only get cart count after mount to avoid hydration mismatch
-  const cartItemCount = isMounted ? getItemCount() : 0;
+  const cartItemCount = isMounted ? (cartCountData?.count || 0) : 0;
 
   useEffect(() => {
     setIsMounted(true);

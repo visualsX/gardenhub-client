@@ -5,10 +5,38 @@ import { useRouter } from 'next/navigation';
 import useCartStore from '@/lib/store/cart';
 import CartItem from '@/components/shared/cart/CartItem';
 import CartSummary from '@/components/shared/cart/CartSummary';
+import { useCart, useRemoveCartItem, useUpdateCartItem } from '@/hooks/cart/useCart';
+import { Spin } from 'antd';
 
 export default function CartPage() {
     const router = useRouter();
-    const { items } = useCartStore();
+    const { data: cartData, isLoading } = useCart();
+    const { mutate: removeItem } = useRemoveCartItem();
+    const { mutate: updateItem } = useUpdateCartItem();
+
+    // Parse items to ensure consistency
+    const items = cartData?.items || [];
+    const subtotal = cartData?.subtotal || 0;
+
+    // Derived totals (same logic as checkout/drawer - ideally centralized)
+    const shipping = subtotal > 200 ? 0 : 25;
+    const tax = subtotal * 0.05;
+    const total = subtotal + shipping + tax;
+
+    const totals = {
+        subtotal: subtotal.toFixed(2),
+        shipping: shipping.toFixed(2),
+        tax: tax.toFixed(2),
+        total: total.toFixed(2)
+    };
+
+    if (isLoading) {
+        return (
+            <div className="max-layout min-h-screen pt-32 pb-16 flex items-center justify-center">
+                <Spin size="large" />
+            </div>
+        );
+    }
 
     if (items.length === 0) {
         return (
@@ -62,7 +90,21 @@ export default function CartPage() {
                 {/* Cart Items */}
                 <div className="lg:col-span-2 space-y-4">
                     {items.map((item) => (
-                        <CartItem key={`${item.id}-${item.variantId || 'default'}`} item={item} />
+                        <CartItem
+                            key={`${item.id || item.productId}-${item.variantId || item.productVariantId || 'default'}`}
+                            item={item}
+                            onRemove={() => removeItem({
+                                cartItemId: item.cartItemId || item.id,
+                                productId: item.id || item.productId,
+                                productVariantId: item.variantId || item.productVariantId
+                            })}
+                            onUpdateQuantity={(newQty) => updateItem({
+                                cartItemId: item.cartItemId || item.id,
+                                productId: item.id || item.productId,
+                                productVariantId: item.variantId || item.productVariantId,
+                                quantity: newQty
+                            })}
+                        />
                     ))}
 
                     {/* Continue Shopping Link */}
@@ -82,7 +124,7 @@ export default function CartPage() {
                 {/* Cart Summary Sidebar */}
                 <div className="lg:col-span-1">
                     <div className="sticky top-32">
-                        <CartSummary showPromoCode />
+                        <CartSummary showPromoCode totals={totals} />
 
                         {/* Checkout Button */}
                         <button
