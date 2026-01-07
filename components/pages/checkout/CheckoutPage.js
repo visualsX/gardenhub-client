@@ -61,6 +61,7 @@ export default function CheckoutPage() {
             form.setFieldsValue({
                 email: email,
                 shippingAddress: defaultShipping ? {
+                    addressId: defaultShipping.id,
                     firstName: defaultShipping.firstName,
                     lastName: defaultShipping.lastName,
                     phone: defaultShipping.phone,
@@ -76,6 +77,7 @@ export default function CheckoutPage() {
                     country: 'United Arab Emirates'
                 },
                 billingAddress: defaultBilling ? {
+                    addressId: defaultBilling.id,
                     firstName: defaultBilling.firstName,
                     lastName: defaultBilling.lastName,
                     phone: defaultBilling.phone,
@@ -172,8 +174,10 @@ export default function CheckoutPage() {
             const payload = {
                 idempotencyKey: crypto.randomUUID(),
                 customerId: customerId || "guest",
-                shippingAddressId: 0,
-                billingAddressId: 0,
+                shippingAddressId: values.shippingAddress?.addressId || 0,
+                billingAddressId: billingSameAsShipping
+                    ? (values.shippingAddress?.addressId || 0)
+                    : (values.billingAddress?.addressId || 0),
                 shippingAddress: shippingAddressObj,
                 billingAddress: billingAddressObj,
                 shippingRateId: selectedShippingRateId,
@@ -284,6 +288,12 @@ export default function CheckoutPage() {
                 name={[prefix, 'country']}
                 hidden
                 initialValue="United Arab Emirates"
+            >
+                <Input />
+            </Form.Item>
+            <Form.Item
+                name={[prefix, 'addressId']}
+                hidden
             >
                 <Input />
             </Form.Item>

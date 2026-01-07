@@ -123,7 +123,10 @@ export default function ProductInfo({ product }) {
       productId: product.id,
       productVariantId: selectedVariant?.id || null, // Ensure explicit null if no variant
       quantity: quantity,
-      addons: selectedAddons,
+      addons: selectedAddons.map(addon => ({
+        globalAddonOptionId: addon.optionId,
+        quantity: 1
+      })),
       productInfo: { // Payload for local store fallback
         id: product.id,
         variantId: selectedVariant?.id || 'no-variant',
