@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Form, Input, Select, Radio, message, Spin, Checkbox } from 'antd';
+import { Form, Input, Select, Radio, message, Spin } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
 import { useCustomerProfile } from '@/hooks/useCustomerProfile';
 import { usePaymentMethods, useShippingRates, usePlaceOrder } from '@/hooks/useOrder';
-import client from '@/lib/api/client-config/client';
-import { API_ENDPOINTS } from '@/lib/const/endpoints';
 import { UAE_EMIRATES } from '@/lib/const/emirates';
 
 const { Option } = Select;
@@ -56,7 +54,9 @@ export default function CheckoutPage() {
         if (profileData?.customerProfile) {
             const { addresses, email, firstName, lastName } = profileData.customerProfile;
             const defaultShipping = addresses?.find(a => a.isDefaultShipping) || addresses?.[0];
-            const defaultBilling = addresses?.find(a => a.isDefaultBilling) || addresses?.[0];
+            const realDefaultBilling = addresses?.find(a => a.isDefaultBilling);
+            // Fallback for billing: use real default billing, or default shipping, or first address
+            const defaultBilling = realDefaultBilling || defaultShipping || addresses?.[0];
 
             form.setFieldsValue({
                 email: email,
@@ -85,10 +85,15 @@ export default function CheckoutPage() {
                     emirate: defaultBilling.emirate,
                     postalCode: defaultBilling.postalCode,
                     country: defaultBilling.country || 'United Arab Emirates'
-                } : {}
+                } : {
+                    firstName: firstName,
+                    lastName: lastName,
+                    country: 'United Arab Emirates'
+                }
             });
 
-            if (defaultShipping && defaultBilling && defaultShipping.id !== defaultBilling.id) {
+            // Only switch to "Different billing address" if we explicitly have a billing address that is different from shipping
+            if (defaultShipping && realDefaultBilling && defaultShipping.id !== realDefaultBilling.id) {
                 setBillingSameAsShipping(false);
             }
         }
