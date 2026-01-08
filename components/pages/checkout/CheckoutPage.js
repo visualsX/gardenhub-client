@@ -319,7 +319,7 @@ export default function CheckoutPage() {
     );
 
     return (
-        <div className="max-layout min-h-screen pt-32 pb-16">
+        <div className="max-layout min-h-screen py-10">
             <div className="mb-8">
                 <h1 className="text-4xl font-bold text-gray-900 mb-2">Checkout</h1>
                 <p className="text-gray-600">Complete your order</p>
@@ -438,7 +438,7 @@ export default function CheckoutPage() {
 
                 {/* Sidebar */}
                 <div className="lg:col-span-1">
-                    <div className="sticky top-32 space-y-6">
+                    <div className="sticky top-10 space-y-6">
                         <Box loading={isCartLoading || !cartData} header title="Order Summary" padding="p-5">
                             <div className="py-4 max-h-64 space-y-3 overflow-y-auto">
                                 {items.map((item) => {
