@@ -19,7 +19,7 @@ export default function CheckoutPage() {
     const [form] = Form.useForm();
     const { data: cartData, isLoading: isCartLoading } = useCart();
     const { mutateAsync: clearCartApi } = useClearCart();
-    const { data: profileData } = useCustomerProfile();
+    const { data: profileData } = useCustomerProfile({ initialData: null });
     const { data: paymentMethodsData, isLoading: isPaymentMethodsLoading } = usePaymentMethods();
     const { mutateAsync: placeOrderApi } = usePlaceOrder();
     const { mutateAsync: createGuestApi } = useCreateGuest();
