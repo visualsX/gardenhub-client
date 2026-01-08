@@ -5,6 +5,7 @@ import { message } from 'antd';
 import { useRouter } from 'next/navigation';
 import { API_ENDPOINTS } from '@/lib/const/endpoints';
 import useCartStore from '@/lib/store/cart';
+import { deleteCookie } from '@/lib/utils/cookies';
 
 export const useLogin = () => {
   const setAuth = useAuth((state) => state.setAuth);
@@ -56,6 +57,10 @@ export const useLogin = () => {
         }
       }
 
+      // delete guest cookies, if user logged in
+      deleteCookie('guest_customer_id');
+      deleteCookie('guest_token');
+      deleteCookie('guest_email');
       // Invalidate queries to fetch fresh cart from backend
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       queryClient.invalidateQueries({ queryKey: ['cartCount'] });
@@ -135,7 +140,6 @@ export const useGoogleLogin = () => {
         expires.setDate(expires.getDate() + 7);
         document.cookie = `token=${data.token}; path=/; expires=${expires.toUTCString()}; SameSite=Strict; Secure`;
       }
-
       message.success(`Welcome ${data.userName}!`);
 
       // Sync cart if there are local items
@@ -164,6 +168,10 @@ export const useGoogleLogin = () => {
         }
       }
 
+      // delete guest cookies, if user logged in
+      deleteCookie('guest_customer_id');
+      deleteCookie('guest_token');
+      deleteCookie('guest_email');
       // Invalidate queries to fetch fresh cart from backend
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       queryClient.invalidateQueries({ queryKey: ['cartCount'] });
