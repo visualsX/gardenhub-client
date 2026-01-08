@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { Form, Input, Select, message, Spin, Skeleton } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
 import { useCustomerProfile } from '@/hooks/useCustomerProfile';
@@ -9,6 +9,8 @@ import { usePaymentMethods, useShippingRates, usePlaceOrder } from '@/hooks/useO
 import { UAE_EMIRATES } from '@/lib/const/emirates';
 import { Box } from '@/components/wrappers/box';
 import { RadioCardGroup } from '@/components/ui/radio-card-group';
+import { useCreateGuest } from '@/hooks/useGuestCheckout';
+import { getCookie } from '@/lib/utils/cookie';
 
 const { Option } = Select;
 
@@ -20,6 +22,7 @@ export default function CheckoutPage() {
     const { data: profileData } = useCustomerProfile();
     const { data: paymentMethodsData, isLoading: isPaymentMethodsLoading } = usePaymentMethods();
     const { mutateAsync: placeOrderApi } = usePlaceOrder();
+    const { mutateAsync: createGuestApi } = useCreateGuest();
 
     // Watch shipping emirate to fetch rates
     const shippingEmirate = Form.useWatch(['shippingAddress', 'emirate'], form);
@@ -100,6 +103,12 @@ export default function CheckoutPage() {
             if (defaultShipping && realDefaultBilling && defaultShipping.id !== realDefaultBilling.id) {
                 setBillingSameAsShipping(false);
             }
+        } else {
+            // If not logged in, check for guest email cookie
+            const guestEmail = getCookie('guest_email');
+            if (guestEmail) {
+                form.setFieldsValue({ email: guestEmail });
+            }
         }
     }, [profileData, form]);
 
@@ -120,12 +129,6 @@ export default function CheckoutPage() {
     }, [paymentMethodsData]);
 
 
-    if (!isCartLoading && items.length === 0) {
-        router.push('/cart');
-        return null;
-    }
-
-
     const handlePlaceOrder = async (values) => {
         if (!selectedShippingRateId) {
             message.error("Please select a shipping method");
@@ -138,7 +141,28 @@ export default function CheckoutPage() {
 
         setIsProcessing(true);
         try {
-            const customerId = profileData?.customerProfile?.id;
+            let customerId = profileData?.customerProfile?.id;
+
+            // If not logged in, check for existing guest or create new
+            if (!customerId) {
+                // Check if we already have a guest session
+                const existingGuestId = getCookie('guest_customer_id');
+
+                if (existingGuestId) {
+                    customerId = existingGuestId;
+                } else {
+                    const guestData = {
+                        email: values.email,
+                        firstName: values.shippingAddress.firstName,
+                        lastName: values.shippingAddress.lastName,
+                        phone: values.shippingAddress.phone
+                    };
+
+                    const guestResponse = await createGuestApi(guestData);
+                    customerId = guestResponse.customerId;
+                    // Cookies are now set in the hook's onSuccess
+                }
+            }
 
             const shippingAddressObj = {
                 firstName: values.shippingAddress.firstName,
@@ -168,7 +192,7 @@ export default function CheckoutPage() {
 
             const payload = {
                 idempotencyKey: crypto.randomUUID(),
-                customerId: customerId || "guest",
+                customerId: customerId,
                 shippingAddressId: values.shippingAddress?.addressId || 0,
                 billingAddressId: billingSameAsShipping
                     ? (values.shippingAddress?.addressId || 0)
@@ -196,7 +220,7 @@ export default function CheckoutPage() {
 
             message.success('Order placed successfully!');
             await clearCartApi();
-            router.push('/');
+            router.push('/order-confirmation');
         } catch (error) {
             console.error("Order failed", error);
             message.error("Failed to place order: " + (error.response?.data?.message || error.message));
