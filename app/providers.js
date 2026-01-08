@@ -38,7 +38,7 @@ export default function Providers({ children }) {
   return (
     <AntdRegistry>
       <NextTopLoader
-        color="var(--primary-green)"
+        color="#B0CA87"
         initialPosition={0.08}
         crawlSpeed={200}
         height={3}

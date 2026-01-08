@@ -327,7 +327,7 @@ export default function CheckoutPage() {
 
                         {/* Shipping Method Selection */}
                         <Box loading={isCartLoading || !cartData} header title="Shipping Method" padding="p-5 mt-6">
-                            <Skeleton loading={isShippingRatesLoading || !shippingRates}>
+                            <Skeleton loading={isShippingRatesLoading}>
                                 <RadioCardGroup
                                     value={selectedShippingRateId}
                                     onChange={(e) => setSelectedShippingRateId(e.target.value)}
