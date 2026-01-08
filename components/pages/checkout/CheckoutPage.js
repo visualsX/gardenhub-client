@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Form, Input, Select, Radio, message, Spin } from 'antd';
+import { Form, Input, Select, message, Spin, Skeleton } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
 import { useCustomerProfile } from '@/hooks/useCustomerProfile';
 import { usePaymentMethods, useShippingRates, usePlaceOrder } from '@/hooks/useOrder';
 import { UAE_EMIRATES } from '@/lib/const/emirates';
+import { Box } from '@/components/wrappers/box';
+import { RadioCardGroup } from '@/components/ui/radio-card-group';
 
 const { Option } = Select;
 
@@ -123,13 +125,6 @@ export default function CheckoutPage() {
         return null;
     }
 
-    if (isCartLoading || !cartData) {
-        return (
-            <div className="flex h-screen w-full items-center justify-center">
-                <Spin size="large" />
-            </div>
-        );
-    }
 
     const handlePlaceOrder = async (values) => {
         if (!selectedShippingRateId) {
@@ -211,22 +206,21 @@ export default function CheckoutPage() {
     };
 
     const renderAddressFields = (prefix, title) => (
-        <div className="border-with-radius p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">{title}</h2>
+        <Box loading={isCartLoading || !cartData} header title={title} padding="p-5">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Form.Item
                     label="First Name"
                     name={[prefix, 'firstName']}
                     rules={[{ required: true, message: 'Required' }]}
                 >
-                    <Input size="large" placeholder="First Name" />
+                    <Input placeholder="First Name" />
                 </Form.Item>
                 <Form.Item
                     label="Last Name"
                     name={[prefix, 'lastName']}
                     rules={[{ required: true, message: 'Required' }]}
                 >
-                    <Input size="large" placeholder="Last Name" />
+                    <Input placeholder="Last Name" />
                 </Form.Item>
             </div>
 
@@ -235,7 +229,7 @@ export default function CheckoutPage() {
                 name={[prefix, 'phone']}
                 rules={[{ required: true, message: 'Required' }]}
             >
-                <Input size="large" placeholder="+971 50 123 4567" />
+                <Input placeholder="+971 50 123 4567" />
             </Form.Item>
 
             <Form.Item
@@ -243,14 +237,14 @@ export default function CheckoutPage() {
                 name={[prefix, 'address']}
                 rules={[{ required: true, message: 'Required' }]}
             >
-                <Input.TextArea size="large" rows={2} placeholder="Street address" />
+                <Input.TextArea rows={2} placeholder="Street address" />
             </Form.Item>
 
             <Form.Item
                 label="Apartment, suite, etc. (optional)"
                 name={[prefix, 'addressLine2']}
             >
-                <Input size="large" placeholder="Apt 4B" />
+                <Input placeholder="Apt 4B" />
             </Form.Item>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -259,7 +253,7 @@ export default function CheckoutPage() {
                     name={[prefix, 'city']}
                     rules={[{ required: true, message: 'Required' }]}
                 >
-                    <Input size="large" placeholder="City" />
+                    <Input placeholder="City" />
                 </Form.Item>
 
                 <Form.Item
@@ -267,7 +261,7 @@ export default function CheckoutPage() {
                     name={[prefix, 'emirate']}
                     rules={[{ required: true, message: 'Required' }]}
                 >
-                    <Select size="large" placeholder="Select emirate">
+                    <Select className='h-10!' placeholder="Select emirate">
                         {UAE_EMIRATES.map((emirate) => (
                             <Option key={emirate.value} value={emirate.value}>
                                 {emirate.label}
@@ -281,7 +275,7 @@ export default function CheckoutPage() {
                     name={[prefix, 'postalCode']}
                     rules={[{ required: true, message: 'Required' }]}
                 >
-                    <Input size="large" placeholder="00000" />
+                    <Input placeholder="00000" />
                 </Form.Item>
             </div>
             <Form.Item
@@ -297,7 +291,7 @@ export default function CheckoutPage() {
             >
                 <Input />
             </Form.Item>
-        </div>
+        </Box>
     );
 
     return (
@@ -315,8 +309,7 @@ export default function CheckoutPage() {
                         onFinish={handlePlaceOrder}
                     >
                         {/* Contact Information */}
-                        <div className="border-with-radius p-6 mb-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-6">Contact</h2>
+                        <Box loading={isCartLoading || !cartData} header title="Contact" padding="p-5 mb-6">
                             <Form.Item
                                 label="Email"
                                 name="email"
@@ -325,97 +318,78 @@ export default function CheckoutPage() {
                                     { type: 'email', message: 'Please enter a valid email' },
                                 ]}
                             >
-                                <Input size="large" placeholder="email@example.com" />
+                                <Input placeholder="email@example.com" />
                             </Form.Item>
-                        </div>
+                        </Box>
 
                         {/* Shipping Address */}
                         {renderAddressFields('shippingAddress', 'Shipping Address')}
 
                         {/* Shipping Method Selection */}
-                        {shippingRates && shippingRates.length > 0 && (
-                            <div className="mt-6 border-with-radius p-6">
-                                <h2 className="text-xl font-bold text-gray-900 mb-4">Shipping Method</h2>
-                                <Radio.Group
+                        <Box loading={isCartLoading || !cartData} header title="Shipping Method" padding="p-5 mt-6">
+                            <Skeleton loading={isShippingRatesLoading || !shippingRates}>
+                                <RadioCardGroup
                                     value={selectedShippingRateId}
                                     onChange={(e) => setSelectedShippingRateId(e.target.value)}
-                                    className="w-full flex flex-col gap-3"
-                                >
-                                    {shippingRates.map(rate => {
-                                        // Calculate cost for display based on threshold
+                                    options={shippingRates?.map(rate => {
                                         const cost = subtotal >= (rate.freeShippingThreshold || Infinity) ? 0 : rate.baseCost;
-                                        return (
-                                            <div key={rate.id} className={`flex items-center justify-between rounded-xl border p-4 cursor-pointer ${selectedShippingRateId === rate.id ? 'border-primary bg-primary-light/10' : 'border-gray-200'}`}>
-                                                <Radio value={rate.id}>
-                                                    <span className="font-medium text-gray-900 ml-2">{rate.rateName}</span>
-                                                </Radio>
-                                                <span className="font-bold text-gray-900">
-                                                    {cost === 0 ? 'Free' : `AED ${cost.toFixed(2)}`}
-                                                </span>
-                                            </div>
-                                        );
+                                        return {
+                                            value: rate.id,
+                                            content: rate.rateName,
+                                            rightContent: cost === 0 ? 'Free' : `AED ${cost.toFixed(2)}`
+                                        };
                                     })}
-                                </Radio.Group>
-                            </div>
-                        )}
+                                />
+                            </Skeleton>
+                        </Box>
 
                         {/* Payment Method */}
-                        <div className="mt-6 border-with-radius p-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-6">Payment Method</h2>
+                        <Box loading={isCartLoading || !cartData} header title="Payment Method" padding="p-5 mt-6">
                             {isPaymentMethodsLoading ? (
                                 <div className="py-4 text-center"><Spin /></div>
                             ) : (
-                                <Radio.Group
+                                <RadioCardGroup
                                     value={selectedPaymentMethodId}
                                     onChange={(e) => setSelectedPaymentMethodId(e.target.value)}
-                                    className="w-full"
-                                >
-                                    <div className="space-y-3">
-                                        {console.log(paymentMethodsData)}
-                                        {paymentMethodsData?.map((method) => (
-                                            <Radio key={method.id} value={method.id} className="w-full">
-                                                <div className={`flex items-center gap-3 rounded-xl border p-4 cursor-pointer w-full ${selectedPaymentMethodId === method.id ? 'border-primary bg-primary-light/10' : 'border-gray-200'}`}>
-                                                    <span className="text-2xl">
-                                                        {method.code === 'COD' ? '💵' : '💳'}
-                                                    </span>
-                                                    <span className="font-medium text-gray-900">{method.name}</span>
-                                                </div>
-                                            </Radio>
-                                        ))}
-                                    </div>
-                                </Radio.Group>
+                                    options={paymentMethodsData?.map((method) => ({
+                                        value: method.id,
+                                        content: (
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-2xl leading-none">
+                                                    {method.code === 'COD' ? '💵' : '💳'}
+                                                </span>
+                                                <span className="font-medium text-black">{method.name}</span>
+                                            </div>
+                                        )
+                                    }))}
+                                />
                             )}
 
                             {/* Dummy Card Inputs just for visuals if Card payment selected (assuming not COD) */}
                             {selectedPaymentMethodId && paymentMethodsData?.find(m => m.id === selectedPaymentMethodId && m.code !== 'COD') && (
                                 <div className="mt-6 p-4 bg-gray-50 rounded-xl space-y-4">
                                     <div className="grid grid-cols-1 gap-4">
-                                        <Input size="large" placeholder="Card number" prefix={<span className="text-gray-400">💳</span>} />
+                                        <Input placeholder="Card number" prefix={<span className="text-gray-400">💳</span>} />
                                         <div className="grid grid-cols-2 gap-4">
-                                            <Input size="large" placeholder="MM / YY" />
-                                            <Input size="large" placeholder="CVC" />
+                                            <Input placeholder="MM / YY" />
+                                            <Input placeholder="CVC" />
                                         </div>
                                     </div>
                                 </div>
                             )}
-                        </div>
+                        </Box>
 
                         {/* Billing Address Toggle and Form */}
-                        <div className="mt-6 border-with-radius p-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-4">Billing Address</h2>
+                        <Box loading={isCartLoading || !cartData} header title="Billing Address" padding="p-5 mt-6">
                             <Form.Item>
-                                <Radio.Group
+                                <RadioCardGroup
                                     value={billingSameAsShipping}
                                     onChange={(e) => setBillingSameAsShipping(e.target.value)}
-                                    className="w-full flex flex-col gap-3"
-                                >
-                                    <div className={`flex items-center gap-3 rounded-xl border p-4 cursor-pointer ${billingSameAsShipping ? 'border-primary bg-primary-light/10' : 'border-gray-200'}`}>
-                                        <Radio value={true}>Same as shipping address</Radio>
-                                    </div>
-                                    <div className={`flex items-center gap-3 rounded-xl border p-4 cursor-pointer ${!billingSameAsShipping ? 'border-primary bg-primary-light/10' : 'border-gray-200'}`}>
-                                        <Radio value={false}>Use a different billing address</Radio>
-                                    </div>
-                                </Radio.Group>
+                                    options={[
+                                        { value: true, content: 'Same as shipping address' },
+                                        { value: false, content: 'Use a different billing address' }
+                                    ]}
+                                />
                             </Form.Item>
 
                             {!billingSameAsShipping && (
@@ -423,7 +397,7 @@ export default function CheckoutPage() {
                                     {renderAddressFields('billingAddress', 'Billing Address Details')}
                                 </div>
                             )}
-                        </div>
+                        </Box>
 
                         {/* Mobile Place Order */}
                         <div className="lg:hidden mt-6">
@@ -441,8 +415,7 @@ export default function CheckoutPage() {
                 {/* Sidebar */}
                 <div className="lg:col-span-1">
                     <div className="sticky top-32 space-y-6">
-                        <div className="border-with-radius p-6">
-                            <h3 className="text-lg font-bold text-gray-900 mb-4">Order Summary</h3>
+                        <Box loading={isCartLoading || !cartData} header title="Order Summary" padding="p-5">
                             <div className="py-4 max-h-64 space-y-3 overflow-y-auto">
                                 {items.map((item) => {
                                     const name = item.productName || item.name;
@@ -452,7 +425,7 @@ export default function CheckoutPage() {
                                     const total = item.itemTotal ? parseFloat(item.itemTotal).toFixed(2) : (unitPrice * item.quantity).toFixed(2);
 
                                     return (
-                                        <div key={`${item.id || item.productId}-${item.variantId || item.productVariantId || 'default'}`} className="flex gap-3">
+                                        <div key={`${item.id || item.productId}-${item.variantId || item.productVariantId || 'default'}`} className="flex gap-2">
                                             <div className="relative h-16 w-16 rounded-xl">
                                                 <img
                                                     src={imageUrl}
@@ -497,7 +470,7 @@ export default function CheckoutPage() {
                                     <span className="text-2xl font-bold text-primary">AED {totals.total}</span>
                                 </div>
                             </div>
-                        </div>
+                        </Box>
 
                         <div className="hidden lg:block">
                             <button

@@ -12,7 +12,7 @@ export function Box({
   classRest = '',
 }) {
   return (
-    <div className={`border-smoke-light rounded-2xl border bg-white ${padding} ${classRest}`}>
+    <div className={`border-with-radius ${padding} ${classRest}`}>
       {header && (
         <div className="flex items-center justify-between">
           <Title title={title} description={description} />
