@@ -1,14 +1,13 @@
 'use client';
 
 import { Drawer } from 'antd';
-import { useRouter } from 'next/navigation';
+import { Link } from '@/i18n/navigation';
 import useCartStore from '@/lib/store/cart';
 import CartItem from './CartItem';
 import { useCart, useRemoveCartItem, useUpdateCartItem } from '@/hooks/cart/useCart';
 import { Spin } from 'antd';
 
 export default function CartDrawer() {
-    const router = useRouter();
     const { isDrawerOpen, closeDrawer } = useCartStore(); // Only UI state from store
     const { data: cartData, isLoading } = useCart();
     const { mutate: removeItem } = useRemoveCartItem();
@@ -16,16 +15,6 @@ export default function CartDrawer() {
 
     const items = cartData?.items || [];
     const subtotal = cartData?.subtotal || 0;
-
-    const handleViewCart = () => {
-        closeDrawer();
-        router.push('/cart');
-    };
-
-    const handleCheckout = () => {
-        closeDrawer();
-        router.push('/checkout');
-    };
 
     return (
         <Drawer
@@ -119,18 +108,20 @@ export default function CartDrawer() {
 
                         {/* Action Buttons */}
                         <div className="space-y-3">
-                            <button
-                                onClick={handleCheckout}
-                                className="w-full rounded-full bg-primary py-3 font-semibold text-white transition-all hover:bg-primary-dark hover:shadow-lg"
+                            <Link
+                                href="/checkout"
+                                onClick={closeDrawer}
+                                className="block w-full text-center rounded-full bg-primary! py-3 font-semibold text-white! transition-all hover:bg-primary-dark! hover:shadow-lg"
                             >
                                 Checkout
-                            </button>
-                            <button
-                                onClick={handleViewCart}
-                                className="w-full rounded-full border-2 border-primary py-3 font-semibold text-primary transition-all hover:bg-primary-light"
+                            </Link>
+                            <Link
+                                href="/cart"
+                                onClick={closeDrawer}
+                                className="block w-full text-center rounded-full border-2 border-primary py-3 font-semibold text-primary! transition-all hover:bg-primary-light!"
                             >
                                 View Cart
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

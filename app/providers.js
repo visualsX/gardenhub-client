@@ -43,6 +43,8 @@ export default function Providers({ children }) {
         crawlSpeed={200}
         height={3}
         showSpinner={false}
+        zIndex={99999}
+        showAtBottom={false}
       />
       <QueryClientProvider client={queryClient}>
         <OfflineNotice />
