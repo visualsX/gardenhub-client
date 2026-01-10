@@ -2,13 +2,52 @@
 
 import { Carousel } from 'antd';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useActiveBanners } from '@/hooks/useHome';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useRef } from 'react';
 
-const BannerContent = ({ banner }) => {
+const POSITION_MAP = {
+    'center': 'items-center justify-center',
+    'center-left': 'items-center justify-start',
+    'center-right': 'items-center justify-end',
+    'top-left': 'items-start justify-start',
+    'top-center': 'items-start justify-center',
+    'top-right': 'items-start justify-end',
+    'bottom-left': 'items-end justify-start',
+    'bottom-center': 'items-end justify-center',
+    'bottom-right': 'items-end justify-end',
+};
+
+const BannerButton = ({ button, className }) => {
+    if (!button || !button.text) return null;
+
+    const baseStyles = "px-10 py-3.5 rounded-full font-bold transition-all duration-500 text-lg md:text-xl inline-block text-center min-w-[200px] hover:scale-105! active:scale-95! hover:shadow-2xl!";
+    const styles = {
+        solid: "bg-primary! text-white! hover:bg-primary/90! shadow-lg shadow-primary/20!",
+        outline: "border-2! border-primary/40! text-white! bg-primary/20! backdrop-blur-md! hover:bg-primary/25! hover:border-primary/60! shadow-xl shadow-black/5!",
+        ghost: "bg-transparent! text-white! border-2! border-white/20! hover:bg-white/10! backdrop-blur-sm! hover:border-white/40!",
+    };
+
     return (
-        <div className="relative w-full h-[400px] md:h-[600px]">
+        <Link
+            href={button.link || '#'}
+            className={`${baseStyles} ${styles[button.style] || styles.solid} ${className}`}
+        >
+            {button.text}
+        </Link>
+    );
+};
+
+const BannerContent = ({ banner }) => {
+    const positionClass = POSITION_MAP[banner.textPosition] || POSITION_MAP['center-left'];
+    const textAlignClass = `text-${banner.textAlignment || 'left'}`;
+
+    // Convert opacity to decimal and handle potential edge cases
+    const opacityValue = (banner.overlayOpacity || 30) / 100;
+
+    return (
+        <div className="relative w-full h-screen md:h-[80vh] overflow-hidden">
             {/* Background Image - Desktop */}
             <div className="hidden md:block absolute inset-0">
                 {banner.imageUrl && (
@@ -47,30 +86,40 @@ const BannerContent = ({ banner }) => {
 
             {/* Overlay */}
             <div
-                className="absolute inset-0 bg-black"
-                style={{ opacity: banner.overlayOpacity || 0.3 }}
+                className="absolute inset-0"
+                style={{
+                    backgroundColor: banner.backgroundOverlay || '#000000',
+                    opacity: opacityValue
+                }}
             />
 
-            {/* Content */}
-            <div className={`absolute inset-0 flex items-center justify-${banner.textAlignment === 'right' ? 'end' : banner.textAlignment === 'center' ? 'center' : 'start'} p-8 md:p-16`}>
-                <div className={`text-${banner.textAlignment || 'left'} max-w-xl text-white z-10 space-y-4`}>
-                    {banner.heading && (
-                        <h2 className="text-4xl md:text-6xl font-bold leading-tight">
-                            {banner.heading}
+            {/* Content Container */}
+            <div className={`max-layout absolute inset-0 flex ${positionClass} p-8 md:p-20`}>
+                <div className={`${textAlignClass} text-white z-10 space-y-6 animate-fadeIn`}>
+                    <div className="space-y-2">
+                        {banner.subheading && (
+                            <p className="text-lg md:text-2xl font-medium tracking-wider uppercase text-white/90 drop-shadow-sm">
+                                {banner.subheading}
+                            </p>
+                        )}
+                        {banner.heading && (
+                            <h2 className="text-4xl md:text-7xl font-bold leading-[1.1] drop-shadow-md">
+                                {banner.heading}
+                            </h2>
+                        )}
+                    </div>
+
+                    {banner.description && (
+                        <h2 className="text-base md:text-lg font-medium leading-[1.1] drop-shadow-md">
+                            {banner.description}
                         </h2>
                     )}
-                    {banner.subheading && (
-                        <p className="text-lg md:text-xl font-medium opacity-90">
-                            {banner.subheading}
-                        </p>
-                    )}
-                    {banner.description && (
-                        <div dangerouslySetInnerHTML={{ __html: banner.description }} className="prose prose-invert" />
-                    )}
 
-                    {/* Add buttons/CTA here if available in schema. 
-              Currently query doesn't return CTA links but based on request we integrate the banner. 
-              If needed we can add checks. */}
+                    {/* Buttons Group */}
+                    <div className={`flex flex-wrap gap-4 pt-2 ${banner.textAlignment === 'center' ? 'justify-center' : banner.textAlignment === 'right' ? 'justify-end' : 'justify-start'}`}>
+                        <BannerButton button={banner.primaryButton} />
+                        <BannerButton button={banner.secondaryButton} />
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,10 +129,10 @@ const BannerContent = ({ banner }) => {
 const CustomArrow = ({ direction, onClick }) => (
     <button
         onClick={onClick}
-        className={`absolute top-1/2 -translate-y-1/2 z-20 ${direction === 'left' ? 'left-4' : 'right-4'
-            } bg-white/20 hover:bg-white/40 text-white p-2 rounded-full backdrop-blur-sm transition-all duration-300 hidden md:flex items-center justify-center`}
+        className={`absolute top-1/2 -translate-y-1/2 z-20 ${direction === 'left' ? 'left-6' : 'right-6'
+            } bg-black/20 hover:bg-black/40 text-white w-12 h-12 rounded-full backdrop-blur-md transition-all duration-300 hidden md:flex items-center justify-center border border-white/20`}
     >
-        {direction === 'left' ? <LeftOutlined className="text-xl" /> : <RightOutlined className="text-xl" />}
+        {direction === 'left' ? <LeftOutlined className="text-lg" /> : <RightOutlined className="text-lg" />}
     </button>
 );
 
@@ -92,7 +141,7 @@ export default function HomeBanner({ initialBanners }) {
     const carouselRef = useRef(null);
 
     if (isLoading && !banners?.length) {
-        return <div className="w-full h-[400px] md:h-[600px] bg-gray-100 animate-pulse" />;
+        return <div className="w-full h-[450px] md:h-[650px] bg-gray-100 animate-pulse" />;
     }
 
     if (!banners || banners.length === 0) {
@@ -102,10 +151,12 @@ export default function HomeBanner({ initialBanners }) {
     return (
         <div className="relative group">
             <Carousel
+                pauseOnHover={true}
                 autoplay
+                autoplaySpeed={2000}
                 effect="fade"
                 ref={carouselRef}
-                dots={{ className: "custom-dots" }}
+                dots={{ className: "custom-dots-hero" }}
             >
                 {banners.map((banner) => (
                     <div key={banner.id}>
@@ -114,12 +165,12 @@ export default function HomeBanner({ initialBanners }) {
                 ))}
             </Carousel>
 
-            {banners.length > 1 && (
+            {/* {banners.length > 1 && (
                 <>
                     <CustomArrow direction="left" onClick={() => carouselRef.current?.prev()} />
                     <CustomArrow direction="right" onClick={() => carouselRef.current?.next()} />
                 </>
-            )}
+            )} */}
         </div>
     );
 }
