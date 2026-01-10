@@ -25,3 +25,14 @@ export const useLandingPageSections = (initialData) => {
         staleTime: 1000 * 60 * 60, // 1 hour
     });
 };
+export const useShopCollections = (initialData) => {
+    return useQuery({
+        queryKey: ['shop-collections'],
+        queryFn: async () => {
+            const data = await graphqlClient.request(LANDING_PAGE_QUERIES.GET_SHOP_COLLECTIONS);
+            return data?.featuredCategories || [];
+        },
+        initialData,
+        staleTime: 1000 * 60 * 60, // 1 hour
+    });
+};

@@ -12,12 +12,13 @@ export const metadata = constructMetadata({
     'Shop the best indoor plants, accessories, and care essentials delivered to your door.',
 });
 
-import { fetchFeaturedProducts, fetchActiveBanners } from '@/lib/api/ssr-calls/server-homepage';
+import { fetchFeaturedProducts, fetchActiveBanners, fetchShopCollections } from '@/lib/api/ssr-calls/server-homepage';
 
 export default async function Home() {
   // Fetch Initial Data
   const featuredSectionsData = await fetchFeaturedProducts();
   const activeBanners = await fetchActiveBanners();
+  const shopCollections = await fetchShopCollections();
 
   return (
     <div className="min-h-screen">
@@ -25,7 +26,7 @@ export default async function Home() {
 
       <DynamicSections initialSections={featuredSectionsData} />
 
-      <ShopCollection />
+      <ShopCollection initialCollections={shopCollections} />
       <StatsSection />
       <TestimonialsSection />
     </div>
