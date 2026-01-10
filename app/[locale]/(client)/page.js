@@ -1,10 +1,9 @@
-import HeroSection from '@/components/pages/home/HeroSection';
 import ShopCollection from '@/components/pages/home/ShopCollection';
 import StatsSection from '@/components/pages/home/StatsSection';
 import TestimonialsSection from '@/components/pages/home/TestimonialsSection';
-import ProductGrid from '@/components/shared/ProductGrid';
 import { constructMetadata } from '@/lib/utils/seo';
 import HomeBanner from '@/components/pages/home/HomeBanner';
+import DynamicSections from '@/components/pages/home/DynamicSections';
 
 // Metadata for the home page
 export const metadata = constructMetadata({
@@ -16,41 +15,16 @@ export const metadata = constructMetadata({
 import { fetchFeaturedProducts, fetchActiveBanners } from '@/lib/api/ssr-calls/server-homepage';
 
 export default async function Home() {
-  // Fetch Indoor Plants
-  const indoorPlantsData = await fetchFeaturedProducts({
-    collectionType: 'sale', // Using 'sale' as per valid enum or comment in query file
-    limit: 4,
-    categorySlug: 'indoor',
-  });
-
-  // Fetch Active Banners
+  // Fetch Initial Data
+  const featuredSectionsData = await fetchFeaturedProducts();
   const activeBanners = await fetchActiveBanners();
-
-  console.log('indoorplants: ', indoorPlantsData);
-  // Map API response to ProductGrid format
-  const indoorPlants = indoorPlantsData?.map((product) => ({
-    ...product,
-    price: `AED ${product.salePrice > 0 ? product.salePrice : product.price}`, // Handle sale price if needed
-    rating: 5, // Default rating for now as API doesn't return it
-  }));
 
   return (
     <div className="min-h-screen">
       <HomeBanner initialBanners={activeBanners} />
-      {/* <HeroSection /> */}
-      <ProductGrid title="Indoor Plants" products={indoorPlants} />
 
-      <ProductGrid
-        parentClassName={'bg-accent-gray'}
-        title="Our indoor best-sellers"
-        titleClassName="text-4xl! text-center"
-        products={indoorPlants}
-      />
-      <ProductGrid
-        title="Best Christmas Collection "
-        titleClassName="text-4xl! text-center"
-        products={indoorPlants}
-      />
+      <DynamicSections initialSections={featuredSectionsData} />
+
       <ShopCollection />
       <StatsSection />
       <TestimonialsSection />
