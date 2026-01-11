@@ -47,7 +47,7 @@ const BannerContent = ({ banner }) => {
     const opacityValue = (banner.overlayOpacity || 30) / 100;
 
     return (
-        <div className="relative w-full h-screen md:h-[80vh] overflow-hidden">
+        <div className="relative w-full h-screen md:h-[84vh] overflow-hidden">
             {/* Background Image - Desktop */}
             <div className="hidden md:block absolute inset-0">
                 {banner.imageUrl && (
@@ -141,7 +141,7 @@ export default function HomeBanner({ initialBanners }) {
     const carouselRef = useRef(null);
 
     if (isLoading && !banners?.length) {
-        return <div className="w-full h-[450px] md:h-[650px] bg-gray-100 animate-pulse" />;
+        return <div className="w-full h-screen md:h-[84vh] bg-gray-100 animate-pulse" />;
     }
 
     if (!banners || banners.length === 0) {

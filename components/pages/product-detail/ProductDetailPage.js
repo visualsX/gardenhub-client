@@ -52,14 +52,7 @@ export default function ProductDetailPage({ product }) {
           description={
             product.longDescription || product.detailedDescription || product.shortDescription
           }
-          careInfo={
-            product.careInfo || {
-              difficulty: 'Easy',
-              light: 'Bright indirect light',
-              water: 'Every 1-2 weeks',
-              petFriendly: 'Yes',
-            }
-          }
+          careInfo={product.filterTags || []}
         />
 
         {/* Other You May Also Like */}

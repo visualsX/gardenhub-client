@@ -20,7 +20,7 @@ export default function FAQBanner() {
         </div>
         <Link
           href="/faq"
-          className="text-primary rounded-full bg-white px-8 py-3 font-bold transition-transform hover:scale-105"
+          className="text-primary! rounded-full! bg-white! px-8 py-3 font-bold! transition-transform hover:scale-105!"
         >
           View All FAQs
         </Link>
