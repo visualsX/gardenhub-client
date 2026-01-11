@@ -29,7 +29,7 @@ function ProductCard({ product }) {
 
       {/* Product Image */}
       <div className="group relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
-        {product.isOnSale && <div className="absolute top-3 right-3 z-20 rounded bg-red-500/20 px-2 py-1 text-xs font-bold text-red-500 shadow-sm backdrop-blur-[1px]">
+        {product.isOnSale && <div className="absolute top-3 right-3 z-20 rounded bg-red-500 px-2 py-1 text-xs font-bold text-white shadow-sm">
           On Sale
         </div>}
         <img
