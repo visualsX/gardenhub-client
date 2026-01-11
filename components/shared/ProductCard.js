@@ -4,7 +4,6 @@ import Link from 'next/link';
 
 function ProductCard({ product }) {
   const { name, rating, mainImageUrl, slug } = product;
-  console.log("ehehheh: ", product)
   // const addToCart = useAddToCart();
 
   // const handleAddToCart = (e) => {
