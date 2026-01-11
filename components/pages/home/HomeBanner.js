@@ -3,8 +3,9 @@
 import { Carousel } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
+import ArrowLeft from '@/public/shared/arrow-left.svg';
+import ArrowRight from '@/public/shared/arrow-right.svg';
 import { useActiveBanners } from '@/hooks/useHome';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useRef } from 'react';
 
 const POSITION_MAP = {
@@ -130,9 +131,9 @@ const CustomArrow = ({ direction, onClick }) => (
     <button
         onClick={onClick}
         className={`absolute top-1/2 -translate-y-1/2 z-20 ${direction === 'left' ? 'left-6' : 'right-6'
-            } bg-black/20 hover:bg-black/40 text-white w-12 h-12 rounded-full backdrop-blur-md transition-all duration-300 hidden md:flex items-center justify-center border border-white/20`}
+            } bg-white/5 hover:bg-white/10 text-white w-12 h-12 rounded-full backdrop-blur-sm transition-all duration-300 hidden md:flex items-center justify-center border border-white/20`}
     >
-        {direction === 'left' ? <LeftOutlined className="text-lg" /> : <RightOutlined className="text-lg" />}
+        {direction === 'left' ? <ArrowLeft /> : <ArrowRight />}
     </button>
 );
 
@@ -153,7 +154,7 @@ export default function HomeBanner({ initialBanners }) {
             <Carousel
                 pauseOnHover={true}
                 autoplay
-                autoplaySpeed={2000}
+                autoplaySpeed={4000}
                 effect="fade"
                 ref={carouselRef}
                 dots={{ className: "custom-dots-hero" }}
@@ -165,12 +166,12 @@ export default function HomeBanner({ initialBanners }) {
                 ))}
             </Carousel>
 
-            {/* {banners.length > 1 && (
+            {banners.length > 1 && (
                 <>
                     <CustomArrow direction="left" onClick={() => carouselRef.current?.prev()} />
                     <CustomArrow direction="right" onClick={() => carouselRef.current?.next()} />
                 </>
-            )} */}
+            )}
         </div>
     );
 }
