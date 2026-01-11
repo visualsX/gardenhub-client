@@ -7,6 +7,7 @@ export async function generateMetadata({ params }) {
   // params.slug is an array because of [...slug] route
   const slug = Array.isArray(rawSlug) ? rawSlug[0] : rawSlug;
   const product = await getProductBySlug(slug);
+  // console.log("products on productpage: ", product)
 
   if (!product) {
     return {
@@ -81,6 +82,7 @@ export default async function Page({ params }) {
         product.stockQuantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
     },
   };
+
 
   return (
     <>

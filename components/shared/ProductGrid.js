@@ -3,7 +3,7 @@ import ProductCard from './ProductCard';
 
 export default function ProductGrid({ title, products, parentClassName, titleClassName = '', viewAll = null }) {
 
-  console.log("products: ", products)
+  // console.log("products: ", products)
   return (
     <section className={`py-16 ${parentClassName}`}>
       <div className="max-layout">
