@@ -3,7 +3,7 @@ export const siteConfig = {
   description:
     'Fresh Indoor Plants, Delivered to Your Home. Discover hand-picked plants perfect for beginners, collectors, and cozy spaces.',
   url: 'https://client.gardenhub.ae',
-  ogImage: 'https://client.gardenhub.ae/gardenhub.png',
+  ogImage: 'https://client.gardenhub.ae/test.png',
   links: {
     twitter: 'https://twitter.com/gardenhub',
     github: 'https://github.com/gardenhub',
