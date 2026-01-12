@@ -148,6 +148,14 @@ export const useVariantSelection = (product) => {
       ? product.salePrice
       : product?.price || 0;
 
+  const originalPrice = selectedVariant
+    ? selectedVariant.salePrice > 0
+      ? selectedVariant.price
+      : variantPrice(selectedVariant)
+    : product?.salePrice > 0
+      ? product.price
+      : null;
+
   // Helper to handle potentially missing price on variant
   function variantPrice(v) {
     return v.price || 0;
@@ -181,5 +189,6 @@ export const useVariantSelection = (product) => {
     incrementQuantity,
     decrementQuantity,
     isOptionDisabled,
+    originalPrice
   };
 };

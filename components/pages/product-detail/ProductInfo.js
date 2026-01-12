@@ -9,6 +9,7 @@ import ProductAddons from './addons';
 import useCartStore from '@/lib/store/cart';
 
 import { useAddToCart } from '@/hooks/cart/useCart';
+import { CURRENCY } from '@/lib/const/global.variables';
 
 export default function ProductInfo({ product }) {
   const { openDrawer } = useCartStore();
@@ -27,6 +28,7 @@ export default function ProductInfo({ product }) {
     decrementQuantity,
     isOptionDisabled,
     selectedVariant,
+    originalPrice
   } = useVariantSelection(product);
 
   // Determine if we should fetch addons
@@ -247,11 +249,11 @@ export default function ProductInfo({ product }) {
       {/* Price */}
       <div className="text-2xl font-bold text-gray-900">
         {product.hasVariants && allOptionsSelected ? (
-          <>AED {currentPrice}</>
+          <div> <span>{CURRENCY} {currentPrice} </span> {originalPrice && <span className="text-gray-500 line-through pl-2">{CURRENCY} {originalPrice}</span>}</div>
         ) : product.hasVariants ? (
           <span className="text-lg text-gray-500">Select options to see price</span>
         ) : (
-          <>AED {currentPrice}</>
+          <div> <span>{CURRENCY} {currentPrice} </span> {originalPrice && <span className="text-gray-500 line-through pl-2">{CURRENCY} {originalPrice}</span>}</div>
         )}
       </div>
 
