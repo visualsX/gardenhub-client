@@ -66,7 +66,7 @@ export default function CartPage() {
 
                     <Link
                         href="/shop"
-                        className="rounded-full bg-primary px-8 py-4 font-semibold text-white transition-all hover:bg-primary-dark hover:shadow-xl"
+                        className="rounded-full bg-primary! px-8 py-4 font-semibold text-white! transition-all hover:bg-primary-dark hover:shadow-xl"
                     >
                         Continue Shopping
                     </Link>
