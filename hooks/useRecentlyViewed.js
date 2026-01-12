@@ -38,20 +38,22 @@ export const useRecentlyViewed = () => {
   };
 
   // Helper to store only what's needed for ProductCard
-  const formatProductForStorage = (product) => ({
-    id: product.id,
-    name: product.name,
-    slug: product.slug,
-    mainImageUrl: product.images?.[0] || product.mainImageUrl,
-    rating: product.rating || 5.0, // Default for now if missing
-    price: formatPrice(product),
-  });
+  const formatProductForStorage = (product) => {
+    const firstVariant = product.variants?.[0];
+    const price = product.price || firstVariant?.price || 0;
+    const salePrice = product.salePrice || firstVariant?.salePrice || 0;
+    const isOnSale = product.isOnSale || (salePrice > 0 && salePrice < price);
 
-  const formatPrice = (product) => {
-    // Handle different price structures
-    const priceVal = product.salePrice > 0 ? product.salePrice : product.price;
-    if (typeof priceVal === 'string' && priceVal.includes('AED')) return priceVal;
-    return `AED ${priceVal}`;
+    return {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      mainImageUrl: product.images?.[0] || product.mainImageUrl,
+      rating: product.rating || 5.0,
+      price: price,
+      salePrice: salePrice,
+      isOnSale: isOnSale,
+    };
   };
 
   return { recentlyViewed, addToRecentlyViewed };

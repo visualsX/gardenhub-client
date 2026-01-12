@@ -3,7 +3,12 @@ import Link from 'next/link';
 
 function ProductCard({ product }) {
   const { name, rating, mainImageUrl, slug } = product;
-  const actualPrice = product?.isOnSale ? product.salePrice : product.price;
+
+  // Handle cases where product might be from old storage or missing price
+  const price = product.price || 0;
+  const salePrice = product.salePrice || 0;
+  const isOnSale = product.isOnSale || (salePrice > 0 && salePrice < price);
+  const actualPrice = isOnSale ? salePrice : price;
   return (
     <div className="group relative flex h-full flex-col rounded-3xl bg-white p-3 transition-shadow hover:shadow-xl">
       <Link
@@ -45,7 +50,9 @@ function ProductCard({ product }) {
 
         {/* Price and Add to Cart */}
         <div className="relative z-20 flex items-center justify-between">
-          <span className="text-base font-bold text-gray-900">{actualPrice} AED</span>
+          <span className="text-base font-bold text-gray-900">
+            {actualPrice > 0 ? `AED ${actualPrice}` : 'Price TBD'}
+          </span>
           <button
             className="group/btn text-primary hover:bg-primary flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-[#d0e6d6] transition-all duration-300 hover:w-32 hover:text-white disabled:opacity-50"
             aria-label="Quick Buy"

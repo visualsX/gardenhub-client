@@ -30,7 +30,7 @@ export default function ProductInfo({ product }) {
     selectedVariant,
     originalPrice
   } = useVariantSelection(product);
-
+  // console.log("prodouct: ", product)
   // Determine if we should fetch addons
   const hasAddons = selectedVariant ? selectedVariant.hasAddons : product?.hasAddons;
 

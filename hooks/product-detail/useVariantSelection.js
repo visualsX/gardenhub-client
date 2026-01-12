@@ -151,7 +151,7 @@ export const useVariantSelection = (product) => {
   const originalPrice = selectedVariant
     ? selectedVariant.salePrice > 0
       ? selectedVariant.price
-      : variantPrice(selectedVariant)
+      : null
     : product?.salePrice > 0
       ? product.price
       : null;
