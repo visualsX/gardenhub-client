@@ -21,6 +21,6 @@ export const useCustomerProfile = (initialData) => {
     },
     initialData,
     enabled: !!token,
-    retry: false
+    retry: false,
   });
 };

@@ -18,7 +18,7 @@ export default function InputSearch({
     }, debounceMs);
 
     return () => clearTimeout(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, debounceMs]);
 
   // Sync with external defaultValue changes

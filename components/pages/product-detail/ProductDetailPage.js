@@ -56,12 +56,13 @@ export default function ProductDetailPage({ product }) {
         />
 
         {/* Other You May Also Like */}
-        {product.relatedProducts.length > 0 && <ProductGrid
-          titleClassName="text-4xl!"
-          title="Other you may also like"
-          products={product.relatedProducts || []}
-        />
-        }
+        {product.relatedProducts.length > 0 && (
+          <ProductGrid
+            titleClassName="text-4xl!"
+            title="Other you may also like"
+            products={product.relatedProducts || []}
+          />
+        )}
         {/* Recently Viewed */}
         {isMounted && recentlyViewed.filter((p) => p.slug !== product.slug).length > 0 && (
           <ProductGrid

@@ -189,6 +189,6 @@ export const useVariantSelection = (product) => {
     incrementQuantity,
     decrementQuantity,
     isOptionDisabled,
-    originalPrice
+    originalPrice,
   };
 };

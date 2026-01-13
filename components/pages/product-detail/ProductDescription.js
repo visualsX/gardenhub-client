@@ -13,11 +13,16 @@ export default function ProductDescription({ description, careInfo }) {
 
       {/* Care Info Card */}
       <div>
-        <h2 className="mb-6 text-2xl font-bold text-gray-900 md:text-3xl">Care & Characteristics</h2>
+        <h2 className="mb-6 text-2xl font-bold text-gray-900 md:text-3xl">
+          Care & Characteristics
+        </h2>
         <div className="space-y-4">
           {Array.isArray(careInfo) && careInfo.length > 0 ? (
             careInfo.map((item, index) => (
-              <div key={`${item.slug}-${index}`} className="bg-accent-gray group overflow-hidden rounded-2xl">
+              <div
+                key={`${item.slug}-${index}`}
+                className="bg-accent-gray group overflow-hidden rounded-2xl"
+              >
                 {item.description ? (
                   <details className="w-full">
                     <summary className="flex cursor-pointer list-none items-center justify-between p-4 focus:outline-none">
@@ -58,7 +63,9 @@ export default function ProductDescription({ description, careInfo }) {
               </div>
             ))
           ) : (
-            <p className="py-8 text-center text-gray-400">Care information is currently unavailable.</p>
+            <p className="py-8 text-center text-gray-400">
+              Care information is currently unavailable.
+            </p>
           )}
         </div>
       </div>

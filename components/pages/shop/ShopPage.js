@@ -51,8 +51,6 @@ export default function ShopPage({ initialProducts, initialFilters, initialTotal
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-
-
   // Flatten all pages into single products array
   const products = data?.pages.flatMap((page) => page.edges.map((edge) => edge.node)) || [];
 

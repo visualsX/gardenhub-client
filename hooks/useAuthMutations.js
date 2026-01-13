@@ -36,15 +36,19 @@ export const useLogin = () => {
         try {
           message.loading({ content: 'Syncing cart...', key: 'cartSync' });
 
-          const promises = items.map(item =>
-            client.post(API_ENDPOINTS.CART.ADD, {
-              productId: item.id || item.productId, // Handle both id formats
-              productVariantId: item.variantId || item.productVariantId || null,
-              quantity: item.quantity,
-              addons: item.addons || []
-            }, {
-              headers: { Authorization: `Bearer ${data.token}` }
-            })
+          const promises = items.map((item) =>
+            client.post(
+              API_ENDPOINTS.CART.ADD,
+              {
+                productId: item.id || item.productId, // Handle both id formats
+                productVariantId: item.variantId || item.productVariantId || null,
+                quantity: item.quantity,
+                addons: item.addons || [],
+              },
+              {
+                headers: { Authorization: `Bearer ${data.token}` },
+              }
+            )
           );
 
           await Promise.all(promises);
@@ -52,7 +56,7 @@ export const useLogin = () => {
           clearCart();
           message.success({ content: 'Cart synced!', key: 'cartSync' });
         } catch (error) {
-          console.error("Cart sync failed", error);
+          console.error('Cart sync failed', error);
           message.error({ content: 'Failed to sync some cart items', key: 'cartSync' });
         }
       }
@@ -147,15 +151,19 @@ export const useGoogleLogin = () => {
         try {
           message.loading({ content: 'Syncing cart...', key: 'cartSync' });
 
-          const promises = items.map(item =>
-            client.post(API_ENDPOINTS.CART.ADD, {
-              productId: item.id || item.productId,
-              productVariantId: item.variantId || item.productVariantId || null,
-              quantity: item.quantity,
-              addons: item.addons || []
-            }, {
-              headers: { Authorization: `Bearer ${data.token}` }
-            })
+          const promises = items.map((item) =>
+            client.post(
+              API_ENDPOINTS.CART.ADD,
+              {
+                productId: item.id || item.productId,
+                productVariantId: item.variantId || item.productVariantId || null,
+                quantity: item.quantity,
+                addons: item.addons || [],
+              },
+              {
+                headers: { Authorization: `Bearer ${data.token}` },
+              }
+            )
           );
 
           await Promise.all(promises);
@@ -163,7 +171,7 @@ export const useGoogleLogin = () => {
           clearCart();
           message.success({ content: 'Cart synced!', key: 'cartSync' });
         } catch (error) {
-          console.error("Cart sync failed", error);
+          console.error('Cart sync failed', error);
           message.error({ content: 'Failed to sync some cart items', key: 'cartSync' });
         }
       }

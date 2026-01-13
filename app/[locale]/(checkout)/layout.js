@@ -1,3 +1,3 @@
 export default function CheckoutLayout({ children }) {
-    return <>{children}</>;
+  return <>{children}</>;
 }

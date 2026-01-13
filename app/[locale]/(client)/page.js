@@ -12,7 +12,11 @@ export const metadata = constructMetadata({
     'Shop the best indoor plants, accessories, and care essentials delivered to your door.',
 });
 
-import { fetchFeaturedProducts, fetchActiveBanners, fetchShopCollections } from '@/lib/api/ssr-calls/server-homepage';
+import {
+  fetchFeaturedProducts,
+  fetchActiveBanners,
+  fetchShopCollections,
+} from '@/lib/api/ssr-calls/server-homepage';
 
 export default async function Home() {
   // Fetch Initial Data

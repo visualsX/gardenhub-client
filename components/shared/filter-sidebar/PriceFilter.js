@@ -42,14 +42,14 @@ export default function PriceFilter({ onChange, min = 0, max = 5000, initialRang
         value={range}
         onChange={handleSliderChange}
         onChangeComplete={handleAfterChange}
-      // styles={{
-      //     track: { backgroundColor: 'var(--primary-green, #4CAF50)' },
-      //     handle: {
-      //         borderColor: 'var(--primary-green, #4CAF50)',
-      //         backgroundColor: 'var(--primary-green, #4CAF50)',
-      //     },
-      //     rail: { backgroundColor: '#E0E0E0' }
-      // }}
+        // styles={{
+        //     track: { backgroundColor: 'var(--primary-green, #4CAF50)' },
+        //     handle: {
+        //         borderColor: 'var(--primary-green, #4CAF50)',
+        //         backgroundColor: 'var(--primary-green, #4CAF50)',
+        //     },
+        //     rail: { backgroundColor: '#E0E0E0' }
+        // }}
       />
 
       <div className="mt-4 flex items-center justify-between gap-2">

@@ -27,7 +27,7 @@ export default function Header({ initialMenuData }) {
   const { data: cartCountData } = useCartCount();
 
   // Only get cart count after mount to avoid hydration mismatch
-  const cartItemCount = isMounted ? (cartCountData?.count || 0) : 0;
+  const cartItemCount = isMounted ? cartCountData?.count || 0 : 0;
 
   useEffect(() => {
     setIsMounted(true);
@@ -57,8 +57,9 @@ export default function Header({ initialMenuData }) {
       <Link
         key={category.id}
         href={`/collections/${category.slug}`}
-        className={`text-sm! font-medium! transition-colors ${isHomePage ? 'hover:text-primary! text-gray-700!' : 'text-white/90! hover:text-white!'
-          }`}
+        className={`text-sm! font-medium! transition-colors ${
+          isHomePage ? 'hover:text-primary! text-gray-700!' : 'text-white/90! hover:text-white!'
+        }`}
       >
         {category.name}
       </Link>
@@ -105,10 +106,11 @@ export default function Header({ initialMenuData }) {
               <li key={link.id}>
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${isHomePage
-                    ? 'hover:text-primary! text-gray-700!'
-                    : 'text-white/90! hover:text-white!'
-                    }`}
+                  className={`text-sm font-medium transition-colors ${
+                    isHomePage
+                      ? 'hover:text-primary! text-gray-700!'
+                      : 'text-white/90! hover:text-white!'
+                  }`}
                 >
                   {link.label}
                 </Link>
@@ -141,7 +143,7 @@ export default function Header({ initialMenuData }) {
             >
               {isHomePage ? <BagIcon /> : <BagWhiteIcon />}
               {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+                <span className="bg-primary absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white">
                   {cartItemCount > 9 ? '9+' : cartItemCount}
                 </span>
               )}

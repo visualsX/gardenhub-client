@@ -6,13 +6,10 @@ import ArrowLeft from '@/public/shared/arrow-left.svg';
 import ArrowRight from '@/public/shared/arrow-right.svg';
 import { useShopCollections } from '@/hooks/useHome';
 export default function ShopCollection({ initialCollections }) {
-
   const { data: collections } = useShopCollections(initialCollections);
   console.log(collections);
 
   const scrollRef = useRef(null);
-
-
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -41,7 +38,7 @@ export default function ShopCollection({ initialCollections }) {
               <Link
                 key={collection.categoryId}
                 href={`/collections/${collection.categorySlug}`}
-                className="group relative flex h-[400px] w-[300px] shrink-0 snap-center flex-col items-center justify-center overflow-hidden rounded-2xl bg-[#f3fbf6] border border-gray-300"
+                className="group relative flex h-[400px] w-[300px] shrink-0 snap-center flex-col items-center justify-center overflow-hidden rounded-2xl border border-gray-300 bg-[#f3fbf6]"
               >
                 {/* Image or Placeholder */}
                 {collection.imageUrl ? (

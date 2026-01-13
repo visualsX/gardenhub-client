@@ -8,124 +8,128 @@ import { useCart, useRemoveCartItem, useUpdateCartItem } from '@/hooks/cart/useC
 import { Spin } from 'antd';
 
 export default function CartDrawer() {
-    const { isDrawerOpen, closeDrawer } = useCartStore(); // Only UI state from store
-    const { data: cartData, isLoading } = useCart();
-    const { mutate: removeItem } = useRemoveCartItem();
-    const { mutate: updateItem } = useUpdateCartItem();
+  const { isDrawerOpen, closeDrawer } = useCartStore(); // Only UI state from store
+  const { data: cartData, isLoading } = useCart();
+  const { mutate: removeItem } = useRemoveCartItem();
+  const { mutate: updateItem } = useUpdateCartItem();
 
-    const items = cartData?.items || [];
-    const subtotal = cartData?.subtotal || 0;
+  const items = cartData?.items || [];
+  const subtotal = cartData?.subtotal || 0;
 
-    return (
-        <Drawer
-            title={
-                <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-gray-900">Shopping Cart</span>
-                    <span className="text-sm font-medium text-gray-500">
-                        {items.length} {items.length === 1 ? 'item' : 'items'}
-                    </span>
-                </div>
-            }
-            placement="right"
-            onClose={closeDrawer}
-            open={isDrawerOpen}
-            size={420}
-            styles={{
-                body: { padding: '0' },
-            }}
-        >
-            {items.length === 0 ? (
-                // Empty Cart State
-                <div className="flex h-full flex-col items-center justify-center px-6 pb-6">
-                    <div className="mb-6 text-center">
-                        <svg
-                            className="mx-auto h-32 w-32 text-gray-300"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={1.5}
-                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                            />
-                        </svg>
-                        <h3 className="mt-4 text-xl font-bold text-gray-900">Your cart is empty</h3>
-                        <p className="mt-2 text-sm text-gray-500">
-                            Add some plants to your cart to get started!
-                        </p>
-                    </div>
-                    <button
-                        onClick={closeDrawer}
-                        className="rounded-full bg-primary px-8 py-3 font-semibold text-white transition-all hover:bg-primary-dark hover:shadow-lg"
-                    >
-                        Continue Shopping
-                    </button>
-                </div>
+  return (
+    <Drawer
+      title={
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-bold text-gray-900">Shopping Cart</span>
+          <span className="text-sm font-medium text-gray-500">
+            {items.length} {items.length === 1 ? 'item' : 'items'}
+          </span>
+        </div>
+      }
+      placement="right"
+      onClose={closeDrawer}
+      open={isDrawerOpen}
+      size={420}
+      styles={{
+        body: { padding: '0' },
+      }}
+    >
+      {items.length === 0 ? (
+        // Empty Cart State
+        <div className="flex h-full flex-col items-center justify-center px-6 pb-6">
+          <div className="mb-6 text-center">
+            <svg
+              className="mx-auto h-32 w-32 text-gray-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+            </svg>
+            <h3 className="mt-4 text-xl font-bold text-gray-900">Your cart is empty</h3>
+            <p className="mt-2 text-sm text-gray-500">
+              Add some plants to your cart to get started!
+            </p>
+          </div>
+          <button
+            onClick={closeDrawer}
+            className="bg-primary hover:bg-primary-dark rounded-full px-8 py-3 font-semibold text-white transition-all hover:shadow-lg"
+          >
+            Continue Shopping
+          </button>
+        </div>
+      ) : (
+        // Cart with Items
+        <div className="flex h-full flex-col">
+          {/* Cart Items */}
+          <div className="flex-1 space-y-3 overflow-y-auto px-6 py-6">
+            {isLoading ? (
+              <div className="flex h-full items-center justify-center">
+                <Spin />
+              </div>
             ) : (
-                // Cart with Items
-                <div className="flex h-full flex-col">
-                    {/* Cart Items */}
-                    <div className="flex-1 space-y-3 overflow-y-auto px-6 py-6">
-                        {isLoading ? (
-                            <div className="flex h-full items-center justify-center">
-                                <Spin />
-                            </div>
-                        ) : (
-                            items.map((item) => (
-                                <CartItem
-                                    key={`${item.id || item.productId}-${item.variantId || item.productVariantId || 'default'}`}
-                                    item={item}
-                                    compact
-                                    onRemove={() => removeItem({
-                                        cartItemId: item.cartItemId || item.id, // API uses cartItemId/id, Store uses productId
-                                        productId: item.id || item.productId,
-                                        productVariantId: item.variantId || item.productVariantId
-                                    })}
-                                    onUpdateQuantity={(newQty) => updateItem({
-                                        cartItemId: item.cartItemId || item.id,
-                                        productId: item.id || item.productId,
-                                        productVariantId: item.variantId || item.productVariantId,
-                                        quantity: newQty
-                                    })}
-                                />
-                            ))
-                        )}
-                    </div>
-
-                    {/* Cart Footer */}
-                    <div className="border-t border-gray-200 bg-gray-50 px-6 py-6">
-                        {/* Subtotal */}
-                        <div className="mb-4 flex items-center justify-between">
-                            <span className="text-base font-semibold text-gray-700">Subtotal</span>
-                            <span className="text-xl font-bold text-primary">AED {subtotal.toFixed(2)}</span>
-                        </div>
-
-                        <p className="mb-4 text-xs text-gray-500 text-center">
-                            Shipping and taxes calculated at checkout
-                        </p>
-
-                        {/* Action Buttons */}
-                        <div className="space-y-3">
-                            <Link
-                                href="/checkout"
-                                onClick={closeDrawer}
-                                className="block w-full text-center rounded-full bg-primary! py-3 font-semibold text-white! transition-all hover:bg-primary-dark! hover:shadow-lg"
-                            >
-                                Checkout
-                            </Link>
-                            <Link
-                                href="/cart"
-                                onClick={closeDrawer}
-                                className="block w-full text-center rounded-full border-2 border-primary py-3 font-semibold text-primary! transition-all hover:bg-primary-light!"
-                            >
-                                View Cart
-                            </Link>
-                        </div>
-                    </div>
-                </div>
+              items.map((item) => (
+                <CartItem
+                  key={`${item.id || item.productId}-${item.variantId || item.productVariantId || 'default'}`}
+                  item={item}
+                  compact
+                  onRemove={() =>
+                    removeItem({
+                      cartItemId: item.cartItemId || item.id, // API uses cartItemId/id, Store uses productId
+                      productId: item.id || item.productId,
+                      productVariantId: item.variantId || item.productVariantId,
+                    })
+                  }
+                  onUpdateQuantity={(newQty) =>
+                    updateItem({
+                      cartItemId: item.cartItemId || item.id,
+                      productId: item.id || item.productId,
+                      productVariantId: item.variantId || item.productVariantId,
+                      quantity: newQty,
+                    })
+                  }
+                />
+              ))
             )}
-        </Drawer>
-    );
+          </div>
+
+          {/* Cart Footer */}
+          <div className="border-t border-gray-200 bg-gray-50 px-6 py-6">
+            {/* Subtotal */}
+            <div className="mb-4 flex items-center justify-between">
+              <span className="text-base font-semibold text-gray-700">Subtotal</span>
+              <span className="text-primary text-xl font-bold">AED {subtotal.toFixed(2)}</span>
+            </div>
+
+            <p className="mb-4 text-center text-xs text-gray-500">
+              Shipping and taxes calculated at checkout
+            </p>
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              <Link
+                href="/checkout"
+                onClick={closeDrawer}
+                className="bg-primary! hover:bg-primary-dark! block w-full rounded-full py-3 text-center font-semibold text-white! transition-all hover:shadow-lg"
+              >
+                Checkout
+              </Link>
+              <Link
+                href="/cart"
+                onClick={closeDrawer}
+                className="border-primary text-primary! hover:bg-primary-light! block w-full rounded-full border-2 py-3 text-center font-semibold transition-all"
+              >
+                View Cart
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </Drawer>
+  );
 }
