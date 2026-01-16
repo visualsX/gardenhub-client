@@ -78,8 +78,8 @@ export default function OrdersPage() {
             {/* Header Section */}
             <div className="flex flex-col gap-2 border-b border-gray-100 pb-6 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Order History</h1>
-                    <p className="mt-2 text-sm text-gray-500">
+                    <h1 className="text-2xl font-bold text-gray-900">Order History</h1>
+                    <p className="mt-2 text-gray-500">
                         Check the status of recent orders, manage returns, and discover similar products.
                     </p>
                 </div>
