@@ -12,6 +12,7 @@ export default function AccountsSidebar() {
 
   const navItems = [
     { label: 'Profile', href: '/auth/accounts/profile' },
+    { label: 'Orders', href: '/auth/accounts/orders' },
     { label: 'Settings', href: '/auth/accounts/settings' },
   ];
 
@@ -35,11 +36,10 @@ export default function AccountsSidebar() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-              isActive(item.href)
+            className={`flex items-center rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive(item.href)
                 ? 'bg-primary-light! text-primary!'
                 : 'text-gray-600! hover:bg-gray-50 hover:text-gray-900!'
-            }`}
+              }`}
           >
             {item.label}
           </Link>
