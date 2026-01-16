@@ -242,7 +242,7 @@ export default async function OrderDetailPage({ params }) {
                                     <div key={idx} className="flex flex-col gap-2 rounded-2xl bg-gray-50/50 p-4 ring-1 ring-gray-100/50">
                                         <div className="flex flex-col gap-1.5">
                                             <div className="flex items-start justify-between gap-3">
-                                                <p className="flex-1 break-words text-sm font-black leading-snug text-gray-900 uppercase tracking-tight">
+                                                <p className="flex-1 wrap-break-word text-sm font-black leading-snug text-gray-900 uppercase tracking-tight">
                                                     {formatPaymentMethod(tx.paymentMethod)}
                                                 </p>
                                                 <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider ring-1 ring-inset ${tx.status === 'SUCCESS' ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/10' : 'bg-amber-50 text-amber-700 ring-amber-600/10'}`}>
