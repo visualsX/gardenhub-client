@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from '@/i18n/navigation';
 import { Form, Input, Select, message, Spin, Skeleton } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
-import { useCustomerProfile } from '@/hooks/useCustomerProfile';
+// import { useCustomerProfile } from '@/hooks/useCustomerProfile';
 import { usePaymentMethods, useShippingRates, usePlaceOrder } from '@/hooks/useOrder';
 import { UAE_EMIRATES } from '@/lib/const/emirates';
 import { Box } from '@/components/wrappers/box';
@@ -14,12 +14,12 @@ import { getCookie } from '@/lib/utils/cookie';
 
 const { Option } = Select;
 
-export default function CheckoutPage() {
+export default function CheckoutPage({ customerProfile }) {
   const router = useRouter();
   const [form] = Form.useForm();
   const { data: cartData, isLoading: isCartLoading } = useCart();
   const { mutateAsync: clearCartApi } = useClearCart();
-  const { data: profileData } = useCustomerProfile({ initialData: null });
+  // const { data:  = useCustomerProfile(initialProfile);
   const { data: paymentMethodsData, isLoading: isPaymentMethodsLoading } = usePaymentMethods();
   const { mutateAsync: placeOrderApi } = usePlaceOrder();
   const { mutateAsync: createGuestApi } = useCreateGuest();
@@ -59,8 +59,8 @@ export default function CheckoutPage() {
 
   // Pre-fill form
   useEffect(() => {
-    if (profileData?.customerProfile) {
-      const { addresses, email, firstName, lastName } = profileData.customerProfile;
+    if (customerProfile) {
+      const { addresses, email, firstName, lastName } = customerProfile;
       const defaultShipping = addresses?.find((a) => a.isDefaultShipping) || addresses?.[0];
       const realDefaultBilling = addresses?.find((a) => a.isDefaultBilling);
       // Fallback for billing: use real default billing, or default shipping, or first address
@@ -70,40 +70,40 @@ export default function CheckoutPage() {
         email: email,
         shippingAddress: defaultShipping
           ? {
-              addressId: defaultShipping.id,
-              firstName: defaultShipping.firstName,
-              lastName: defaultShipping.lastName,
-              phone: defaultShipping.phone,
-              address: defaultShipping.streetAddress,
-              addressLine2: defaultShipping.addressLine2,
-              city: defaultShipping.city,
-              emirate: defaultShipping.emirate,
-              postalCode: defaultShipping.postalCode,
-              country: defaultShipping.country || 'United Arab Emirates',
-            }
+            addressId: defaultShipping.id,
+            firstName: defaultShipping.firstName,
+            lastName: defaultShipping.lastName,
+            phone: defaultShipping.phone,
+            address: defaultShipping.streetAddress,
+            addressLine2: defaultShipping.addressLine2,
+            city: defaultShipping.city,
+            emirate: defaultShipping.emirate,
+            postalCode: defaultShipping.postalCode,
+            country: defaultShipping.country || 'United Arab Emirates',
+          }
           : {
-              firstName: firstName,
-              lastName: lastName,
-              country: 'United Arab Emirates',
-            },
+            firstName: firstName,
+            lastName: lastName,
+            country: 'United Arab Emirates',
+          },
         billingAddress: defaultBilling
           ? {
-              addressId: defaultBilling.id,
-              firstName: defaultBilling.firstName,
-              lastName: defaultBilling.lastName,
-              phone: defaultBilling.phone,
-              address: defaultBilling.streetAddress,
-              addressLine2: defaultBilling.addressLine2,
-              city: defaultBilling.city,
-              emirate: defaultBilling.emirate,
-              postalCode: defaultBilling.postalCode,
-              country: defaultBilling.country || 'United Arab Emirates',
-            }
+            addressId: defaultBilling.id,
+            firstName: defaultBilling.firstName,
+            lastName: defaultBilling.lastName,
+            phone: defaultBilling.phone,
+            address: defaultBilling.streetAddress,
+            addressLine2: defaultBilling.addressLine2,
+            city: defaultBilling.city,
+            emirate: defaultBilling.emirate,
+            postalCode: defaultBilling.postalCode,
+            country: defaultBilling.country || 'United Arab Emirates',
+          }
           : {
-              firstName: firstName,
-              lastName: lastName,
-              country: 'United Arab Emirates',
-            },
+            firstName: firstName,
+            lastName: lastName,
+            country: 'United Arab Emirates',
+          },
       });
 
       // Only switch to "Different billing address" if we explicitly have a billing address that is different from shipping
@@ -117,7 +117,7 @@ export default function CheckoutPage() {
         form.setFieldsValue({ email: guestEmail });
       }
     }
-  }, [profileData, form]);
+  }, [customerProfile, form]);
 
   // Auto-select first shipping rate
   useEffect(() => {
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
 
     setIsProcessing(true);
     try {
-      let customerId = profileData?.customerProfile?.id;
+      let customerId = customerProfile?.id;
 
       // If not logged in, check for existing guest or create new
       if (!customerId) {
@@ -185,16 +185,16 @@ export default function CheckoutPage() {
       const billingAddressObj = billingSameAsShipping
         ? { ...shippingAddressObj }
         : {
-            firstName: values.billingAddress.firstName,
-            lastName: values.billingAddress.lastName,
-            phone: values.billingAddress.phone,
-            country: values.billingAddress.country || 'United Arab Emirates',
-            emirate: values.billingAddress.emirate || 'NotSpecified',
-            city: values.billingAddress.city,
-            streetAddress: values.billingAddress.address,
-            addressLine2: values.billingAddress.addressLine2 || '',
-            postalCode: values.billingAddress.postalCode,
-          };
+          firstName: values.billingAddress.firstName,
+          lastName: values.billingAddress.lastName,
+          phone: values.billingAddress.phone,
+          country: values.billingAddress.country || 'United Arab Emirates',
+          emirate: values.billingAddress.emirate || 'NotSpecified',
+          city: values.billingAddress.city,
+          streetAddress: values.billingAddress.address,
+          addressLine2: values.billingAddress.addressLine2 || '',
+          postalCode: values.billingAddress.postalCode,
+        };
 
       const payload = {
         idempotencyKey: crypto.randomUUID(),
