@@ -3,7 +3,7 @@ import AddressManager from '@/components/auth/AddressManager';
 
 export default async function SettingsPage({ params }) {
   const { locale } = await params;
-  const initialData = await getCustomerProfile(locale);
+  const customerProfile = await getCustomerProfile(locale);
 
-  return <AddressManager initialData={initialData} />;
+  return <AddressManager customerProfile={customerProfile} />;
 }
