@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useCustomerProfile } from '@/hooks/useCustomerProfile';
+// import { useCustomerProfile } from '@/hooks/useCustomerProfile';
 import {
   useAddAddress,
   useUpdateAddress,
@@ -16,7 +16,6 @@ import {
   Input,
   Checkbox,
   Tag,
-  Space,
   Card,
   Spin,
   Tooltip,
@@ -31,15 +30,15 @@ import {
 } from '@ant-design/icons';
 import { UAE_EMIRATES } from '@/lib/const/emirates';
 
-export default function AddressManager({ initialData }) {
+export default function AddressManager({ customerProfile }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
   const [form] = Form.useForm();
 
-  const { data: profileData, isLoading } = useCustomerProfile(initialData);
+  // const { data: profileData, isLoading } = useCustomerProfile(customerProfile);
 
-  const addresses = profileData?.customerProfile?.addresses || [];
-  const customerId = profileData?.customerProfile?.id;
+  const addresses = customerProfile?.addresses || [];
+  const customerId = customerProfile?.id;
 
   // Mutations
   const addAddress = useAddAddress();
@@ -106,7 +105,7 @@ export default function AddressManager({ initialData }) {
     }
   };
 
-  if (isLoading && !profileData) {
+  if (!customerProfile) {
     return (
       <div className="flex h-64 items-center justify-center">
         <Spin size="large" />

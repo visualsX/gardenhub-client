@@ -1,17 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useCustomerProfile } from '@/hooks/useCustomerProfile';
+// import { useCustomerProfile } from '@/hooks/useCustomerProfile';
 import { useUpdateProfile, useDeleteAccount } from '@/hooks/useCustomerMutations';
 import { Input, Button, Form, Modal, Spin, Skeleton } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
-export default function ProfileForm({ initialProfile }) {
+export default function ProfileForm({ customerProfile }) {
   const [form] = Form.useForm();
-
+  // console.log('customerProfile initial data', customerProfile);
   // Use custom hook seeded with initial SSR data
-  const { data: profileData, isLoading } = useCustomerProfile(initialProfile);
-  const customerProfile = profileData?.customerProfile;
+  // const { data: profileData, isLoading } = useCustomerProfile(customerProfile);
+  // const customerProfile = profileData;
 
   // Mutations
   const updateProfile = useUpdateProfile();
@@ -41,7 +41,7 @@ export default function ProfileForm({ initialProfile }) {
   };
 
   // If loading initially without cache (should rarely happen if SSR worked), show spinner
-  if (isLoading && !customerProfile) {
+  if (!customerProfile) {
     return (
       <div className="flex h-64 items-center justify-center">
         <Spin size="large" />
@@ -62,41 +62,41 @@ export default function ProfileForm({ initialProfile }) {
         onFinish={onFinish}
         requiredMark={false}
         className="space-y-4"
-        // initialValues={{
-        //   firstName: customerProfile.firstName,
-        //   lastName: customerProfile.lastName,
-        //   email: customerProfile.email,
-        // }}
+      // initialValues={{
+      //   firstName: customerProfile.firstName,
+      //   lastName: customerProfile.lastName,
+      //   email: customerProfile.email,
+      // }}
       >
-        <Skeleton loading={isLoading}>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Form.Item
-              name="firstName"
-              label="First Name"
-              rules={[{ required: true, message: 'Please enter your first name' }]}
-            >
-              <Input size="large" placeholder="John" />
-            </Form.Item>
-            <Form.Item
-              name="lastName"
-              label="Last Name"
-              rules={[{ required: true, message: 'Please enter your last name' }]}
-            >
-              <Input size="large" placeholder="Doe" />
-            </Form.Item>
-          </div>
-
+        {/* <Skeleton loading={isLoading}> */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Form.Item
-            name="email"
-            label="Email Address"
-            rules={[
-              { required: true, message: 'Please enter your email' },
-              { type: 'email', message: 'Please enter a valid email' },
-            ]}
+            name="firstName"
+            label="First Name"
+            rules={[{ required: true, message: 'Please enter your first name' }]}
           >
-            <Input size="large" placeholder="john@example.com" disabled />
+            <Input size="large" placeholder="John" />
           </Form.Item>
-        </Skeleton>
+          <Form.Item
+            name="lastName"
+            label="Last Name"
+            rules={[{ required: true, message: 'Please enter your last name' }]}
+          >
+            <Input size="large" placeholder="Doe" />
+          </Form.Item>
+        </div>
+
+        <Form.Item
+          name="email"
+          label="Email Address"
+          rules={[
+            { required: true, message: 'Please enter your email' },
+            { type: 'email', message: 'Please enter a valid email' },
+          ]}
+        >
+          <Input size="large" placeholder="john@example.com" disabled />
+        </Form.Item>
+        {/* </Skeleton> */}
 
         <div className="pt-4">
           <Button
