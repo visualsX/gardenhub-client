@@ -9,9 +9,10 @@ import { UAE_EMIRATES } from '@/lib/const/emirates';
 import { RadioCardGroup } from '@/components/ui/radio-card-group';
 import { useCreateGuest } from '@/hooks/useGuestCheckout';
 import { getCookie } from '@/lib/utils/cookie';
-import { TAX_RATE } from '@/lib/const/global.variables';
+import { GUEST_CUSTOMER_ID, GUEST_EMAIL, GUEST_TOKEN, TAX_RATE, USER_TOKEN } from '@/lib/const/global.variables';
 import CheckoutSummary from '@/components/shared/checkout/CheckoutSummary';
 import { CheckoutBox } from '@/components/wrappers/checkout-box';
+import Link from 'next/link';
 
 const { Option } = Select;
 
@@ -23,8 +24,7 @@ export default function CheckoutPage({ customerProfile }) {
   const { data: paymentMethodsData, isLoading: isPaymentMethodsLoading } = usePaymentMethods();
   const { mutateAsync: placeOrderApi } = usePlaceOrder();
   const { mutateAsync: createGuestApi } = useCreateGuest();
-  const { mutateAsync: validateCouponApi, isLoading: isValidatingCoupon } = useValidateCoupon();
-
+  const { mutateAsync: validateCouponApi, isPending: isValidatingCoupon } = useValidateCoupon();
   // Watch shipping emirate to fetch rates
   const shippingEmirate = Form.useWatch(['shippingAddress', 'emirate'], form);
   const { data: shippingRates, isLoading: isShippingRatesLoading } =
@@ -120,9 +120,8 @@ export default function CheckoutPage({ customerProfile }) {
       }
     } else {
       // If not logged in, check for guest email cookie
-      const guestEmail = getCookie('guest_email');
-      if (guestEmail) {
-        form.setFieldsValue({ email: guestEmail });
+      if (GUEST_EMAIL) {
+        form.setFieldsValue({ email: GUEST_EMAIL });
       }
     }
   }, [customerProfile, form]);
@@ -261,7 +260,7 @@ export default function CheckoutPage({ customerProfile }) {
         couponCode,
         cartItems,
         orderSubtotal: subtotal,
-        customerId: customerProfile?.id || null,
+        customerId: customerProfile?.id || GUEST_CUSTOMER_ID || null,
       });
 
       setCouponResponse(response);
@@ -369,7 +368,8 @@ export default function CheckoutPage({ customerProfile }) {
           <div className="pt-5 pr-10">
             <Form requiredMark={false} className='' form={form} layout="vertical" onFinish={handlePlaceOrder}>
               {/* Contact Information */}
-              <CheckoutBox className='pb-5' dividers={null} loading={isCartLoading || !cartData} padding="mb-2">
+              <CheckoutBox className='pb-5 relative' dividers={null} loading={isCartLoading || !cartData} padding="mb-2">
+                {!USER_TOKEN && <Link className="absolute top-0 right-0 underline! cursor-pointer! text-primary! z-10" href="/auth/login">Login</Link>}
                 <Form.Item
                   label="Email"
                   name="email"
@@ -509,6 +509,7 @@ export default function CheckoutPage({ customerProfile }) {
                 handleApplyCoupon={handleApplyCoupon}
                 isCartLoading={isCartLoading}
                 cartData={cartData}
+                showPromoCode={USER_TOKEN || GUEST_TOKEN ? true : false}
               />
 
               <div className="hidden lg:block">

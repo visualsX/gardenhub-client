@@ -15,6 +15,7 @@ export default function CheckoutSummary({
     handleApplyCoupon,
     isCartLoading,
     cartData,
+    showPromoCode
 }) {
     return (
         <CheckoutBox dividers={null} loading={isCartLoading || !cartData} header title="Order Summary" className="p-5 bg-white border rounded-xl">
@@ -54,7 +55,7 @@ export default function CheckoutSummary({
             </div>
 
             {/* Coupon Section */}
-            <div className="border-t border-gray-200 py-4">
+            {showPromoCode && <div className="border-t border-gray-200 py-4">
                 <div className="flex gap-2">
                     <Input
                         placeholder="Coupon code"
@@ -79,7 +80,7 @@ export default function CheckoutSummary({
                             : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                             } rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50`}
                     >
-                        {isValidatingCoupon ? '...' : couponResponse?.isValid ? 'Remove' : 'Apply'}
+                        {couponResponse?.isValid ? 'Remove' : 'Apply'}
                     </Button>
                 </div>
                 {couponResponse && (
@@ -90,7 +91,7 @@ export default function CheckoutSummary({
                         {couponResponse.message}
                     </p>
                 )}
-            </div>
+            </div>}
 
             <div className="space-y-3 border-t border-gray-200 pt-4">
                 <div className="flex items-center justify-between">
