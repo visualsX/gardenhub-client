@@ -7,6 +7,7 @@ import CartItem from '@/components/shared/cart/CartItem';
 import CartSummary from '@/components/shared/cart/CartSummary';
 import { useCart, useRemoveCartItem, useUpdateCartItem } from '@/hooks/cart/useCart';
 import { Spin } from 'antd';
+import { TAX_RATE } from '@/lib/const/global.variables';
 
 export default function CartPage() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function CartPage() {
 
   // Derived totals (same logic as checkout/drawer - ideally centralized)
   const shipping = subtotal > 200 ? 0 : 25;
-  const tax = subtotal * 0.05;
+  const tax = subtotal * TAX_RATE;
   const total = subtotal + shipping + tax;
 
   const totals = {
@@ -135,7 +136,7 @@ export default function CartPage() {
         <div className="lg:col-span-1">
           <div className="sticky top-32">
             <div className="flex flex-col">
-              <CartSummary showPromoCode totals={totals} />
+              <CartSummary totals={totals} />
 
               {/* Checkout Button */}
               <Link
