@@ -2,15 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from '@/i18n/navigation';
-import { Form, Input, Select, message, Spin, Skeleton } from 'antd';
+import { Form, Input, Select, message, Spin, Skeleton, Button } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
-import { usePaymentMethods, useShippingRates, usePlaceOrder } from '@/hooks/useOrder';
+import { usePaymentMethods, useShippingRates, usePlaceOrder, useValidateCoupon } from '@/hooks/useOrder';
 import { UAE_EMIRATES } from '@/lib/const/emirates';
 import { Box } from '@/components/wrappers/box';
 import { RadioCardGroup } from '@/components/ui/radio-card-group';
 import { useCreateGuest } from '@/hooks/useGuestCheckout';
 import { getCookie } from '@/lib/utils/cookie';
 import { TAX_RATE } from '@/lib/const/global.variables';
+import CheckoutSummary from '@/components/shared/checkout/CheckoutSummary';
 
 const { Option } = Select;
 
@@ -22,6 +23,7 @@ export default function CheckoutPage({ customerProfile }) {
   const { data: paymentMethodsData, isLoading: isPaymentMethodsLoading } = usePaymentMethods();
   const { mutateAsync: placeOrderApi } = usePlaceOrder();
   const { mutateAsync: createGuestApi } = useCreateGuest();
+  const { mutateAsync: validateCouponApi, isLoading: isValidatingCoupon } = useValidateCoupon();
 
   // Watch shipping emirate to fetch rates
   const shippingEmirate = Form.useWatch(['shippingAddress', 'emirate'], form);
@@ -31,6 +33,8 @@ export default function CheckoutPage({ customerProfile }) {
   const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
   const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState(null);
   const [selectedShippingRateId, setSelectedShippingRateId] = useState(null);
+  const [couponCode, setCouponCode] = useState('');
+  const [couponResponse, setCouponResponse] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const items = cartData?.items || [];
@@ -46,13 +50,18 @@ export default function CheckoutPage({ customerProfile }) {
       : selectedShippingRate.baseCost
     : 0;
 
-  const tax = subtotal * TAX_RATE;
-  const total = subtotal + shippingCost + tax;
+  const discountAmount = couponResponse?.isValid ? couponResponse.discountAmount : 0;
+
+  // New Tax Logic: Tax is added after shipping and discount
+  const taxableAmount = subtotal + shippingCost - discountAmount;
+  const tax = taxableAmount * TAX_RATE;
+  const total = taxableAmount + tax;
 
   const totals = {
     subtotal: subtotal.toFixed(2),
     shipping: shippingCost.toFixed(2),
     tax: tax.toFixed(2),
+    discount: discountAmount.toFixed(2),
     total: total.toFixed(2),
   };
 
@@ -205,7 +214,7 @@ export default function CheckoutPage({ customerProfile }) {
         shippingAddress: shippingAddressObj,
         billingAddress: billingAddressObj,
         shippingRateId: selectedShippingRateId,
-        couponCode: '',
+        couponCode: couponResponse?.isValid ? couponResponse.couponCode : '',
         paymentToken: 'string', // Placeholder
         paymentMethodId: selectedPaymentMethodId,
         items: items.map((item) => ({
@@ -232,6 +241,38 @@ export default function CheckoutPage({ customerProfile }) {
       message.error('Failed to place order: ' + (error.response?.data?.message || error.message));
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) {
+      message.warning('Please enter a coupon code');
+      return;
+    }
+
+    try {
+      const cartItems = items.map((item) => ({
+        productId: item.productId || item.id,
+        // productVariantId: item.productVariantId || item.variantId || null,
+        quantity: item.quantity,
+      }));
+
+      const response = await validateCouponApi({
+        couponCode,
+        cartItems,
+        orderSubtotal: subtotal,
+        customerId: customerProfile?.id || null,
+      });
+
+      setCouponResponse(response);
+      if (response.isValid) {
+        message.success(response.message || 'Coupon applied successfully!');
+      } else {
+        message.error(response.message || 'Invalid coupon code');
+      }
+    } catch (error) {
+      console.error('Coupon validation failed', error);
+      message.error('Failed to validate coupon');
     }
   };
 
@@ -455,63 +496,18 @@ export default function CheckoutPage({ customerProfile }) {
         {/* Sidebar */}
         <div className="lg:col-span-1">
           <div className="sticky top-10 space-y-6">
-            <Box loading={isCartLoading || !cartData} header title="Order Summary" padding="p-5">
-              <div className="max-h-64 space-y-3 overflow-y-auto py-4">
-                {items.map((item) => {
-                  const name = item.productName || item.name;
-                  const imageUrl = item.imageUrl || item.image || '/all/image-placeholder.svg';
-                  const variantLabel = item.variantAttributes || item.variant;
-                  const unitPrice = item.salePrice > 0 ? item.salePrice : item.price;
-                  const total = item.itemTotal
-                    ? parseFloat(item.itemTotal).toFixed(2)
-                    : (unitPrice * item.quantity).toFixed(2);
-
-                  return (
-                    <div
-                      key={`${item.id || item.productId}-${item.variantId || item.productVariantId || 'default'}`}
-                      className="flex gap-2"
-                    >
-                      <div className="relative h-16 w-16 rounded-xl">
-                        <img
-                          src={imageUrl}
-                          alt={name}
-                          className="h-full w-full rounded-xl object-cover"
-                        />
-                        <span className="bg-primary absolute -top-2 -right-1 z-30 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white">
-                          {item.quantity}
-                        </span>
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="line-clamp-1 text-sm font-semibold text-gray-900">{name}</h4>
-                        {variantLabel && <p className="text-xs text-gray-500">{variantLabel}</p>}
-                        <p className="text-primary mt-1 text-sm font-bold">AED {total}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="space-y-3 border-t border-gray-200 pt-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Subtotal</span>
-                  <span className="text-sm font-semibold text-gray-900">AED {totals.subtotal}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Shipping</span>
-                  <span className="text-sm font-semibold text-gray-900">
-                    {parseFloat(totals.shipping) === 0 ? 'FREE' : `AED ${totals.shipping}`}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Tax (5%)</span>
-                  <span className="text-sm font-semibold text-gray-900">AED {totals.tax}</span>
-                </div>
-                <div className="flex items-center justify-between border-t-2 border-gray-200 pt-3">
-                  <span className="text-lg font-bold text-gray-900">Total</span>
-                  <span className="text-primary text-2xl font-bold">AED {totals.total}</span>
-                </div>
-              </div>
-            </Box>
+            <CheckoutSummary
+              items={items}
+              totals={totals}
+              couponCode={couponCode}
+              setCouponCode={setCouponCode}
+              couponResponse={couponResponse}
+              setCouponResponse={setCouponResponse}
+              isValidatingCoupon={isValidatingCoupon}
+              handleApplyCoupon={handleApplyCoupon}
+              isCartLoading={isCartLoading}
+              cartData={cartData}
+            />
 
             <div className="hidden lg:block">
               <button
@@ -540,3 +536,4 @@ export default function CheckoutPage({ customerProfile }) {
     </div>
   );
 }
+
