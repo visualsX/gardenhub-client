@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from '@/i18n/navigation';
 import { Form, Input, Select, message, Spin, Skeleton } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
-// import { useCustomerProfile } from '@/hooks/useCustomerProfile';
 import { usePaymentMethods, useShippingRates, usePlaceOrder } from '@/hooks/useOrder';
 import { UAE_EMIRATES } from '@/lib/const/emirates';
 import { Box } from '@/components/wrappers/box';
@@ -19,7 +18,6 @@ export default function CheckoutPage({ customerProfile }) {
   const [form] = Form.useForm();
   const { data: cartData, isLoading: isCartLoading } = useCart();
   const { mutateAsync: clearCartApi } = useClearCart();
-  // const { data:  = useCustomerProfile(initialProfile);
   const { data: paymentMethodsData, isLoading: isPaymentMethodsLoading } = usePaymentMethods();
   const { mutateAsync: placeOrderApi } = usePlaceOrder();
   const { mutateAsync: createGuestApi } = useCreateGuest();
