@@ -1,8 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from '@/i18n/navigation';
-import useCartStore from '@/lib/store/cart';
 import CartItem from '@/components/shared/cart/CartItem';
 import CartSummary from '@/components/shared/cart/CartSummary';
 import { useCart, useRemoveCartItem, useUpdateCartItem } from '@/hooks/cart/useCart';
@@ -10,7 +8,6 @@ import { Spin } from 'antd';
 import { TAX_RATE } from '@/lib/const/global.variables';
 
 export default function CartPage() {
-  const router = useRouter();
   const { data: cartData, isLoading } = useCart();
   const { mutate: removeItem } = useRemoveCartItem();
   const { mutate: updateItem } = useUpdateCartItem();
@@ -19,16 +16,19 @@ export default function CartPage() {
   const items = cartData?.items || [];
   const subtotal = cartData?.subtotal || 0;
 
-  // Derived totals (same logic as checkout/drawer - ideally centralized)
-  const shipping = subtotal > 200 ? 0 : 25;
-  const tax = subtotal * TAX_RATE;
-  const total = subtotal + shipping + tax;
+  // Derived totals (tax and subtotal only)
+  const totalTaxAmount = (subtotal) => {
+    return subtotal * TAX_RATE;
+  }
+
+  const totalAmount = (subtotal) => {
+    return subtotal + totalTaxAmount(subtotal);
+  }
 
   const totals = {
     subtotal: subtotal.toFixed(2),
-    shipping: shipping.toFixed(2),
-    tax: tax.toFixed(2),
-    total: total.toFixed(2),
+    tax: totalTaxAmount(subtotal).toFixed(2),
+    total: totalAmount(subtotal).toFixed(2),
   };
 
   if (isLoading) {

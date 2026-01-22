@@ -10,6 +10,7 @@ import { Box } from '@/components/wrappers/box';
 import { RadioCardGroup } from '@/components/ui/radio-card-group';
 import { useCreateGuest } from '@/hooks/useGuestCheckout';
 import { getCookie } from '@/lib/utils/cookie';
+import { TAX_RATE } from '@/lib/const/global.variables';
 
 const { Option } = Select;
 
@@ -45,7 +46,7 @@ export default function CheckoutPage({ customerProfile }) {
       : selectedShippingRate.baseCost
     : 0;
 
-  const tax = subtotal * 0.05;
+  const tax = subtotal * TAX_RATE;
   const total = subtotal + shippingCost + tax;
 
   const totals = {

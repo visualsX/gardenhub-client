@@ -1,5 +1,7 @@
 'use client';
 
+import Link from "next/link";
+
 export default function CartSummary({ showPromoCode = false, totals }) {
   // Totals passed from parent (CartPage) to ensure consistency with API data
   if (!totals) return null;
@@ -14,18 +16,14 @@ export default function CartSummary({ showPromoCode = false, totals }) {
         <span className="text-sm font-semibold text-gray-900">AED {totals.subtotal}</span>
       </div>
 
-      {/* Shipping */}
-      <div className="flex items-center justify-between border-b border-gray-100 py-3">
-        <span className="text-sm text-gray-600">Shipping</span>
-        <span className="text-sm font-semibold text-gray-900">
-          {parseFloat(totals.shipping) === 0 ? 'FREE' : `AED ${totals.shipping}`}
-        </span>
-      </div>
-
       {/* Tax */}
       <div className="flex items-center justify-between border-b border-gray-100 py-3">
         <span className="text-sm text-gray-600">Tax (5%)</span>
         <span className="text-sm font-semibold text-gray-900">AED {totals.tax}</span>
+      </div>
+      {/* shipping alert */}
+      <div className="flex items-center justify-between pt-3">
+        <span className="text-sm text-gray-600">Tax Included. <Link href="/shipping-policy" className="underline! text-primary! cursor-pointer">Shipping</Link> will be calculated at checkout</span>
       </div>
 
       {/* Promo Code */}
@@ -49,17 +47,6 @@ export default function CartSummary({ showPromoCode = false, totals }) {
         <span className="text-lg font-bold text-gray-900">Total</span>
         <span className="text-primary text-2xl font-bold">AED {totals.total}</span>
       </div>
-
-      {/* Free Shipping Notice */}
-      {parseFloat(totals.subtotal) > 0 && parseFloat(totals.subtotal) < 200 && (
-        <div className="bg-primary-light mt-4 rounded-lg p-3">
-          <p className="text-primary-dark text-xs">
-            Add{' '}
-            <span className="font-bold">AED {(200 - parseFloat(totals.subtotal)).toFixed(2)}</span>{' '}
-            more to get FREE shipping!
-          </p>
-        </div>
-      )}
     </div>
   );
 }
