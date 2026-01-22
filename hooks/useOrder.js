@@ -28,14 +28,14 @@ export const useShippingRates = (emirate) => {
   return useQuery({
     queryKey: ['shippingRates', emirate],
     queryFn: async () => {
-      if (!emirate) return [];
+      // if (!emirate) return [];
       // The API expects 'countryCode' parameter.
       const data = await client.get(API_ENDPOINTS.ORDER.SHIPPING_RATES, {
         params: { countryCode: emirate },
       });
       return data;
     },
-    enabled: !!emirate,
+    // enabled: !!emirate,
   });
 };
 
