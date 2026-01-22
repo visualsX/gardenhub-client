@@ -14,7 +14,7 @@ export const useCartCount = () => {
   const token = authStoreToken || getCookie('token');
 
   return useQuery({
-    queryKey: ['cartCount', !!token, user?.id],
+    queryKey: ['cartCount', !!token, user?.id, !token ? getItemCount() : undefined],
     queryFn: async () => {
       if (!token) return { count: getItemCount() };
       try {
@@ -39,7 +39,7 @@ export const useCart = () => {
   const token = authStoreToken || getCookie('token');
 
   return useQuery({
-    queryKey: ['cart', !!token],
+    queryKey: ['cart', !!token, !token ? localItems : undefined],
     queryFn: async () => {
       if (token) {
         return await client.get(API_ENDPOINTS.CART.GET);
@@ -47,6 +47,7 @@ export const useCart = () => {
       // For guest, return structure matching backend or consistent one
       // We map local items to match typical backend shape if needed
       // But for now returning the store structure wrapped
+
       const subtotal = localItems.reduce((acc, item) => {
         const price = item.salePrice > 0 ? item.salePrice : item.price;
         return acc + price * item.quantity;
