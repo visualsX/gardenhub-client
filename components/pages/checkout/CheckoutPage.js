@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from '@/i18n/navigation';
-import { Form, Input, Select, message, Spin, Skeleton, Button } from 'antd';
+import { Form, Input, Select, message, Spin, Skeleton } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
 import { usePaymentMethods, useShippingRates, usePlaceOrder, useValidateCoupon } from '@/hooks/useOrder';
 import { UAE_EMIRATES } from '@/lib/const/emirates';
-import { Box } from '@/components/wrappers/box';
 import { RadioCardGroup } from '@/components/ui/radio-card-group';
 import { useCreateGuest } from '@/hooks/useGuestCheckout';
 import { getCookie } from '@/lib/utils/cookie';
 import { TAX_RATE } from '@/lib/const/global.variables';
 import CheckoutSummary from '@/components/shared/checkout/CheckoutSummary';
+import { CheckoutBox } from '@/components/wrappers/checkout-box';
 
 const { Option } = Select;
 
@@ -277,263 +277,266 @@ export default function CheckoutPage({ customerProfile }) {
   };
 
   const renderAddressFields = (prefix, title) => (
-    <Box loading={isCartLoading || !cartData} header title={title} padding="p-5">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Form.Item
-          label="First Name"
-          name={[prefix, 'firstName']}
+    <CheckoutBox
+      loading={isCartLoading || !cartData} header title={title}>
+      <main className='flex flex-col gap-y-3'>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Form.Item className='mb-0!'
+            label="First Name"
+            name={[prefix, 'firstName']}
+            rules={[{ required: true, message: 'Required' }]}
+          >
+            <Input placeholder="First Name" />
+          </Form.Item>
+          <Form.Item className='mb-0!'
+            label="Last Name"
+            name={[prefix, 'lastName']}
+            rules={[{ required: true, message: 'Required' }]}
+          >
+            <Input placeholder="Last Name" />
+          </Form.Item>
+        </div>
+
+        <Form.Item className='mb-0!'
+          label="Phone Number"
+          name={[prefix, 'phone']}
           rules={[{ required: true, message: 'Required' }]}
         >
-          <Input placeholder="First Name" />
+          <Input placeholder="+971 50 123 4567" />
         </Form.Item>
-        <Form.Item
-          label="Last Name"
-          name={[prefix, 'lastName']}
+
+        <Form.Item className='mb-0!'
+          label="Address"
+          name={[prefix, 'address']}
           rules={[{ required: true, message: 'Required' }]}
         >
-          <Input placeholder="Last Name" />
-        </Form.Item>
-      </div>
-
-      <Form.Item
-        label="Phone Number"
-        name={[prefix, 'phone']}
-        rules={[{ required: true, message: 'Required' }]}
-      >
-        <Input placeholder="+971 50 123 4567" />
-      </Form.Item>
-
-      <Form.Item
-        label="Address"
-        name={[prefix, 'address']}
-        rules={[{ required: true, message: 'Required' }]}
-      >
-        <Input.TextArea rows={2} placeholder="Street address" />
-      </Form.Item>
-
-      <Form.Item label="Apartment, suite, etc. (optional)" name={[prefix, 'addressLine2']}>
-        <Input placeholder="Apt 4B" />
-      </Form.Item>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Form.Item
-          label="City"
-          name={[prefix, 'city']}
-          rules={[{ required: true, message: 'Required' }]}
-        >
-          <Input placeholder="City" />
+          <Input.TextArea rows={2} placeholder="Street address" />
         </Form.Item>
 
-        <Form.Item
-          label="Emirate"
-          name={[prefix, 'emirate']}
-          rules={[{ required: true, message: 'Required' }]}
-        >
-          <Select className="h-10!" placeholder="Select emirate">
-            {UAE_EMIRATES.map((emirate) => (
-              <Option key={emirate.value} value={emirate.value}>
-                {emirate.label}
-              </Option>
-            ))}
-          </Select>
+        <Form.Item className='mb-0!' label="Apartment, suite, etc. (optional)" name={[prefix, 'addressLine2']}>
+          <Input placeholder="Apt 4B" />
         </Form.Item>
 
-        <Form.Item
-          label="Postal Code"
-          name={[prefix, 'postalCode']}
-          rules={[{ required: true, message: 'Required' }]}
-        >
-          <Input placeholder="00000" />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <Form.Item className='mb-0!'
+            label="City"
+            name={[prefix, 'city']}
+            rules={[{ required: true, message: 'Required' }]}
+          >
+            <Input placeholder="City" />
+          </Form.Item>
+
+          <Form.Item className='mb-0!'
+            label="Emirate"
+            name={[prefix, 'emirate']}
+            rules={[{ required: true, message: 'Required' }]}
+          >
+            <Select className="h-10!" placeholder="Select emirate">
+              {UAE_EMIRATES.map((emirate) => (
+                <Option key={emirate.value} value={emirate.value}>
+                  {emirate.label}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item className='mb-0!'
+            label="Postal Code"
+            name={[prefix, 'postalCode']}
+            rules={[{ required: true, message: 'Required' }]}
+          >
+            <Input placeholder="00000" />
+          </Form.Item>
+        </div>
+        <Form.Item className='mb-0!' name={[prefix, 'country']} hidden initialValue="United Arab Emirates">
+          <Input />
         </Form.Item>
-      </div>
-      <Form.Item name={[prefix, 'country']} hidden initialValue="United Arab Emirates">
-        <Input />
-      </Form.Item>
-      <Form.Item name={[prefix, 'addressId']} hidden>
-        <Input />
-      </Form.Item>
-    </Box>
+        <Form.Item className='mb-0!' name={[prefix, 'addressId']} hidden>
+          <Input />
+        </Form.Item>
+      </main>
+    </CheckoutBox>
   );
 
   return (
-    <div className="max-layout min-h-screen py-10">
-      <div className="mb-8">
-        <h1 className="mb-2 text-4xl font-bold text-gray-900">Checkout</h1>
-        <p className="text-gray-600">Complete your order</p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
-          <Form form={form} layout="vertical" onFinish={handlePlaceOrder}>
-            {/* Contact Information */}
-            <Box loading={isCartLoading || !cartData} header title="Contact" padding="p-5 mb-6">
-              <Form.Item
-                label="Email"
-                name="email"
-                rules={[
-                  { required: true, message: 'Please enter your email' },
-                  { type: 'email', message: 'Please enter a valid email' },
-                ]}
-              >
-                <Input placeholder="email@example.com" />
-              </Form.Item>
-            </Box>
-
-            {/* Shipping Address */}
-            {renderAddressFields('shippingAddress', 'Shipping Address')}
-
-            {/* Shipping Method Selection */}
-            <Box
-              loading={isCartLoading || !cartData}
-              header
-              title="Shipping Method"
-              padding="p-5 mt-6"
-            >
-              <Skeleton loading={isShippingRatesLoading}>
-                <RadioCardGroup
-                  value={selectedShippingRateId}
-                  onChange={(e) => setSelectedShippingRateId(e.target.value)}
-                  options={shippingRates?.map((rate) => {
-                    const cost =
-                      subtotal >= (rate.freeShippingThreshold || Infinity) ? 0 : rate.baseCost;
-                    return {
-                      value: rate.id,
-                      content: rate.rateName,
-                      rightContent: cost === 0 ? 'Free' : `AED ${cost.toFixed(2)}`,
-                    };
-                  })}
-                />
-              </Skeleton>
-            </Box>
-
-            {/* Payment Method */}
-            <Box
-              loading={isCartLoading || !cartData}
-              header
-              title="Payment Method"
-              padding="p-5 mt-6"
-            >
-              {isPaymentMethodsLoading ? (
-                <div className="py-4 text-center">
-                  <Spin />
-                </div>
-              ) : (
-                <RadioCardGroup
-                  value={selectedPaymentMethodId}
-                  onChange={(e) => setSelectedPaymentMethodId(e.target.value)}
-                  options={paymentMethodsData?.map((method) => ({
-                    value: method.id,
-                    content: (
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl leading-none">
-                          {method.code === 'COD' ? '💵' : '💳'}
-                        </span>
-                        <span className="font-medium text-black">{method.name}</span>
-                      </div>
-                    ),
-                  }))}
-                />
-              )}
-
-              {/* Dummy Card Inputs just for visuals if Card payment selected (assuming not COD) */}
-              {selectedPaymentMethodId &&
-                paymentMethodsData?.find(
-                  (m) => m.id === selectedPaymentMethodId && m.code !== 'COD'
-                ) && (
-                  <div className="mt-6 space-y-4 rounded-xl bg-gray-50 p-4">
-                    <div className="grid grid-cols-1 gap-4">
-                      <Input
-                        placeholder="Card number"
-                        prefix={<span className="text-gray-400">💳</span>}
-                      />
-                      <div className="grid grid-cols-2 gap-4">
-                        <Input placeholder="MM / YY" />
-                        <Input placeholder="CVC" />
-                      </div>
-                    </div>
-                  </div>
-                )}
-            </Box>
-
-            {/* Billing Address Toggle and Form */}
-            <Box
-              loading={isCartLoading || !cartData}
-              header
-              title="Billing Address"
-              padding="p-5 mt-6"
-            >
-              <Form.Item>
-                <RadioCardGroup
-                  value={billingSameAsShipping}
-                  onChange={(e) => setBillingSameAsShipping(e.target.value)}
-                  options={[
-                    { value: true, content: 'Same as shipping address' },
-                    { value: false, content: 'Use a different billing address' },
-                  ]}
-                />
-              </Form.Item>
-
-              {!billingSameAsShipping && (
-                <div className="mt-6 border-t border-gray-100 pt-6">
-                  {renderAddressFields('billingAddress', 'Billing Address Details')}
-                </div>
-              )}
-            </Box>
-
-            {/* Mobile Place Order */}
-            <div className="mt-6 lg:hidden">
-              <button
-                type="submit"
-                disabled={isProcessing}
-                className="bg-primary hover:bg-primary-dark w-full rounded-full py-4 font-bold text-white transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
-              </button>
-            </div>
-          </Form>
+    <main className="bg-white">
+      <div className="min-h-screen py-5">
+        <div className="border-b border-gray-200">
+          <h1 className="mb-1 text-4xl font-bold text-primary max-checkout-layout ">Gardenhub Checkout</h1>
         </div>
 
-        {/* Sidebar */}
-        <div className="lg:col-span-1">
-          <div className="sticky top-10 space-y-6">
-            <CheckoutSummary
-              items={items}
-              totals={totals}
-              couponCode={couponCode}
-              setCouponCode={setCouponCode}
-              couponResponse={couponResponse}
-              setCouponResponse={setCouponResponse}
-              isValidatingCoupon={isValidatingCoupon}
-              handleApplyCoupon={handleApplyCoupon}
-              isCartLoading={isCartLoading}
-              cartData={cartData}
-            />
+        <div className="max-checkout-layout grid grid-cols-1 lg:grid-cols-2 divide-gray-200 divide-x">
+          <div className="pt-5 pr-10">
+            <Form requiredMark={false} className='' form={form} layout="vertical" onFinish={handlePlaceOrder}>
+              {/* Contact Information */}
+              <CheckoutBox className='pb-5' dividers={null} loading={isCartLoading || !cartData} padding="mb-2">
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  className="mb-0!"
+                  rules={[
+                    { required: true, message: 'Please enter your email' },
+                    { type: 'email', message: 'Please enter a valid email' },
+                  ]}
+                >
+                  <Input placeholder="email@example.com" />
+                </Form.Item>
+              </CheckoutBox>
 
-            <div className="hidden lg:block">
-              <button
-                onClick={() => form.submit()}
-                disabled={isProcessing}
-                className="bg-primary hover:bg-primary-dark w-full rounded-full py-4 font-bold text-white transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
+
+              {/* Shipping Address */}
+              {renderAddressFields('shippingAddress', 'Shipping Address')}
+
+              {/* Shipping Method Selection */}
+              <CheckoutBox
+                loading={isCartLoading || !cartData}
+                header
+                title="Shipping Method"
               >
-                {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
-              </button>
-            </div>
+                <Skeleton loading={isShippingRatesLoading}>
+                  <RadioCardGroup
+                    value={selectedShippingRateId}
+                    onChange={(e) => setSelectedShippingRateId(e.target.value)}
+                    options={shippingRates?.map((rate) => {
+                      const cost =
+                        subtotal >= (rate.freeShippingThreshold || Infinity) ? 0 : rate.baseCost;
+                      return {
+                        value: rate.id,
+                        content: rate.rateName,
+                        rightContent: cost === 0 ? 'Free' : `AED ${cost.toFixed(2)}`,
+                      };
+                    })}
+                  />
+                </Skeleton>
+              </CheckoutBox>
+              {/* Payment Method */}
+              <CheckoutBox
+                loading={isCartLoading || !cartData}
+                header
+                title="Payment Method"
+              >
+                {isPaymentMethodsLoading ? (
+                  <div className="py-4 text-center">
+                    <Spin />
+                  </div>
+                ) : (
+                  <RadioCardGroup
+                    value={selectedPaymentMethodId}
+                    onChange={(e) => setSelectedPaymentMethodId(e.target.value)}
+                    options={paymentMethodsData?.map((method) => ({
+                      value: method.id,
+                      content: (
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl leading-none">
+                            {method.code === 'COD' ? '💵' : '💳'}
+                          </span>
+                          <span className="font-medium text-black">{method.name}</span>
+                        </div>
+                      ),
+                    }))}
+                  />
+                )}
 
-            <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-              Secure Checkout
+                {/* Dummy Card Inputs just for visuals if Card payment selected (assuming not COD) */}
+                {selectedPaymentMethodId &&
+                  paymentMethodsData?.find(
+                    (m) => m.id === selectedPaymentMethodId && m.code !== 'COD'
+                  ) && (
+                    <div className="mt-6 space-y-4 rounded-xl bg-gray-50 p-4">
+                      <div className="grid grid-cols-1 gap-4">
+                        <Input
+                          placeholder="Card number"
+                          prefix={<span className="text-gray-400">💳</span>}
+                        />
+                        <div className="grid grid-cols-2 gap-4">
+                          <Input placeholder="MM / YY" />
+                          <Input placeholder="CVC" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+              </CheckoutBox>
+
+              {/* Billing Address Toggle and Form */}
+              <CheckoutBox
+                loading={isCartLoading || !cartData}
+                header
+                title="Billing Address"
+                padding="p-5 mt-6"
+              >
+                <Form.Item>
+                  <RadioCardGroup
+                    value={billingSameAsShipping}
+                    onChange={(e) => setBillingSameAsShipping(e.target.value)}
+                    options={[
+                      { value: true, content: 'Same as shipping address' },
+                      { value: false, content: 'Use a different billing address' },
+                    ]}
+                  />
+                </Form.Item>
+
+                {!billingSameAsShipping && (
+                  <div className="mt-6 border-t border-gray-100 pt-6">
+                    {renderAddressFields('billingAddress', 'Billing Address Details')}
+                  </div>
+                )}
+              </CheckoutBox>
+
+              {/* Mobile Place Order */}
+              <div className="mt-6 lg:hidden">
+                <button
+                  type="submit"
+                  disabled={isProcessing}
+                  className="bg-primary hover:bg-primary-dark w-full rounded-full py-4 font-bold text-white transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
+                </button>
+              </div>
+            </Form>
+          </div>
+
+          {/* Sidebar */}
+          <div className="pt-5 pl-10">
+            <div className="sticky top-1 space-y-6">
+              <CheckoutSummary
+                items={items}
+                totals={totals}
+                couponCode={couponCode}
+                setCouponCode={setCouponCode}
+                couponResponse={couponResponse}
+                setCouponResponse={setCouponResponse}
+                isValidatingCoupon={isValidatingCoupon}
+                handleApplyCoupon={handleApplyCoupon}
+                isCartLoading={isCartLoading}
+                cartData={cartData}
+              />
+
+              <div className="hidden lg:block">
+                <button
+                  onClick={() => form.submit()}
+                  disabled={isProcessing}
+                  className="bg-primary hover:bg-primary-dark w-full rounded-full py-4 font-bold text-white transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
+                </button>
+              </div>
+
+              <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+                Secure Checkout
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

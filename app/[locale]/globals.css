@@ -54,6 +54,9 @@ body {
 .max-layout {
   @apply mx-auto w-full max-w-[1440px] px-3 md:px-4;
 }
+.max-checkout-layout {
+  @apply mx-auto w-full max-w-[1050px] px-3 md:px-4;
+}
 
 .border-with-radius {
   @apply overflow-hidden rounded-2xl border border-gray-200 bg-white;

@@ -2,6 +2,7 @@
 
 import { Input, Button } from 'antd';
 import { Box } from '@/components/wrappers/box';
+import { CheckoutBox } from '@/components/wrappers/checkout-box';
 
 export default function CheckoutSummary({
     items,
@@ -16,8 +17,8 @@ export default function CheckoutSummary({
     cartData,
 }) {
     return (
-        <Box loading={isCartLoading || !cartData} header title="Order Summary" padding="p-5">
-            <div className="max-h-64 space-y-3 overflow-y-auto py-4">
+        <CheckoutBox dividers={null} loading={isCartLoading || !cartData} header title="Order Summary" className="p-5 bg-white border rounded-xl">
+            <div className="space-y-3 overflow-y-auto py-4">
                 {items.map((item) => {
                     const name = item.productName || item.name;
                     const imageUrl = item.imageUrl || item.image || '/all/image-placeholder.svg';
@@ -74,8 +75,8 @@ export default function CheckoutSummary({
                         }
                         disabled={isValidatingCoupon}
                         className={`${couponResponse?.isValid
-                                ? 'bg-red-50 text-red-600 hover:bg-red-100'
-                                : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                            ? 'bg-red-50 text-red-600 hover:bg-red-100'
+                            : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                             } rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50`}
                     >
                         {isValidatingCoupon ? '...' : couponResponse?.isValid ? 'Remove' : 'Apply'}
@@ -122,6 +123,6 @@ export default function CheckoutSummary({
                     <span className="text-primary text-2xl font-bold">AED {totals.total}</span>
                 </div>
             </div>
-        </Box>
+        </CheckoutBox>
     );
 }
