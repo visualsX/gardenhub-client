@@ -1,14 +1,57 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import Link from 'next/link';
+import { useAddToCart } from '@/hooks/cart/useCart';
+import QuickBuyModal from './QuickBuyModal';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import useCartStore from '@/lib/store/cart';
 
 function ProductCard({ product }) {
-  const { name, rating, mainImageUrl, slug } = product;
+  const { name, rating, mainImageUrl, slug, hasVariants } = product;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { openDrawer } = useCartStore();
+  const addToCartMutation = useAddToCart();
 
   // Handle cases where product might be from old storage or missing price
   const price = product.price || 0;
   const salePrice = product.salePrice || 0;
   const isOnSale = product.isOnSale || (salePrice > 0 && salePrice < price);
   const actualPrice = isOnSale ? salePrice : price;
+
+  const handleQuickBuy = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (hasVariants) {
+      setIsModalOpen(true);
+      return;
+    }
+
+    // Direct add to cart for simple products
+    addToCartMutation.mutate(
+      {
+        productId: product.id,
+        productVariantId: null,
+        quantity: 1,
+        addons: [],
+        productInfo: {
+          id: product.id,
+          variantId: 'no-variant',
+          name: name,
+          price: parseFloat(actualPrice),
+          salePrice: 0,
+          quantity: 1,
+          image: mainImageUrl || '/all/image-placeholder.svg',
+        },
+      },
+      {
+        onSuccess: () => {
+          openDrawer();
+        },
+      }
+    );
+  };
+
   return (
     <div className="group relative flex h-full flex-col rounded-3xl bg-white p-3 transition-shadow hover:shadow-xl">
       <Link
@@ -56,23 +99,37 @@ function ProductCard({ product }) {
             {actualPrice > 0 ? `AED ${actualPrice}` : 'Price TBD'}
           </span>
           <button
+            onClick={handleQuickBuy}
+            disabled={addToCartMutation.isPending}
             className="group/btn text-primary hover:bg-primary flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-[#d0e6d6] transition-all duration-300 hover:w-32 hover:text-white disabled:opacity-50"
             aria-label="Quick Buy"
           >
-            <svg className="h-6 w-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
+            {addToCartMutation.isPending ? (
+              <LoadingOutlined className="text-xl" />
+            ) : (
+              <svg className="h-6 w-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+            )}
             <span className="ml-0 max-w-0 whitespace-nowrap opacity-0 transition-all duration-300 group-hover/btn:ml-2 group-hover/btn:max-w-[100px] group-hover/btn:opacity-100">
-              Quick Buy
+              {addToCartMutation.isPending ? 'Adding...' : 'Quick Buy'}
             </span>
           </button>
         </div>
       </div>
+
+      {hasVariants && (
+        <QuickBuyModal
+          slug={slug}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

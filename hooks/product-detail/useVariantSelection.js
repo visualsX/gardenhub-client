@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
-export const useVariantSelection = (product) => {
+export const useVariantSelection = (product, config = {}) => {
+  const { syncWithUrl = true } = config;
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -46,6 +47,7 @@ export const useVariantSelection = (product) => {
   // Update URL when options change
   const updateUrl = useCallback(
     (newOptions) => {
+      if (!syncWithUrl) return;
       const params = new URLSearchParams(searchParams.toString());
 
       Object.entries(newOptions).forEach(([key, value]) => {
