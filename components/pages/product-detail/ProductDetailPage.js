@@ -75,6 +75,7 @@ export default function ProductDetailPage({ product }) {
         {/* Reviews */}
         <div className="border-t border-gray-100 pt-12">
           <ReviewsSection
+            productId={product.id}
             reviews={product.reviewsList || []}
             rating={product.rating || 0}
             totalReviews={product.reviews || 0}
