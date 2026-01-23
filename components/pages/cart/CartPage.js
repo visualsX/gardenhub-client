@@ -93,20 +93,20 @@ export default function CartPage() {
         <div className="space-y-4 lg:col-span-2">
           {items.map((item) => (
             <CartItem
-              key={`${item.id || item.productId}-${item.variantId || item.productVariantId || 'default'}`}
+              key={`page-${item.id || item.productId}-${item.variantId || item.productVariantId || 'no-v'}`}
               item={item}
               onRemove={() =>
                 removeItem({
-                  cartItemId: item.cartItemId || item.id,
-                  productId: item.id || item.productId,
-                  productVariantId: item.variantId || item.productVariantId,
+                  cartItemId: item.cartItemId || item.id || item.productId,
+                  productId: item.productId || item.id,
+                  productVariantId: item.productVariantId || item.variantId,
                 })
               }
               onUpdateQuantity={(newQty) =>
                 updateItem({
-                  cartItemId: item.cartItemId || item.id,
-                  productId: item.id || item.productId,
-                  productVariantId: item.variantId || item.productVariantId,
+                  cartItemId: item.cartItemId || item.id || item.productId,
+                  productId: item.productId || item.id,
+                  productVariantId: item.productVariantId || item.variantId,
                   quantity: newQty,
                 })
               }

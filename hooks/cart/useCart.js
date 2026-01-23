@@ -14,7 +14,7 @@ export const useCartCount = () => {
   const token = authStoreToken || getCookie('token');
 
   return useQuery({
-    queryKey: ['cartCount', !!token, user?.id, !token ? getItemCount() : undefined],
+    queryKey: ['cartCount', !!token, user?.id, !token ? getItemCount() : null],
     queryFn: async () => {
       if (!token) return { count: getItemCount() };
       try {
@@ -27,7 +27,7 @@ export const useCartCount = () => {
         return { count: 0 };
       }
     },
-    placeholderData: { count: 0 },
+    placeholderData: (previousData) => previousData,
     staleTime: 1000 * 60 * 5,
     enabled: !token || !!user?.id,
   });
@@ -39,7 +39,7 @@ export const useCart = () => {
   const token = authStoreToken || getCookie('token');
 
   return useQuery({
-    queryKey: ['cart', !!token, !token ? localItems : undefined],
+    queryKey: ['cart', !!token, !token ? localItems : null],
     queryFn: async () => {
       if (token) {
         return await client.get(API_ENDPOINTS.CART.GET);
@@ -59,6 +59,7 @@ export const useCart = () => {
         totalItems: localItems.reduce((acc, item) => acc + item.quantity, 0),
       };
     },
+    placeholderData: (previousData) => previousData,
     staleTime: 1000 * 60 * 5,
   });
 };
