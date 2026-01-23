@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Form, Modal, Input, Rate, Upload, message, Button, Spin, Empty, Tooltip } from 'antd';
+import { Form, Modal, Input, Rate, Upload, message, Button, Spin, Empty, Tooltip, Image } from 'antd';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import {
   useProductReviewStats,
@@ -163,12 +163,12 @@ export default function ReviewsSection({ productId, rating: initialRating, total
                     <div className="flex gap-3">
                       {review.image1Url && (
                         <div className="h-20 w-20 overflow-hidden rounded-xl border border-gray-200">
-                          <img src={review.image1Url} alt="Review" className="h-full w-full object-cover" />
+                          <Image preview src={review.image1Url} alt="Review" className="h-full w-full object-cover" />
                         </div>
                       )}
                       {review.image2Url && (
                         <div className="h-20 w-20 overflow-hidden rounded-xl border border-gray-200">
-                          <img src={review.image2Url} alt="Review" className="h-full w-full object-cover" />
+                          <Image preview src={review.image2Url} alt="Review" className="h-full w-full object-cover" />
                         </div>
                       )}
                     </div>
