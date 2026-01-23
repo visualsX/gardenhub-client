@@ -8,11 +8,19 @@ import ProductDescription from '../product-detail/ProductDescription';
 import ProductGrid from '@/components/shared/ProductGrid';
 import { useRecentlyViewedStore } from '@/lib/store/useRecentlyViewedStore';
 import Link from 'next/link';
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import { useAddToCart } from '@/hooks/cart/useCart';
+import useCartStore from '@/lib/store/cart';
 
 export default function BundleDetailPage({ bundle }) {
     const addToRecentlyViewed = useRecentlyViewedStore((state) => state.addToRecentlyViewed);
     const recentlyViewed = useRecentlyViewedStore((state) => state.recentlyViewed);
+    const { openDrawer } = useCartStore();
+    const addToCartMutation = useAddToCart();
+
     const [isMounted, setIsMounted] = useState(false);
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
         setIsMounted(true);
@@ -31,6 +39,34 @@ export default function BundleDetailPage({ bundle }) {
             });
         }
     }, [bundle, addToRecentlyViewed]);
+
+    const handleAddToCart = () => {
+        addToCartMutation.mutate(
+            {
+                productId: bundle.id,
+                productVariantId: null,
+                quantity: quantity,
+                addons: [],
+                productInfo: {
+                    id: bundle.id,
+                    variantId: 'bundle',
+                    name: bundle.name,
+                    variant: 'Bundle',
+                    price: parseFloat(bundle.price),
+                    salePrice: 0,
+                    quantity: quantity,
+                    image: bundle.mainImageUrl || '/all/image-placeholder.svg',
+                    addons: [],
+                    addonDetails: null,
+                },
+            },
+            {
+                onSuccess: () => {
+                    openDrawer();
+                },
+            }
+        );
+    };
 
     if (!bundle) return null;
 
@@ -90,8 +126,35 @@ export default function BundleDetailPage({ bundle }) {
                             </div>
                         </div>
 
-                        <button className="w-full rounded-2xl bg-primary py-4 text-xl font-bold text-white transition-colors hover:bg-primary-hover shadow-lg shadow-primary/20">
-                            Add Bundle to Cart
+                        {/* Quantity Selector */}
+                        <div className="mb-6">
+                            <label className="mb-2 block font-medium text-gray-900">Quantity</label>
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
+                                    <Button
+                                        icon={<MinusOutlined />}
+                                        onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                                        disabled={quantity <= 1}
+                                        className="flex h-12 w-12 items-center justify-center"
+                                    />
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-gray-100 bg-white text-xl font-bold text-gray-900 shadow-sm">
+                                        {quantity}
+                                    </div>
+                                    <Button
+                                        icon={<PlusOutlined />}
+                                        onClick={() => setQuantity((prev) => prev + 1)}
+                                        className="flex h-12 w-12 items-center justify-center"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={handleAddToCart}
+                            disabled={addToCartMutation.isPending}
+                            className="w-full rounded-2xl bg-primary py-4 text-xl font-bold text-white transition-colors hover:bg-primary-hover shadow-lg shadow-primary/20 disabled:opacity-50"
+                        >
+                            {addToCartMutation.isPending ? 'Adding to Cart...' : 'Add Bundle to Cart'}
                         </button>
                         <FeaturesSection />
                     </div>
