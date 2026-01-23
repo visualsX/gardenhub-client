@@ -4,11 +4,22 @@ import { useState, useEffect } from 'react';
 import { useRouter } from '@/i18n/navigation';
 import { Form, Input, Select, message, Spin, Skeleton, InputNumber, Space, Tooltip } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
-import { usePaymentMethods, useShippingRates, usePlaceOrder, useValidateCoupon } from '@/hooks/useOrder';
+import {
+  usePaymentMethods,
+  useShippingRates,
+  usePlaceOrder,
+  useValidateCoupon,
+} from '@/hooks/useOrder';
 import { UAE_EMIRATES } from '@/lib/const/emirates';
 import { RadioCardGroup } from '@/components/ui/radio-card-group';
 import { useCreateGuest } from '@/hooks/useGuestCheckout';
-import { GUEST_CUSTOMER_ID, GUEST_EMAIL, GUEST_TOKEN, TAX_RATE, USER_TOKEN } from '@/lib/const/global.variables';
+import {
+  GUEST_CUSTOMER_ID,
+  GUEST_EMAIL,
+  GUEST_TOKEN,
+  TAX_RATE,
+  USER_TOKEN,
+} from '@/lib/const/global.variables';
 import CheckoutSummary from '@/components/shared/checkout/CheckoutSummary';
 import { CheckoutBox } from '@/components/wrappers/checkout-box';
 import Link from 'next/link';
@@ -77,40 +88,40 @@ export default function CheckoutPage({ customerProfile }) {
         email: email,
         shippingAddress: defaultShipping
           ? {
-            addressId: defaultShipping.id,
-            firstName: defaultShipping.firstName,
-            lastName: defaultShipping.lastName,
-            phone: defaultShipping.phone,
-            address: defaultShipping.streetAddress,
-            addressLine2: defaultShipping.addressLine2,
-            city: defaultShipping.city,
-            emirate: defaultShipping.emirate,
-            postalCode: defaultShipping.postalCode,
-            country: defaultShipping.country || 'United Arab Emirates',
-          }
+              addressId: defaultShipping.id,
+              firstName: defaultShipping.firstName,
+              lastName: defaultShipping.lastName,
+              phone: defaultShipping.phone,
+              address: defaultShipping.streetAddress,
+              addressLine2: defaultShipping.addressLine2,
+              city: defaultShipping.city,
+              emirate: defaultShipping.emirate,
+              postalCode: defaultShipping.postalCode,
+              country: defaultShipping.country || 'United Arab Emirates',
+            }
           : {
-            firstName: firstName,
-            lastName: lastName,
-            country: 'United Arab Emirates',
-          },
+              firstName: firstName,
+              lastName: lastName,
+              country: 'United Arab Emirates',
+            },
         billingAddress: defaultBilling
           ? {
-            addressId: defaultBilling.id,
-            firstName: defaultBilling.firstName,
-            lastName: defaultBilling.lastName,
-            phone: defaultBilling.phone,
-            address: defaultBilling.streetAddress,
-            addressLine2: defaultBilling.addressLine2,
-            city: defaultBilling.city,
-            emirate: defaultBilling.emirate,
-            postalCode: defaultBilling.postalCode,
-            country: defaultBilling.country || 'United Arab Emirates',
-          }
+              addressId: defaultBilling.id,
+              firstName: defaultBilling.firstName,
+              lastName: defaultBilling.lastName,
+              phone: defaultBilling.phone,
+              address: defaultBilling.streetAddress,
+              addressLine2: defaultBilling.addressLine2,
+              city: defaultBilling.city,
+              emirate: defaultBilling.emirate,
+              postalCode: defaultBilling.postalCode,
+              country: defaultBilling.country || 'United Arab Emirates',
+            }
           : {
-            firstName: firstName,
-            lastName: lastName,
-            country: 'United Arab Emirates',
-          },
+              firstName: firstName,
+              lastName: lastName,
+              country: 'United Arab Emirates',
+            },
       });
 
       // Only switch to "Different billing address" if we explicitly have a billing address that is different from shipping
@@ -126,8 +137,8 @@ export default function CheckoutPage({ customerProfile }) {
       }
       form.setFieldsValue({
         shippingAddress: {
-          emirate: "Dubai"
-        }
+          emirate: 'Dubai',
+        },
       });
     }
   }, [customerProfile, form]);
@@ -197,16 +208,16 @@ export default function CheckoutPage({ customerProfile }) {
       const billingAddressObj = billingSameAsShipping
         ? { ...shippingAddressObj }
         : {
-          firstName: values.billingAddress.firstName,
-          lastName: values.billingAddress.lastName,
-          phone: values.billingAddress.phone,
-          country: values.billingAddress.country || 'United Arab Emirates',
-          emirate: values.billingAddress.emirate || 'NotSpecified',
-          city: values.billingAddress.city,
-          streetAddress: values.billingAddress.address,
-          addressLine2: values.billingAddress.addressLine2 || '',
-          postalCode: values.billingAddress.postalCode,
-        };
+            firstName: values.billingAddress.firstName,
+            lastName: values.billingAddress.lastName,
+            phone: values.billingAddress.phone,
+            country: values.billingAddress.country || 'United Arab Emirates',
+            emirate: values.billingAddress.emirate || 'NotSpecified',
+            city: values.billingAddress.city,
+            streetAddress: values.billingAddress.address,
+            addressLine2: values.billingAddress.addressLine2 || '',
+            postalCode: values.billingAddress.postalCode,
+          };
 
       const payload = {
         idempotencyKey: crypto.randomUUID(),
@@ -281,10 +292,10 @@ export default function CheckoutPage({ customerProfile }) {
   };
 
   const renderAddressFields = (prefix, title) => (
-    <CheckoutBox
-      loading={isCartLoading || !cartData} header title={title}>
-      <main className='flex flex-col gap-y-3'>
-        <Form.Item className='mb-0!'
+    <CheckoutBox loading={isCartLoading || !cartData} header title={title}>
+      <main className="flex flex-col gap-y-3">
+        <Form.Item
+          className="mb-0!"
           label="Region/Emirate"
           name={[prefix, 'emirate']}
           rules={[{ required: true, message: 'Required' }]}
@@ -298,48 +309,48 @@ export default function CheckoutPage({ customerProfile }) {
           </Select>
         </Form.Item>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Form.Item className='mb-0!'
+          <Form.Item
+            className="mb-0!"
             label="First Name"
             name={[prefix, 'firstName']}
             rules={[{ required: true, message: 'Required' }]}
           >
-            <Input className='h-8!' placeholder="First Name" />
+            <Input className="h-8!" placeholder="First Name" />
           </Form.Item>
-          <Form.Item className='mb-0!'
+          <Form.Item
+            className="mb-0!"
             label="Last Name"
             name={[prefix, 'lastName']}
             rules={[{ required: true, message: 'Required' }]}
           >
-            <Input className='h-8!' placeholder="Last Name" />
+            <Input className="h-8!" placeholder="Last Name" />
           </Form.Item>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Form.Item className='mb-0!'
+          <Form.Item
+            className="mb-0!"
             label="City"
             name={[prefix, 'city']}
             rules={[{ required: true, message: 'Required' }]}
           >
-            <Input className='h-8!' placeholder="City" />
+            <Input className="h-8!" placeholder="City" />
           </Form.Item>
 
-          <Form.Item className='mb-0!'
-            label="Postal Code (optional)"
-            name={[prefix, 'postalCode']}
-          >
-            <Input className='h-8!' placeholder="00000" />
+          <Form.Item className="mb-0!" label="Postal Code (optional)" name={[prefix, 'postalCode']}>
+            <Input className="h-8!" placeholder="00000" />
           </Form.Item>
         </div>
 
-        <Form.Item className='mb-0!'
+        <Form.Item
+          className="mb-0!"
           label="Phone Number"
           name={[prefix, 'phone']}
           rules={[{ required: true, message: 'Required' }]}
         >
           <Space.Compact block>
-            <InputNumber type={"number"} className='w-full!' placeholder="+971 50 123 4567" />
-            <Space.Addon className="bg-gray-50 flex items-center justify-center px-3">
-              <Tooltip placement="top" title={"In case we need to contact you about your order"}>
-
+            <InputNumber type={'number'} className="w-full!" placeholder="+971 50 123 4567" />
+            <Space.Addon className="flex items-center justify-center bg-gray-50 px-3">
+              <Tooltip placement="top" title={'In case we need to contact you about your order'}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -361,7 +372,8 @@ export default function CheckoutPage({ customerProfile }) {
           </Space.Compact>
         </Form.Item>
 
-        <Form.Item className='mb-0!'
+        <Form.Item
+          className="mb-0!"
           label="Address"
           name={[prefix, 'address']}
           rules={[{ required: true, message: 'Required' }]}
@@ -369,14 +381,23 @@ export default function CheckoutPage({ customerProfile }) {
           <Input.TextArea rows={2} placeholder="Street address" />
         </Form.Item>
 
-        <Form.Item className='mb-0!' label="Apartment, suite, etc. (optional)" name={[prefix, 'addressLine2']}>
-          <Input className='h-8!' placeholder="Apt 4B" />
+        <Form.Item
+          className="mb-0!"
+          label="Apartment, suite, etc. (optional)"
+          name={[prefix, 'addressLine2']}
+        >
+          <Input className="h-8!" placeholder="Apt 4B" />
         </Form.Item>
 
-        <Form.Item className='mb-0!' name={[prefix, 'country']} hidden initialValue="United Arab Emirates">
+        <Form.Item
+          className="mb-0!"
+          name={[prefix, 'country']}
+          hidden
+          initialValue="United Arab Emirates"
+        >
           <Input />
         </Form.Item>
-        <Form.Item className='mb-0!' name={[prefix, 'addressId']} hidden>
+        <Form.Item className="mb-0!" name={[prefix, 'addressId']} hidden>
           <Input />
         </Form.Item>
       </main>
@@ -390,26 +411,32 @@ export default function CheckoutPage({ customerProfile }) {
           <h1 className="mb-1 text-4xl font-bold text-primary max-checkout-layout ">Gardenhub Checkout</h1>
         </div> */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 divide-gray-200 lg:divide-x divide-y lg:divide-y-0">
-          <section className="flex flex-col items-center lg:items-end lg:justify-end py-5 px-4 lg:pr-10">
+        <div className="grid grid-cols-1 divide-y divide-gray-200 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+          <section className="flex flex-col items-center px-4 py-5 lg:items-end lg:justify-end lg:pr-10">
             <div className="w-full max-w-[500px]">
               <div className="pb-4 text-center">
-                <h1 className="text-3xl md:text-5xl font-bold text-primary max-checkout-layout ">Gardenhub</h1>
+                <h1 className="text-primary max-checkout-layout text-3xl font-bold md:text-5xl">
+                  Gardenhub
+                </h1>
               </div>
-              <Form
-                requiredMark={false}
-                form={form}
-                layout="vertical"
-                onFinish={handlePlaceOrder}
-              >
+              <Form requiredMark={false} form={form} layout="vertical" onFinish={handlePlaceOrder}>
                 {/* Contact Information */}
-                <CheckoutBox className='pb-5 relative' dividers={null} loading={isCartLoading || !cartData}>
-                  {!USER_TOKEN &&
-                    <Tooltip placement='top' title="We recommend logging in to continue">
-                      <Link className="absolute top-0 right-0 underline! cursor-pointer! text-primary! z-10" href="/auth/login">Login</Link>
+                <CheckoutBox
+                  className="relative pb-5"
+                  dividers={null}
+                  loading={isCartLoading || !cartData}
+                >
+                  {!USER_TOKEN && (
+                    <Tooltip placement="top" title="We recommend logging in to continue">
+                      <Link
+                        className="text-primary! absolute top-0 right-0 z-10 cursor-pointer! underline!"
+                        href="/auth/login"
+                      >
+                        Login
+                      </Link>
                     </Tooltip>
-                  }
-                  <p className="text-lg pb-2! font-semibold">Contact</p>
+                  )}
+                  <p className="pb-2! text-lg font-semibold">Contact</p>
                   <Form.Item
                     // label="Email"
                     name="email"
@@ -419,20 +446,15 @@ export default function CheckoutPage({ customerProfile }) {
                       { type: 'email', message: 'Please enter a valid email' },
                     ]}
                   >
-                    <Input className='h-8!' placeholder="email@example.com" />
+                    <Input className="h-8!" placeholder="email@example.com" />
                   </Form.Item>
                 </CheckoutBox>
-
 
                 {/* Shipping Address */}
                 {renderAddressFields('shippingAddress', 'Shipping Address')}
 
                 {/* Shipping Method Selection */}
-                <CheckoutBox
-                  loading={isCartLoading || !cartData}
-                  header
-                  title="Shipping Method"
-                >
+                <CheckoutBox loading={isCartLoading || !cartData} header title="Shipping Method">
                   <Skeleton loading={isShippingRatesLoading}>
                     <RadioCardGroup
                       value={selectedShippingRateId}
@@ -450,11 +472,7 @@ export default function CheckoutPage({ customerProfile }) {
                   </Skeleton>
                 </CheckoutBox>
                 {/* Payment Method */}
-                <CheckoutBox
-                  loading={isCartLoading || !cartData}
-                  header
-                  title="Payment Method"
-                >
+                <CheckoutBox loading={isCartLoading || !cartData} header title="Payment Method">
                   {isPaymentMethodsLoading ? (
                     <div className="py-4 text-center">
                       <Spin />
@@ -489,8 +507,8 @@ export default function CheckoutPage({ customerProfile }) {
                             prefix={<span className="text-gray-400">💳</span>}
                           />
                           <div className="grid grid-cols-2 gap-4">
-                            <Input className='h-8!' placeholder="MM / YY" />
-                            <Input className='h-8!' placeholder="CVC" />
+                            <Input className="h-8!" placeholder="MM / YY" />
+                            <Input className="h-8!" placeholder="CVC" />
                           </div>
                         </div>
                       </div>
@@ -537,8 +555,8 @@ export default function CheckoutPage({ customerProfile }) {
           </section>
 
           {/* Sidebar */}
-          <section className="py-5 px-4 lg:pl-10 bg-gray-100">
-            <div className="max-w-[500px] sticky top-5 space-y-6">
+          <section className="bg-gray-100 px-4 py-5 lg:pl-10">
+            <div className="sticky top-5 max-w-[500px] space-y-6">
               <CheckoutSummary
                 items={items}
                 totals={totals}
@@ -550,7 +568,7 @@ export default function CheckoutPage({ customerProfile }) {
                 handleApplyCoupon={handleApplyCoupon}
                 isCartLoading={isCartLoading}
                 cartData={cartData}
-              // showPromoCode={USER_TOKEN || GUEST_TOKEN ? true : false}
+                // showPromoCode={USER_TOKEN || GUEST_TOKEN ? true : false}
               />
 
               <div className="hidden lg:block">
@@ -581,4 +599,3 @@ export default function CheckoutPage({ customerProfile }) {
     </main>
   );
 }
-

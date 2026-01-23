@@ -8,7 +8,7 @@ export function CheckoutBox({
   title,
   description,
   className = '',
-  dividers="py-6 border-t border-gray-200"
+  dividers = 'py-6 border-t border-gray-200',
 }) {
   return (
     <div className={`${className} ${dividers}`}>

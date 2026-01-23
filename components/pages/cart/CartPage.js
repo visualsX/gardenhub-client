@@ -19,11 +19,11 @@ export default function CartPage() {
   // Derived totals (tax and subtotal only)
   const totalTaxAmount = (subtotal) => {
     return subtotal * TAX_RATE;
-  }
+  };
 
   const totalAmount = (subtotal) => {
     return subtotal + totalTaxAmount(subtotal);
-  }
+  };
 
   const totals = {
     subtotal: subtotal.toFixed(2),

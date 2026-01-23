@@ -9,18 +9,7 @@ import {
   useSetDefaultBillingAddress,
   useSetDefaultShippingAddress,
 } from '@/hooks/useCustomerMutations';
-import {
-  Button,
-  Modal,
-  Form,
-  Input,
-  Checkbox,
-  Tag,
-  Card,
-  Spin,
-  Tooltip,
-  Select,
-} from 'antd';
+import { Button, Modal, Form, Input, Checkbox, Tag, Card, Spin, Tooltip, Select } from 'antd';
 import {
   PlusOutlined,
   EditOutlined,

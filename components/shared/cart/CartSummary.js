@@ -1,6 +1,6 @@
 'use client';
 
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function CartSummary({ showPromoCode = false, totals }) {
   // Totals passed from parent (CartPage) to ensure consistency with API data
@@ -23,7 +23,13 @@ export default function CartSummary({ showPromoCode = false, totals }) {
       </div>
       {/* shipping alert */}
       <div className="flex items-center justify-between pt-3">
-        <span className="text-sm text-gray-600">Tax Included. <Link href="/shipping-policy" className="underline! text-primary! cursor-pointer">Shipping</Link> will be calculated at checkout</span>
+        <span className="text-sm text-gray-600">
+          Tax Included.{' '}
+          <Link href="/shipping-policy" className="text-primary! cursor-pointer underline!">
+            Shipping
+          </Link>{' '}
+          will be calculated at checkout
+        </span>
       </div>
 
       {/* Promo Code */}
