@@ -1,7 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { Form, Modal, Input, Rate, Upload, message, Button, Spin, Empty, Tooltip, Image } from 'antd';
+import {
+  Form,
+  Modal,
+  Input,
+  Rate,
+  Upload,
+  message,
+  Button,
+  Spin,
+  Empty,
+  Tooltip,
+  Image,
+} from 'antd';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import {
   useProductReviewStats,
@@ -10,7 +22,11 @@ import {
   useSubmitReview,
 } from '@/hooks/useReviews';
 
-export default function ReviewsSection({ productId, rating: initialRating, totalReviews: initialTotalReviews }) {
+export default function ReviewsSection({
+  productId,
+  rating: initialRating,
+  totalReviews: initialTotalReviews,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
@@ -99,10 +115,7 @@ export default function ReviewsSection({ productId, rating: initialRating, total
                     <Rate disabled defaultValue={1} count={1} className="text-xs text-yellow-400" />
                   </div>
                   <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-200">
-                    <div
-                      className="h-full bg-[#1e3d2a]"
-                      style={{ width: `${percentage}%` }}
-                    ></div>
+                    <div className="h-full bg-[#1e3d2a]" style={{ width: `${percentage}%` }}></div>
                   </div>
                   <span className="w-6 text-right font-medium text-gray-600">{count}</span>
                 </div>
@@ -114,7 +127,7 @@ export default function ReviewsSection({ productId, rating: initialRating, total
           {/* {canReview && ( */}
           <Tooltip title="User can review this once and only after buying this product">
             <Button
-              type='primary'
+              type="primary"
               disabled={!canReview}
               onClick={() => setIsModalOpen(true)}
               className="rounded-full! px-8! py-3! font-bold text-white transition-colors"
@@ -149,12 +162,22 @@ export default function ReviewsSection({ productId, rating: initialRating, total
                     <div className="mb-1 flex items-center justify-between">
                       <h4 className="font-bold text-gray-800">{review.customerName}</h4>
                       <span className="text-sm text-gray-400">
-                        {review.createdAt ? new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).format(new Date(review.createdAt)) : ''}
+                        {review.createdAt
+                          ? new Intl.DateTimeFormat('en-US', {
+                              month: 'short',
+                              day: '2-digit',
+                              year: 'numeric',
+                            }).format(new Date(review.createdAt))
+                          : ''}
                       </span>
                     </div>
 
                     <div className="mb-3">
-                      <Rate disabled defaultValue={review.rating} className="text-xs text-yellow-400" />
+                      <Rate
+                        disabled
+                        defaultValue={review.rating}
+                        className="text-xs text-yellow-400"
+                      />
                     </div>
 
                     <h5 className="mb-2 font-bold text-gray-900">{review.title}</h5>
@@ -163,12 +186,22 @@ export default function ReviewsSection({ productId, rating: initialRating, total
                     <div className="flex gap-3">
                       {review.image1Url && (
                         <div className="h-20 w-20 overflow-hidden rounded-xl border border-gray-200">
-                          <Image preview src={review.image1Url} alt="Review" className="h-full w-full object-cover" />
+                          <Image
+                            preview
+                            src={review.image1Url}
+                            alt="Review"
+                            className="h-full w-full object-cover"
+                          />
                         </div>
                       )}
                       {review.image2Url && (
                         <div className="h-20 w-20 overflow-hidden rounded-xl border border-gray-200">
-                          <Image preview src={review.image2Url} alt="Review" className="h-full w-full object-cover" />
+                          <Image
+                            preview
+                            src={review.image2Url}
+                            alt="Review"
+                            className="h-full w-full object-cover"
+                          />
                         </div>
                       )}
                     </div>
@@ -203,16 +236,31 @@ export default function ReviewsSection({ productId, rating: initialRating, total
         width={600}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit} className="mt-4">
-          <Form.Item name="rating" label="Rating" rules={[{ required: true, message: 'Please provide a rating' }]}>
+          <Form.Item
+            name="rating"
+            label="Rating"
+            rules={[{ required: true, message: 'Please provide a rating' }]}
+          >
             <Rate className="text-yellow-400" />
           </Form.Item>
 
-          <Form.Item name="title" label="Title" rules={[{ required: true, message: 'Please enter a title' }]}>
+          <Form.Item
+            name="title"
+            label="Title"
+            rules={[{ required: true, message: 'Please enter a title' }]}
+          >
             <Input placeholder="Example: Great product!" />
           </Form.Item>
 
-          <Form.Item name="description" label="Review Description" rules={[{ required: true, message: 'Please enter your review' }]}>
-            <Input.TextArea rows={4} placeholder="What did you like or dislike about this product?" />
+          <Form.Item
+            name="description"
+            label="Review Description"
+            rules={[{ required: true, message: 'Please enter your review' }]}
+          >
+            <Input.TextArea
+              rows={4}
+              placeholder="What did you like or dislike about this product?"
+            />
           </Form.Item>
 
           <Form.Item label="Upload Photos (Optional)">
@@ -232,12 +280,12 @@ export default function ReviewsSection({ productId, rating: initialRating, total
             </Upload>
           </Form.Item>
 
-          <Form.Item className="mb-0 mt-6 flex justify-end">
+          <Form.Item className="mt-6 mb-0 flex justify-end">
             <Button
               type="primary"
               htmlType="submit"
               loading={isSubmitting}
-              className="bg-[#2D5F3F] hover:bg-[#1e3d2a] h-12 rounded-full px-8 font-bold"
+              className="h-12 rounded-full bg-[#2D5F3F] px-8 font-bold hover:bg-[#1e3d2a]"
             >
               Submit Review
             </Button>
