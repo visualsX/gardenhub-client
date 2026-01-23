@@ -15,10 +15,9 @@ export default function CheckoutSummary({
     handleApplyCoupon,
     isCartLoading,
     cartData,
-    showPromoCode
 }) {
     return (
-        <CheckoutBox dividers={null} loading={isCartLoading || !cartData} header title="Order Summary" className="p-5 bg-white border rounded-xl">
+        <CheckoutBox dividers={null} loading={isCartLoading || !cartData} header title="Order Summary" className="p-5 bg-white border border-gray-300 rounded-xl">
             <div className="space-y-3 overflow-y-auto py-4">
                 {items.map((item) => {
                     const name = item.productName || item.name;
@@ -55,7 +54,7 @@ export default function CheckoutSummary({
             </div>
 
             {/* Coupon Section */}
-            {showPromoCode && <div className="border-t border-gray-200 py-4">
+            <div className="border-t border-gray-200 py-4">
                 <div className="flex gap-2">
                     <Input
                         placeholder="Coupon code"
@@ -91,7 +90,7 @@ export default function CheckoutSummary({
                         {couponResponse.message}
                     </p>
                 )}
-            </div>}
+            </div>
 
             <div className="space-y-3 border-t border-gray-200 pt-4">
                 <div className="flex items-center justify-between">

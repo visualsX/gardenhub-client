@@ -21,7 +21,17 @@ export function CheckoutBox({
           {extra}
         </div>
       )}
-      <Skeleton loading={loading}>{children}</Skeleton>
+      <Skeleton
+        active
+        loading={loading}
+        paragraph={{
+          rows: 4,
+          width: '100%',
+        }}
+        title={{ width: '60%' }}
+      >
+        {children}
+      </Skeleton>
     </div>
   );
 }

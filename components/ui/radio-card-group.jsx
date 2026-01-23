@@ -14,7 +14,7 @@ export function RadioCardGroup({ options, value, onChange, className = '' }) {
     <Radio.Group
       value={value}
       onChange={onChange}
-      className={`flex w-full flex-col divide-y divide-gray-200 overflow-hidden rounded border border-gray-200 ${className}`}
+      className={`flex w-full flex-col divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 ${className}`}
     >
       {options?.map((option) => (
         <Radio
