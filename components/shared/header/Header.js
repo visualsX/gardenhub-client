@@ -66,7 +66,10 @@ export default function Header({ initialMenuData }) {
     );
   };
 
-  const staticLinks = [{ label: 'Contact Us', href: '/contact', id: 'contact' }];
+  const staticLinks = [
+    { label: 'Bundles', href: '/bundles', id: 'bundles' },
+    { label: 'Contact Us', href: '/contact', id: 'contact' },
+  ];
 
   return (
     <header
