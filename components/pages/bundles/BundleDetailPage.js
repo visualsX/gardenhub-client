@@ -7,9 +7,7 @@ import FAQBanner from '../product-detail/FAQBanner';
 import ProductDescription from '../product-detail/ProductDescription';
 import ProductGrid from '@/components/shared/ProductGrid';
 import { useRecentlyViewedStore } from '@/lib/store/useRecentlyViewedStore';
-import Link from 'next/link';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import QuantitySelector from '@/components/shared/QuantitySelector';
 import { useAddToCart } from '@/hooks/cart/useCart';
 import useCartStore from '@/lib/store/cart';
 
@@ -41,24 +39,28 @@ export default function BundleDetailPage({ bundle }) {
   }, [bundle, addToRecentlyViewed]);
 
   const handleAddToCart = () => {
+    console.log("all bundles: ", bundle)
+
     addToCartMutation.mutate(
       {
-        productId: bundle.id,
+        productId: null,
+        productBundleId: bundle.id,
         productVariantId: null,
         quantity: quantity,
         addons: [],
         productInfo: {
-          id: bundle.id,
-          variantId: 'bundle',
+          // id: bundle.id,
+          productVariantId: null,
+          productBundleId: bundle.id,
           name: bundle.name,
-          variant: 'Bundle',
+          variant: null,
           price: parseFloat(bundle.price),
           salePrice: 0,
           quantity: quantity,
           image: bundle.mainImageUrl || '/all/image-placeholder.svg',
           addons: [],
           addonDetails: null,
-        },
+        }
       },
       {
         onSuccess: () => {
@@ -67,7 +69,6 @@ export default function BundleDetailPage({ bundle }) {
       }
     );
   };
-
   if (!bundle) return null;
 
   return (
@@ -127,24 +128,16 @@ export default function BundleDetailPage({ bundle }) {
 
             {/* Quantity Selector */}
             <div className="mb-6">
-              <label className="mb-2 block font-medium text-gray-900">Quantity</label>
+              <label className="font-outfit mb-2 block text-xs font-medium tracking-wider text-gray-900 uppercase">
+                Quantity
+              </label>
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <Button
-                    icon={<MinusOutlined />}
-                    onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
-                    disabled={quantity <= 1}
-                    className="flex h-12 w-12 items-center justify-center"
-                  />
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-gray-100 bg-white text-xl font-bold text-gray-900 shadow-sm">
-                    {quantity}
-                  </div>
-                  <Button
-                    icon={<PlusOutlined />}
-                    onClick={() => setQuantity((prev) => prev + 1)}
-                    className="flex h-12 w-12 items-center justify-center"
-                  />
-                </div>
+                <QuantitySelector
+                  value={quantity}
+                  onIncrement={() => setQuantity((prev) => prev + 1)}
+                  onDecrement={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                  disabled={addToCartMutation.isPending}
+                />
               </div>
             </div>
 
