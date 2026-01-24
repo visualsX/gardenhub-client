@@ -17,11 +17,14 @@ import { useCartCount } from '@/hooks/cart/useCart';
 
 import MenuDropdown from './MenuDropdown';
 import SearchOverlay from './SearchOverlay';
+import MobileMenu from './MobileMenu';
 import { useState, useEffect } from 'react';
+import { MenuOutlined } from '@ant-design/icons';
 
 export default function Header({ initialMenuData }) {
   const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const { openDrawer } = useCartStore();
   const { data: cartCountData } = useCartCount();
@@ -57,9 +60,8 @@ export default function Header({ initialMenuData }) {
       <Link
         key={category.id}
         href={`/collections/${category.slug}`}
-        className={`text-sm! font-medium! transition-colors ${
-          isHomePage ? 'hover:text-primary! text-gray-700!' : 'text-white/90! hover:text-white!'
-        }`}
+        className={`text-sm! font-medium! transition-colors ${isHomePage ? 'hover:text-primary! text-gray-700!' : 'text-white/90! hover:text-white!'
+          }`}
       >
         {category.name}
       </Link>
@@ -96,7 +98,7 @@ export default function Header({ initialMenuData }) {
           </Link>
 
           {/* Navigation Links */}
-          <ul className="hidden items-center gap-8 md:flex">
+          <ul className="hidden items-center gap-8 lg:flex">
             {/* Dynamic Menu Items */}
             {menuItems?.map((category) => (
               <li key={category.id} className="h-full">
@@ -109,11 +111,10 @@ export default function Header({ initialMenuData }) {
               <li key={link.id}>
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${
-                    isHomePage
-                      ? 'hover:text-primary! text-gray-700!'
-                      : 'text-white/90! hover:text-white!'
-                  }`}
+                  className={`text-sm font-medium transition-colors ${isHomePage
+                    ? 'hover:text-primary! text-gray-700!'
+                    : 'text-white/90! hover:text-white!'
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -122,7 +123,16 @@ export default function Header({ initialMenuData }) {
           </ul>
 
           {/* Action Icons */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 md:gap-6">
+            <button
+              className={`hover:text-primary cursor-pointer transition-colors lg:hidden ${isHomePage ? 'text-gray-700!' : 'text-white!'
+                }`}
+              aria-label="Menu"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <MenuOutlined className="text-xl!" />
+            </button>
+
             <button
               className={`hover:text-primary cursor-pointer text-gray-700 transition-colors`}
               aria-label="Search"
@@ -134,7 +144,7 @@ export default function Header({ initialMenuData }) {
               href={
                 isMounted && useAuth.getState().token ? '/auth/accounts/profile' : '/auth/login'
               }
-              className={`hover:text-primary text-gray-700 transition-colors`}
+              className={`hover:text-primary hidden text-gray-700 transition-colors md:block`}
               aria-label="Account"
             >
               {isHomePage ? <UserIcon /> : <UserWhiteIcon />}
@@ -156,6 +166,12 @@ export default function Header({ initialMenuData }) {
       </div>
 
       <SearchOverlay open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        menuItems={menuItems}
+        staticLinks={staticLinks}
+      />
       <CartDrawer />
       {/* <CartTestButton /> */}
     </header>
