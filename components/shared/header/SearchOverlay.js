@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Drawer, Input, Tabs, Empty } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Input, Tabs, Empty, Modal } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import { useSearchSuggestions } from '@/hooks/useSearchSuggestions';
+import SearchIcon from '@/public/shared/search.svg';
 
 export default function SearchOverlay({ open, onClose }) {
   const [query, setQuery] = useState('');
@@ -75,29 +76,34 @@ export default function SearchOverlay({ open, onClose }) {
   );
 
   return (
-    <Drawer
+    <Modal
       open={open}
-      onClose={onClose}
-      size={500}
-      closable={true}
-      styles={{
-        body: { padding: 0, backgroundColor: '#F8F6F2' },
-        header: { display: 'none' },
-      }}
+      onCancel={onClose}
+      closable={false}
+      placement="top"
+      footer={null}
     >
-      <div className="flex h-full flex-col bg-[#F8F6F2]">
+      <div className="flex h-full flex-col">
+        {/* Floating Search Card */}
         {/* Search Header */}
-        <div className="border-primary/10 border-b bg-white p-4">
+        <div className="flex items-center gap-2 border-b border-gray-200 px-6">
+          <SearchIcon />
           <Input
             allowClear
             ref={inputRef}
             placeholder="Search for..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="text-lg font-medium"
-            prefix={<SearchOutlined className="mr-2 text-gray-400" />}
+            className="text-lg font-medium text-[#425d48] placeholder:text-gray-400"
             variant="borderless"
           />
+          <button
+            onClick={onClose}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+            aria-label="Close search"
+          >
+            <CloseOutlined className="text-xl" />
+          </button>
         </div>
 
         {/* Results Container */}
@@ -159,6 +165,6 @@ export default function SearchOverlay({ open, onClose }) {
           )}
         </div>
       </div>
-    </Drawer>
+    </Modal>
   );
 }
