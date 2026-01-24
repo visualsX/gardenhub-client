@@ -20,7 +20,7 @@ export default function CartDrawer() {
     <Drawer
       title={
         <div className="flex items-center justify-between">
-          <span className="text-xl tracking-wider font-bold text-primary">Shopping Cart</span>
+          <span className="text-primary text-xl font-bold tracking-wider">Shopping Cart</span>
           <span className="text-sm font-medium text-gray-500">
             {items.length} {items.length === 1 ? 'item' : 'items'}
           </span>

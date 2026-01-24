@@ -76,13 +76,7 @@ export default function SearchOverlay({ open, onClose }) {
   );
 
   return (
-    <Modal
-      open={open}
-      onCancel={onClose}
-      closable={false}
-      placement="top"
-      footer={null}
-    >
+    <Modal open={open} onCancel={onClose} closable={false} placement="top" footer={null}>
       <div className="flex h-full flex-col">
         {/* Floating Search Card */}
         {/* Search Header */}

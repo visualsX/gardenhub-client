@@ -21,11 +21,12 @@ export default function CartSummary({ showPromoCode = false, totals }) {
         <span className="text-sm text-gray-600">
           <Link href="/tax-policy" className="text-primary! cursor-pointer underline!">
             Tax
-          </Link>{" & "}
+          </Link>
+          {' & '}
           <Link href="/shipping-policy" className="text-primary! cursor-pointer underline!">
             Shipping
-          </Link>{" "} fees
-          will be calculated at checkout
+          </Link>{' '}
+          fees will be calculated at checkout
         </span>
       </div>
 

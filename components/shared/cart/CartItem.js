@@ -39,18 +39,22 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
   if (compact) {
     // Compact layout for drawer
     return (
-      <div className="flex gap-4 rounded-xl bg-gray-50 p-3 transition-all hover:bg-gray-100 relative">
+      <div className="relative flex gap-4 rounded-xl bg-gray-50 p-3 transition-all hover:bg-gray-100">
         {/* Image */}
         <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-white">
           <img src={imageUrl} alt={name} className="h-full w-full object-cover" />
         </div>
 
         {/* Details */}
-        <div className="flex flex-1 flex-col justify-between min-w-0">
+        <div className="flex min-w-0 flex-1 flex-col justify-between">
           <div>
             <h4 className="truncate text-sm font-semibold text-gray-900">{name}</h4>
-            {variantLabel && <p className="mt-0.5 truncate text-[10px] sm:text-xs text-gray-500">{variantLabel}</p>}
-            {addonLabel && <p className="mt-0.5 truncate text-[10px] sm:text-xs text-gray-500">+ {addonLabel}</p>}
+            {variantLabel && (
+              <p className="mt-0.5 truncate text-[10px] text-gray-500 sm:text-xs">{variantLabel}</p>
+            )}
+            {addonLabel && (
+              <p className="mt-0.5 truncate text-[10px] text-gray-500 sm:text-xs">+ {addonLabel}</p>
+            )}
           </div>
 
           <div className="flex items-center justify-between gap-2">
@@ -89,20 +93,25 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
 
   // Expanded layout for cart page
   return (
-    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 rounded-2xl bg-white p-4 sm:p-6 shadow-sm border border-gray-100 transition-all hover:shadow-md relative">
+    <div className="relative flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-all hover:shadow-md sm:flex-row sm:gap-6 sm:p-6">
       {/* Mobile Remove Button (Icon Only) */}
       <button
         onClick={handleRemove}
-        className="sm:hidden absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors p-1"
+        className="absolute top-4 right-4 p-1 text-gray-400 transition-colors hover:text-red-500 sm:hidden"
         aria-label="Remove item"
       >
         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
 
       {/* Image */}
-      <div className="relative h-24 w-24 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-xl bg-gray-50 border border-gray-50">
+      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border border-gray-50 bg-gray-50 sm:h-32 sm:w-32">
         <img
           src={imageUrl}
           alt={name}
@@ -111,13 +120,13 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
       </div>
 
       {/* Details Container */}
-      <div className="flex flex-1 flex-col justify-between min-w-0">
+      <div className="flex min-w-0 flex-1 flex-col justify-between">
         {/* Top Section: Name and Unit Price */}
         <div className="pr-10 sm:pr-0">
-          <p className="text-[#425d48] text-base font-black font-outfit mb-1">
+          <p className="font-outfit mb-1 text-base font-black text-[#425d48]">
             {CURRENCY} {parseFloat(unitPrice).toFixed(2)}
           </p>
-          <h3 className="text-lg font-bold text-gray-900 line-clamp-2 leading-tight">{name}</h3>
+          <h3 className="line-clamp-2 text-lg leading-tight font-bold text-gray-900">{name}</h3>
           {(variantLabel || addonLabel) && (
             <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs font-medium text-gray-400">
               {variantLabel && <span>{variantLabel}</span>}
@@ -127,7 +136,7 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
         </div>
 
         {/* Bottom Section: Aligned Actions (Qty, Remove, Total) */}
-        <div className="mt-4 sm:mt-0 flex items-center justify-between gap-4">
+        <div className="mt-4 flex items-center justify-between gap-4 sm:mt-0">
           <div className="flex items-center gap-4 sm:gap-12">
             {/* Quantity Controls - Common Component */}
             <QuantitySelector
@@ -140,7 +149,7 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
             {/* Remove Button for Desktop */}
             <button
               onClick={handleRemove}
-              className="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-400 transition-colors hover:text-red-500 p-2"
+              className="hidden items-center gap-2 p-2 text-sm font-bold text-gray-400 transition-colors hover:text-red-500 sm:flex"
             >
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -156,7 +165,7 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
 
           {/* Total Price - Perfectly aligned with qty/remove */}
           <div className="text-right">
-            <span className="text-primary text-xl sm:text-2xl font-black font-outfit whitespace-nowrap">
+            <span className="text-primary font-outfit text-xl font-black whitespace-nowrap sm:text-2xl">
               {CURRENCY} {total}
             </span>
           </div>

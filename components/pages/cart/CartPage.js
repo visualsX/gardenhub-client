@@ -78,17 +78,19 @@ export default function CartPage() {
   }
 
   return (
-    <div className="max-layout min-h-screen pt-24 sm:pt-32 pb-16">
+    <div className="max-layout min-h-screen pt-24 pb-16 sm:pt-32">
       {/* Page Header */}
-      <div className="mb-6 sm:mb-8 px-4 sm:px-0">
-        <h1 className="mb-1 sm:mb-2 text-3xl sm:text-4xl font-black text-[#2d5f3f] font-outfit tracking-tight">Shopping Cart</h1>
-        <p className="text-gray-500 font-medium font-outfit text-sm sm:text-base">
+      <div className="mb-6 px-4 sm:mb-8 sm:px-0">
+        <h1 className="font-outfit mb-1 text-3xl font-black tracking-tight text-[#2d5f3f] sm:mb-2 sm:text-4xl">
+          Shopping Cart
+        </h1>
+        <p className="font-outfit text-sm font-medium text-gray-500 sm:text-base">
           {items.length} {items.length === 1 ? 'item' : 'items'} in your cart
         </p>
       </div>
 
       {/* Cart Content */}
-      <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-3 px-4 sm:px-0">
+      <div className="grid grid-cols-1 gap-6 px-4 sm:gap-8 sm:px-0 lg:grid-cols-3">
         {/* Cart Items */}
         <div className="space-y-4 lg:col-span-2">
           {items.map((item) => (
@@ -117,7 +119,7 @@ export default function CartPage() {
           <div className="pt-2 sm:pt-4">
             <Link
               href="/shop"
-              className="text-primary! hover:text-primary-dark! inline-flex items-center gap-2 text-sm font-bold transition-colors font-outfit"
+              className="text-primary! hover:text-primary-dark! font-outfit inline-flex items-center gap-2 text-sm font-bold transition-colors"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -140,14 +142,14 @@ export default function CartPage() {
 
               {/* Checkout Button */}
               <Link
-                className="bg-primary! hover:bg-primary-dark! mt-6 w-full rounded-full! py-4 text-center font-bold text-white! transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
+                className="bg-primary! hover:bg-primary-dark! mt-6 w-full rounded-full! py-4 text-center font-bold text-white! shadow-lg transition-all hover:shadow-xl active:scale-[0.98]"
                 href="/checkout"
               >
                 Proceed to Checkout
               </Link>
 
               {/* Security Badge */}
-              <div className="mt-6 flex items-center justify-center gap-2 text-xs font-medium text-gray-400 font-outfit">
+              <div className="font-outfit mt-6 flex items-center justify-center gap-2 text-xs font-medium text-gray-400">
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"

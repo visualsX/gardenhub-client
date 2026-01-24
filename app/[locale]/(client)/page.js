@@ -23,7 +23,7 @@ export default async function Home() {
   const featuredSectionsData = await fetchFeaturedProducts();
   const activeBanners = await fetchActiveBanners();
   const shopCollections = await fetchShopCollections();
-
+  console.log('feature products: ', featuredSectionsData);
   return (
     <div className="min-h-screen">
       <HomeBanner initialBanners={activeBanners} />

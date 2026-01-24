@@ -10,14 +10,14 @@ import graphqlClient from '@/lib/api/client-config/graphql-client';
  * @param {Object} initialData - Initial data from SSR
  */
 export function useBundle(slug, initialData = null) {
-    return useQuery({
-        queryKey: ['bundle', slug],
-        queryFn: async () => {
-            const data = await graphqlClient.request(BUNDLES_QUERIES.GET_BUNDLE_BY_SLUG, { slug });
-            return data.shopBundleBySlug;
-        },
-        initialData: initialData,
-        enabled: !!slug,
-        staleTime: 1000 * 60 * 5, // 5 minutes
-    });
+  return useQuery({
+    queryKey: ['bundle', slug],
+    queryFn: async () => {
+      const data = await graphqlClient.request(BUNDLES_QUERIES.GET_BUNDLE_BY_SLUG, { slug });
+      return data.shopBundleBySlug;
+    },
+    initialData: initialData,
+    enabled: !!slug,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 }
