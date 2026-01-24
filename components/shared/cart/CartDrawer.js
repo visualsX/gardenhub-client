@@ -11,7 +11,7 @@ export default function CartDrawer() {
   const { isDrawerOpen, closeDrawer } = useCartStore(); // Only UI state from store
   const { data: cartData, isLoading } = useCart();
   const { mutate: removeItem } = useRemoveCartItem();
-  const { mutate: updateItem } = useUpdateCartItem();
+  const { mutateAsync: updateItemAsync } = useUpdateCartItem();
 
   const items = cartData?.items || [];
   const subtotal = cartData?.subtotal || 0;
@@ -86,7 +86,7 @@ export default function CartDrawer() {
                     })
                   }
                   onUpdateQuantity={(newQty) =>
-                    updateItem({
+                    updateItemAsync({
                       cartItemId: item.cartItemId || item.id || item.productId,
                       productId: item.productId || item.id,
                       productVariantId: item.productVariantId || item.variantId,

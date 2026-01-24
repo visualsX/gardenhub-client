@@ -1,9 +1,9 @@
 'use client';
 
 import { useVariantSelection } from '@/hooks/product-detail/useVariantSelection';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import { useState, useEffect } from 'react';
+import QuantitySelector from '@/components/shared/QuantitySelector';
 import { useProductAddons } from '@/hooks/product-detail/useProductAddons';
 import ProductAddons from './addons';
 import useCartStore from '@/lib/store/cart';
@@ -174,11 +174,10 @@ export default function ProductInfo({ product }) {
                   key={i}
                   disabled={isDisabled}
                   onClick={() => handleOptionSelect(option.name, optionValue.value)}
-                  className={`group relative h-12 w-12 rounded-full border-2 transition-all ${
-                    isSelected
-                      ? 'border-green-800 ring-2 ring-green-800 ring-offset-2'
-                      : 'border-gray-200 hover:border-gray-300'
-                  } ${isDisabled ? 'cursor-not-allowed opacity-40 grayscale' : ''} `}
+                  className={`group relative h-12 w-12 rounded-full border-2 transition-all ${isSelected
+                    ? 'border-green-800 ring-2 ring-green-800 ring-offset-2'
+                    : 'border-gray-200 hover:border-gray-300'
+                    } ${isDisabled ? 'cursor-not-allowed opacity-40 grayscale' : ''} `}
                   title={`${optionValue.value}${isDisabled ? ' (Out of Stock)' : ''}`}
                 >
                   <div
@@ -215,11 +214,10 @@ export default function ProductInfo({ product }) {
                 key={i}
                 disabled={isDisabled}
                 onClick={() => handleOptionSelect(option.name, optionValue.value)}
-                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all ${
-                  isSelected
-                    ? 'border-green-800 bg-green-50 text-green-900'
-                    : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
-                } ${isDisabled ? 'cursor-not-allowed bg-gray-100 box-decoration-slice text-gray-400 line-through opacity-50' : ''} `}
+                className={`rounded-lg border px-6 py-3 text-sm font-medium transition-all ${isSelected
+                  ? 'border-green-800 bg-green-50 text-green-900'
+                  : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
+                  } ${isDisabled ? 'cursor-not-allowed bg-gray-100 box-decoration-slice text-gray-400 line-through opacity-50' : ''} `}
               >
                 {optionValue.value}
               </button>
@@ -311,36 +309,25 @@ export default function ProductInfo({ product }) {
 
       {/* Quantity & Add to Cart */}
       <div>
-        <label className="mb-2 block font-medium text-gray-900">Quantity</label>
+        <label className="mb-2 block font-medium text-gray-900 font-outfit uppercase tracking-wider text-xs">Quantity</label>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Button
-              icon={<MinusOutlined />}
-              onClick={decrementQuantity}
-              disabled={quantity <= 1 || !allOptionsSelected}
-              className="flex h-12 w-12 items-center justify-center"
-            />
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-gray-100 bg-white text-xl font-bold text-gray-900 shadow-sm">
-              {quantity}
-            </div>
-            <Button
-              icon={<PlusOutlined />}
-              onClick={incrementQuantity}
-              disabled={quantity >= availableStock || !allOptionsSelected}
-              className="flex h-12 w-12 items-center justify-center"
-            />
-          </div>
+          <QuantitySelector
+            value={quantity}
+            onIncrement={incrementQuantity}
+            onDecrement={decrementQuantity}
+            max={availableStock}
+            disabled={!allOptionsSelected}
+          />
         </div>
       </div>
 
       <button
         disabled={!canAddToCart || addToCartMutation.isPending}
         onClick={handleAddToCart}
-        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${
-          canAddToCart && !addToCartMutation.isPending
-            ? 'bg-green-800 hover:bg-green-900'
-            : 'cursor-not-allowed bg-gray-300'
-        }`}
+        className={`w-full rounded-full py-4 text-lg font-bold text-white transition-colors ${canAddToCart && !addToCartMutation.isPending
+          ? 'bg-green-800 hover:bg-green-900'
+          : 'cursor-not-allowed bg-gray-300'
+          }`}
       >
         {addToCartMutation.isPending
           ? 'Adding...'

@@ -10,7 +10,7 @@ import { TAX_RATE } from '@/lib/const/global.variables';
 export default function CartPage() {
   const { data: cartData, isLoading } = useCart();
   const { mutate: removeItem } = useRemoveCartItem();
-  const { mutate: updateItem } = useUpdateCartItem();
+  const { mutateAsync: updateItemAsync } = useUpdateCartItem();
 
   // Parse items to ensure consistency
   const items = cartData?.items || [];
@@ -103,7 +103,7 @@ export default function CartPage() {
                 })
               }
               onUpdateQuantity={(newQty) =>
-                updateItem({
+                updateItemAsync({
                   cartItemId: item.cartItemId || item.id || item.productId,
                   productId: item.productId || item.id,
                   productVariantId: item.productVariantId || item.variantId,

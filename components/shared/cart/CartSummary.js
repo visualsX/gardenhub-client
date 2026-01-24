@@ -24,7 +24,7 @@ export default function CartSummary({ showPromoCode = false, totals }) {
           </Link>{" & "}
           <Link href="/shipping-policy" className="text-primary! cursor-pointer underline!">
             Shipping
-          </Link>{" "}
+          </Link>{" "} fees
           will be calculated at checkout
         </span>
       </div>

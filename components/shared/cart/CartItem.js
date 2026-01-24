@@ -1,8 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import { CURRENCY } from '@/lib/const/global.variables';
+import QuantitySelector from '../QuantitySelector';
 
 export default function CartItem({ item, compact = false, onRemove, onUpdateQuantity }) {
+  const [updatingType, setUpdatingType] = useState(null); // 'inc', 'dec', or null
+
   // Backend Response Field || Local Store Field
   const name = item.productName || item.name;
   const imageUrl = item.imageUrl || item.image || '/all/image-placeholder.svg';
@@ -16,10 +20,15 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
     ? parseFloat(item.itemTotal).toFixed(2)
     : (unitPrice * item.quantity).toFixed(2);
 
-  const handleQuantityChange = (newQuantity) => {
-    if (newQuantity < 1) return;
+  const handleQuantityChange = async (newQuantity, type) => {
+    if (newQuantity < 1 || updatingType) return;
     if (onUpdateQuantity) {
-      onUpdateQuantity(newQuantity);
+      setUpdatingType(type);
+      try {
+        await onUpdateQuantity(newQuantity);
+      } finally {
+        setUpdatingType(null);
+      }
     }
   };
 
@@ -30,9 +39,9 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
   if (compact) {
     // Compact layout for drawer
     return (
-      <div className="flex gap-3 sm:gap-4 rounded-xl bg-gray-50 p-2.5 sm:p-3 transition-all hover:bg-gray-100 relative">
+      <div className="flex gap-4 rounded-xl bg-gray-50 p-3 transition-all hover:bg-gray-100 relative">
         {/* Image */}
-        <div className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-lg bg-white">
+        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-white">
           <img src={imageUrl} alt={name} className="h-full w-full object-cover" />
         </div>
 
@@ -46,47 +55,26 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
 
           <div className="flex items-center justify-between gap-2">
             {/* Quantity Controls */}
-            <div className="flex items-center gap-x-1.5 sm:gap-x-2">
-              <button
-                onClick={() => handleQuantityChange(item.quantity - 1)}
-                className="hover:bg-primary flex h-6 w-6 items-center justify-center rounded-md bg-white text-gray-600 transition-colors hover:text-white border border-gray-100"
-                aria-label="Decrease quantity"
-              >
-                <svg className="h-4 w-4 md:h-3 md:w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                </svg>
-              </button>
-              <span className="w-5 sm:w-6 text-center text-xs sm:text-sm font-medium text-gray-900">
-                {item.quantity}
-              </span>
-              <button
-                onClick={() => handleQuantityChange(item.quantity + 1)}
-                className="hover:bg-primary flex h-6 w-6 items-center justify-center rounded-md bg-white text-gray-600 transition-colors hover:text-white border border-gray-100"
-                aria-label="Increase quantity"
-              >
-                <svg className="h-4 w-4 md:h-3 md:w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-              </button>
-            </div>
+            <QuantitySelector
+              compact
+              value={item.quantity}
+              onIncrement={() => handleQuantityChange(item.quantity + 1, 'inc')}
+              onDecrement={() => handleQuantityChange(item.quantity - 1, 'dec')}
+              updatingType={updatingType}
+            />
 
             {/* Price */}
-            <span className="text-primary text-sm sm:text-base font-bold whitespace-nowrap">AED {total}</span>
+            <span className="text-primary text-sm font-bold whitespace-nowrap">AED {total}</span>
           </div>
         </div>
 
         {/* Remove Button */}
         <button
           onClick={handleRemove}
-          className="absolute top-2 right-2 text-gray-400 transition-colors hover:text-red-500 p-1"
+          className="absolute top-2 right-2 text-gray-400 transition-colors hover:text-red-500"
           aria-label="Remove item"
         >
-          <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -141,35 +129,13 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
         {/* Bottom Section: Aligned Actions (Qty, Remove, Total) */}
         <div className="mt-4 sm:mt-0 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 sm:gap-12">
-            {/* Quantity Controls - Styled as white squares */}
-            <div className="flex items-center bg-gray-50/80 rounded-xl p-1.5 gap-1 shadow-inner">
-              <button
-                onClick={() => handleQuantityChange(item.quantity - 1)}
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-gray-300 shadow-sm transition-all hover:text-primary hover:shadow-md active:scale-95"
-                aria-label="Decrease quantity"
-              >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 12H4" />
-                </svg>
-              </button>
-              <span className="w-8 text-center text-lg font-black text-[#425d48] font-outfit">
-                {item.quantity}
-              </span>
-              <button
-                onClick={() => handleQuantityChange(item.quantity + 1)}
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-gray-300 shadow-sm transition-all hover:text-primary hover:shadow-md active:scale-95"
-                aria-label="Increase quantity"
-              >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-              </button>
-            </div>
+            {/* Quantity Controls - Common Component */}
+            <QuantitySelector
+              value={item.quantity}
+              onIncrement={() => handleQuantityChange(item.quantity + 1, 'inc')}
+              onDecrement={() => handleQuantityChange(item.quantity - 1, 'dec')}
+              updatingType={updatingType}
+            />
 
             {/* Remove Button for Desktop */}
             <button
