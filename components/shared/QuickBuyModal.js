@@ -105,7 +105,7 @@ export default function QuickBuyModal({ slug, isOpen, onClose }) {
             open={isOpen}
             onCancel={onClose}
             footer={null}
-            destroyOnClose
+            destroyOnHidden
             centered
             width={450}
             className="quick-buy-modal"
