@@ -16,18 +16,15 @@ export default function CartSummary({ showPromoCode = false, totals }) {
         <span className="text-sm font-semibold text-gray-900">AED {totals.subtotal}</span>
       </div>
 
-      {/* Tax */}
-      <div className="flex items-center justify-between border-b border-gray-100 py-3">
-        <span className="text-sm text-gray-600">Tax (5%)</span>
-        <span className="text-sm font-semibold text-gray-900">AED {totals.tax}</span>
-      </div>
       {/* shipping alert */}
       <div className="flex items-center justify-between pt-3">
         <span className="text-sm text-gray-600">
-          Tax Included.{' '}
+          <Link href="/tax-policy" className="text-primary! cursor-pointer underline!">
+            Tax
+          </Link>{" & "}
           <Link href="/shipping-policy" className="text-primary! cursor-pointer underline!">
             Shipping
-          </Link>{' '}
+          </Link>{" "}
           will be calculated at checkout
         </span>
       </div>

@@ -17,17 +17,17 @@ export default function CartPage() {
   const subtotal = cartData?.subtotal || 0;
 
   // Derived totals (tax and subtotal only)
-  const totalTaxAmount = (subtotal) => {
-    return subtotal * TAX_RATE;
-  };
+  // const totalTaxAmount = (subtotal) => {
+  //   return subtotal * TAX_RATE;
+  // };
 
   const totalAmount = (subtotal) => {
-    return subtotal + totalTaxAmount(subtotal);
+    return subtotal;
   };
 
   const totals = {
     subtotal: subtotal.toFixed(2),
-    tax: totalTaxAmount(subtotal).toFixed(2),
+    // tax: totalTaxAmount(subtotal).toFixed(2),
     total: totalAmount(subtotal).toFixed(2),
   };
 
@@ -78,17 +78,17 @@ export default function CartPage() {
   }
 
   return (
-    <div className="max-layout min-h-screen pt-32 pb-16">
+    <div className="max-layout min-h-screen pt-24 sm:pt-32 pb-16">
       {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="mb-2 text-4xl font-bold text-gray-900">Shopping Cart</h1>
-        <p className="text-gray-600">
+      <div className="mb-6 sm:mb-8 px-4 sm:px-0">
+        <h1 className="mb-1 sm:mb-2 text-3xl sm:text-4xl font-black text-[#2d5f3f] font-outfit tracking-tight">Shopping Cart</h1>
+        <p className="text-gray-500 font-medium font-outfit text-sm sm:text-base">
           {items.length} {items.length === 1 ? 'item' : 'items'} in your cart
         </p>
       </div>
 
       {/* Cart Content */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-3 px-4 sm:px-0">
         {/* Cart Items */}
         <div className="space-y-4 lg:col-span-2">
           {items.map((item) => (
@@ -114,16 +114,16 @@ export default function CartPage() {
           ))}
 
           {/* Continue Shopping Link */}
-          <div className="pt-4">
+          <div className="pt-2 sm:pt-4">
             <Link
               href="/shop"
-              className="text-primary hover:text-primary-dark inline-flex items-center gap-2 text-sm font-medium transition-colors"
+              className="text-primary! hover:text-primary-dark! inline-flex items-center gap-2 text-sm font-bold transition-colors font-outfit"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
@@ -134,20 +134,20 @@ export default function CartPage() {
 
         {/* Cart Summary Sidebar */}
         <div className="lg:col-span-1">
-          <div className="sticky top-32">
+          <div className="sticky top-24 sm:top-32">
             <div className="flex flex-col">
               <CartSummary totals={totals} />
 
               {/* Checkout Button */}
               <Link
-                className="bg-primary! hover:bg-primary!-dark mt-6! w-full! rounded-full! py-4! text-center! font-bold! text-white! transition-all hover:shadow-xl!"
+                className="bg-primary! hover:bg-primary-dark! mt-6 w-full rounded-full! py-4 text-center font-bold text-white! transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
                 href="/checkout"
               >
                 Proceed to Checkout
               </Link>
 
               {/* Security Badge */}
-              <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
+              <div className="mt-6 flex items-center justify-center gap-2 text-xs font-medium text-gray-400 font-outfit">
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -156,7 +156,7 @@ export default function CartPage() {
                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                   />
                 </svg>
-                Secure Checkout
+                Secure Checkout Powered by Stripe
               </div>
             </div>
           </div>

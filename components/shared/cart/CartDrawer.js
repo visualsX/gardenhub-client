@@ -20,7 +20,7 @@ export default function CartDrawer() {
     <Drawer
       title={
         <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-gray-900">Shopping Cart</span>
+          <span className="text-xl tracking-wider font-bold text-primary">Shopping Cart</span>
           <span className="text-sm font-medium text-gray-500">
             {items.length} {items.length === 1 ? 'item' : 'items'}
           </span>
@@ -36,7 +36,7 @@ export default function CartDrawer() {
     >
       {items.length === 0 ? (
         // Empty Cart State
-        <div className="flex h-full flex-col items-center justify-center px-6 pb-6">
+        <div className="flex h-full flex-col items-center justify-center p-6">
           <div className="mb-6 text-center">
             <svg
               className="mx-auto h-32 w-32 text-gray-300"
@@ -67,7 +67,7 @@ export default function CartDrawer() {
         // Cart with Items
         <div className="flex h-full flex-col">
           {/* Cart Items */}
-          <div className="flex-1 space-y-3 overflow-y-auto px-6 py-6">
+          <div className="flex-1 space-y-3 overflow-y-auto p-6">
             {isLoading ? (
               <div className="flex h-full items-center justify-center">
                 <Spin />
@@ -99,7 +99,7 @@ export default function CartDrawer() {
           </div>
 
           {/* Cart Footer */}
-          <div className="border-t border-gray-200 bg-gray-50 px-6 py-6">
+          <div className="border-t border-gray-200 bg-gray-50 p-6">
             {/* Subtotal */}
             <div className="mb-4 flex items-center justify-between">
               <span className="text-base font-semibold text-gray-700">Subtotal</span>

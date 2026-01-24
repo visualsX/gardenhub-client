@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { CURRENCY } from '@/lib/const/global.variables';
 
 export default function CartItem({ item, compact = false, onRemove, onUpdateQuantity }) {
   // Backend Response Field || Local Store Field
@@ -30,41 +30,41 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
   if (compact) {
     // Compact layout for drawer
     return (
-      <div className="flex gap-4 rounded-xl bg-gray-50 p-3 transition-all hover:bg-gray-100">
+      <div className="flex gap-3 sm:gap-4 rounded-xl bg-gray-50 p-2.5 sm:p-3 transition-all hover:bg-gray-100 relative">
         {/* Image */}
-        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-white">
+        <div className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-lg bg-white">
           <img src={imageUrl} alt={name} className="h-full w-full object-cover" />
         </div>
 
         {/* Details */}
-        <div className="flex flex-1 flex-col justify-between">
+        <div className="flex flex-1 flex-col justify-between min-w-0">
           <div>
-            <h4 className="line-clamp-1 text-sm font-semibold text-gray-900">{name}</h4>
-            {variantLabel && <p className="mt-1 text-xs text-gray-500">{variantLabel}</p>}
-            {addonLabel && <p className="mt-1 text-xs text-gray-500">+ {addonLabel}</p>}
+            <h4 className="truncate text-sm font-semibold text-gray-900">{name}</h4>
+            {variantLabel && <p className="mt-0.5 truncate text-[10px] sm:text-xs text-gray-500">{variantLabel}</p>}
+            {addonLabel && <p className="mt-0.5 truncate text-[10px] sm:text-xs text-gray-500">+ {addonLabel}</p>}
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             {/* Quantity Controls */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-x-1.5 sm:gap-x-2">
               <button
                 onClick={() => handleQuantityChange(item.quantity - 1)}
-                className="hover:bg-primary flex h-6 w-6 items-center justify-center rounded-md bg-white text-gray-600 transition-colors hover:text-white"
+                className="hover:bg-primary flex h-6 w-6 items-center justify-center rounded-md bg-white text-gray-600 transition-colors hover:text-white border border-gray-100"
                 aria-label="Decrease quantity"
               >
-                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-4 w-4 md:h-3 md:w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
                 </svg>
               </button>
-              <span className="w-6 text-center text-sm font-medium text-gray-900">
+              <span className="w-5 sm:w-6 text-center text-xs sm:text-sm font-medium text-gray-900">
                 {item.quantity}
               </span>
               <button
                 onClick={() => handleQuantityChange(item.quantity + 1)}
-                className="hover:bg-primary flex h-6 w-6 items-center justify-center rounded-md bg-white text-gray-600 transition-colors hover:text-white"
+                className="hover:bg-primary flex h-6 w-6 items-center justify-center rounded-md bg-white text-gray-600 transition-colors hover:text-white border border-gray-100"
                 aria-label="Increase quantity"
               >
-                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-4 w-4 md:h-3 md:w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -76,17 +76,17 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
             </div>
 
             {/* Price */}
-            <span className="text-primary text-sm font-bold">AED {total}</span>
+            <span className="text-primary text-sm sm:text-base font-bold whitespace-nowrap">AED {total}</span>
           </div>
         </div>
 
         {/* Remove Button */}
         <button
           onClick={handleRemove}
-          className="text-gray-400 transition-colors hover:text-red-500"
+          className="absolute top-2 right-2 text-gray-400 transition-colors hover:text-red-500 p-1"
           aria-label="Remove item"
         >
-          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -101,9 +101,20 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
 
   // Expanded layout for cart page
   return (
-    <div className="flex gap-6 rounded-2xl bg-white p-6 shadow-sm transition-all hover:shadow-md">
+    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 rounded-2xl bg-white p-4 sm:p-6 shadow-sm border border-gray-100 transition-all hover:shadow-md relative">
+      {/* Mobile Remove Button (Icon Only) */}
+      <button
+        onClick={handleRemove}
+        className="sm:hidden absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors p-1"
+        aria-label="Remove item"
+      >
+        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
       {/* Image */}
-      <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-xl bg-gray-100">
+      <div className="relative h-24 w-24 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-xl bg-gray-50 border border-gray-50">
         <img
           src={imageUrl}
           alt={name}
@@ -111,73 +122,79 @@ export default function CartItem({ item, compact = false, onRemove, onUpdateQuan
         />
       </div>
 
-      {/* Details */}
-      <div className="flex flex-1 flex-col justify-between">
-        <div>
-          <h3 className="text-lg font-bold text-gray-900">{name}</h3>
-          {variantLabel && <p className="mt-1 text-sm text-gray-500">Variant: {variantLabel}</p>}
-          {addonLabel && <p className="mt-1 text-sm text-gray-500">Addons: {addonLabel}</p>}
-          <p className="text-primary mt-2 text-base font-semibold">
-            AED {parseFloat(unitPrice).toFixed(2)}
+      {/* Details Container */}
+      <div className="flex flex-1 flex-col justify-between min-w-0">
+        {/* Top Section: Name and Unit Price */}
+        <div className="pr-10 sm:pr-0">
+          <p className="text-[#425d48] text-base font-black font-outfit mb-1">
+            {CURRENCY} {parseFloat(unitPrice).toFixed(2)}
           </p>
+          <h3 className="text-lg font-bold text-gray-900 line-clamp-2 leading-tight">{name}</h3>
+          {(variantLabel || addonLabel) && (
+            <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs font-medium text-gray-400">
+              {variantLabel && <span>{variantLabel}</span>}
+              {addonLabel && <span className="line-clamp-1">+ {addonLabel}</span>}
+            </div>
+          )}
         </div>
 
-        <div className="flex items-center justify-between">
-          {/* Quantity Controls */}
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-600">Quantity:</span>
-            <div className="flex items-center gap-3">
+        {/* Bottom Section: Aligned Actions (Qty, Remove, Total) */}
+        <div className="mt-4 sm:mt-0 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 sm:gap-12">
+            {/* Quantity Controls - Styled as white squares */}
+            <div className="flex items-center bg-gray-50/80 rounded-xl p-1.5 gap-1 shadow-inner">
               <button
                 onClick={() => handleQuantityChange(item.quantity - 1)}
-                className="hover:bg-primary flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-600 transition-colors hover:text-white"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-gray-300 shadow-sm transition-all hover:text-primary hover:shadow-md active:scale-95"
                 aria-label="Decrease quantity"
               >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 12H4" />
                 </svg>
               </button>
-              <span className="w-8 text-center text-base font-semibold text-gray-900">
+              <span className="w-8 text-center text-lg font-black text-[#425d48] font-outfit">
                 {item.quantity}
               </span>
               <button
                 onClick={() => handleQuantityChange(item.quantity + 1)}
-                className="hover:bg-primary flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-600 transition-colors hover:text-white"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-gray-300 shadow-sm transition-all hover:text-primary hover:shadow-md active:scale-95"
                 aria-label="Increase quantity"
               >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={2.5}
                     d="M12 4v16m8-8H4"
                   />
                 </svg>
               </button>
             </div>
+
+            {/* Remove Button for Desktop */}
+            <button
+              onClick={handleRemove}
+              className="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-400 transition-colors hover:text-red-500 p-2"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+              <span className="font-outfit">Remove</span>
+            </button>
           </div>
 
-          {/* Remove Button */}
-          <button
-            onClick={handleRemove}
-            className="flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-red-500"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
-            Remove
-          </button>
+          {/* Total Price - Perfectly aligned with qty/remove */}
+          <div className="text-right">
+            <span className="text-primary text-xl sm:text-2xl font-black font-outfit whitespace-nowrap">
+              {CURRENCY} {total}
+            </span>
+          </div>
         </div>
-      </div>
-
-      {/* Item Total */}
-      <div className="flex flex-col items-end justify-between">
-        <span className="text-xs font-medium text-gray-500">Total</span>
-        <span className="text-primary text-2xl font-bold">AED {total}</span>
       </div>
     </div>
   );
