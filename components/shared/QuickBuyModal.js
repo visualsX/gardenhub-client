@@ -31,8 +31,8 @@ export default function QuickBuyModal({ slug, isOpen, onClose }) {
         quantity: vs.quantity,
         addons: [], // Minimal modal typically skips addons unless requested
         productInfo: {
-          id: product.id,
-          variantId: vs.selectedVariant?.id || 'no-variant',
+          productId: product.id,
+          productVariantId: vs.selectedVariant?.id || null,
           name: product.name,
           variant: variantName,
           price: parseFloat(vs.currentPrice),
@@ -67,11 +67,10 @@ export default function QuickBuyModal({ slug, isOpen, onClose }) {
                   key={i}
                   disabled={isDisabled}
                   onClick={() => vs.handleOptionSelect(option.name, optionValue.value)}
-                  className={`relative h-10 w-10 rounded-full border-2 transition-all ${
-                    isSelected
-                      ? 'border-green-800 ring-2 ring-green-800 ring-offset-2'
-                      : 'border-gray-200 hover:border-gray-300'
-                  } ${isDisabled ? 'cursor-not-allowed opacity-40 grayscale' : ''}`}
+                  className={`relative h-10 w-10 rounded-full border-2 transition-all ${isSelected
+                    ? 'border-green-800 ring-2 ring-green-800 ring-offset-2'
+                    : 'border-gray-200 hover:border-gray-300'
+                    } ${isDisabled ? 'cursor-not-allowed opacity-40 grayscale' : ''}`}
                   title={optionValue.value}
                 >
                   <div
@@ -87,11 +86,10 @@ export default function QuickBuyModal({ slug, isOpen, onClose }) {
                 key={i}
                 disabled={isDisabled}
                 onClick={() => vs.handleOptionSelect(option.name, optionValue.value)}
-                className={`rounded-full border px-4 py-2 text-xs font-medium transition-all ${
-                  isSelected
-                    ? 'border-green-800 bg-green-50 text-green-900'
-                    : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
-                } ${isDisabled ? 'cursor-not-allowed line-through opacity-50' : ''}`}
+                className={`rounded-full border px-4 py-2 text-xs font-medium transition-all ${isSelected
+                  ? 'border-green-800 bg-green-50 text-green-900'
+                  : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
+                  } ${isDisabled ? 'cursor-not-allowed line-through opacity-50' : ''}`}
               >
                 {optionValue.value}
               </button>
@@ -163,11 +161,10 @@ export default function QuickBuyModal({ slug, isOpen, onClose }) {
             <button
               onClick={handleAddToCart}
               disabled={!vs.canAddToCart || addToCartMutation.isPending}
-              className={`flex-1 rounded-full px-6 py-3 font-bold text-white shadow-lg transition-all active:scale-95 ${
-                vs.canAddToCart && !addToCartMutation.isPending
-                  ? 'bg-green-800 hover:bg-green-900'
-                  : 'cursor-not-allowed bg-gray-300 shadow-none'
-              }`}
+              className={`flex-1 rounded-full px-6 py-3 font-bold text-white shadow-lg transition-all active:scale-95 ${vs.canAddToCart && !addToCartMutation.isPending
+                ? 'bg-green-800 hover:bg-green-900'
+                : 'cursor-not-allowed bg-gray-300 shadow-none'
+                }`}
             >
               {addToCartMutation.isPending ? 'Adding...' : 'Add to Cart'}
             </button>

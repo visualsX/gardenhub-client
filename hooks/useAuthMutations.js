@@ -40,8 +40,9 @@ export const useLogin = () => {
             client.post(
               API_ENDPOINTS.CART.ADD,
               {
-                productId: item.id || item.productId, // Handle both id formats
-                productVariantId: item.variantId || item.productVariantId || null,
+                productId: item.productId,
+                productVariantId: item.productVariantId || null,
+                productBundleId: item.productBundleId || null,
                 quantity: item.quantity,
                 addons: item.addons || [],
               },
@@ -155,8 +156,9 @@ export const useGoogleLogin = () => {
             client.post(
               API_ENDPOINTS.CART.ADD,
               {
-                productId: item.id || item.productId,
-                productVariantId: item.variantId || item.productVariantId || null,
+                productId: item.productId,
+                productVariantId: item.productVariantId || null,
+                productBundleId: item.productBundleId || null,
                 quantity: item.quantity,
                 addons: item.addons || [],
               },

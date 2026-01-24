@@ -35,8 +35,8 @@ function ProductCard({ product }) {
         quantity: 1,
         addons: [],
         productInfo: {
-          id: product.id,
-          variantId: 'no-variant',
+          productId: product.id,
+          productVariantId: null,
           name: name,
           price: parseFloat(actualPrice),
           salePrice: 0,

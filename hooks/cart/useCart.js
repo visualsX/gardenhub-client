@@ -71,11 +71,12 @@ export const useAddToCart = () => {
   const token = authStoreToken || getCookie('token');
 
   return useMutation({
-    mutationFn: async ({ productId, productVariantId, quantity, addons, productInfo }) => {
+    mutationFn: async ({ productId, productVariantId, productBundleId, quantity, addons, productInfo }) => {
       if (token) {
         return await client.post(API_ENDPOINTS.CART.ADD, {
-          productId,
+          productId: productId || null,
           productVariantId: productVariantId || null,
+          productBundleId: productBundleId || null,
           quantity,
           addons: Array.isArray(addons) ? addons : [],
         });
@@ -86,10 +87,11 @@ export const useAddToCart = () => {
       // Store expects 'product' object with id, variantId, quantity etc.
       addToCart({
         ...productInfo,
-        id: productId,
-        variantId: productVariantId || null,
-        quantity: quantity,
-        addons: addons,
+        productId,
+        productVariantId,
+        productBundleId,
+        quantity,
+        addons,
       });
       return { message: 'Item added to local cart' };
     },

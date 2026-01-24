@@ -5,7 +5,6 @@ import CartItem from '@/components/shared/cart/CartItem';
 import CartSummary from '@/components/shared/cart/CartSummary';
 import { useCart, useRemoveCartItem, useUpdateCartItem } from '@/hooks/cart/useCart';
 import { Spin } from 'antd';
-import { TAX_RATE } from '@/lib/const/global.variables';
 
 export default function CartPage() {
   const { data: cartData, isLoading } = useCart();
@@ -37,6 +36,7 @@ export default function CartPage() {
         <Spin size="large" />
       </div>
     );
+
   }
 
   if (items.length === 0) {
@@ -95,20 +95,20 @@ export default function CartPage() {
         <div className="space-y-4 lg:col-span-2">
           {items.map((item) => (
             <CartItem
-              key={`page-${item.id || item.productId}-${item.variantId || item.productVariantId || 'no-v'}`}
+              key={`page-${item.id || item.productId}-${item.productVariantId || 'no-v'}`}
               item={item}
               onRemove={() =>
                 removeItem({
                   cartItemId: item.cartItemId || item.id || item.productId,
                   productId: item.productId || item.id,
-                  productVariantId: item.productVariantId || item.variantId,
+                  productVariantId: item.productVariantId,
                 })
               }
               onUpdateQuantity={(newQty) =>
                 updateItemAsync({
                   cartItemId: item.cartItemId || item.id || item.productId,
                   productId: item.productId || item.id,
-                  productVariantId: item.productVariantId || item.variantId,
+                  productVariantId: item.productVariantId,
                   quantity: newQty,
                 })
               }

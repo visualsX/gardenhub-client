@@ -75,21 +75,21 @@ export default function CartDrawer() {
             ) : (
               items.map((item) => (
                 <CartItem
-                  key={`drawer-${item.id || item.productId}-${item.variantId || item.productVariantId || 'no-v'}`}
+                  key={`drawer-${item.id || item.productId}-${item.productVariantId || 'no-v'}`}
                   item={item}
                   compact
                   onRemove={() =>
                     removeItem({
                       cartItemId: item.cartItemId || item.id || item.productId,
                       productId: item.productId || item.id,
-                      productVariantId: item.productVariantId || item.variantId,
+                      productVariantId: item.productVariantId,
                     })
                   }
                   onUpdateQuantity={(newQty) =>
                     updateItemAsync({
                       cartItemId: item.cartItemId || item.id || item.productId,
                       productId: item.productId || item.id,
-                      productVariantId: item.productVariantId || item.variantId,
+                      productVariantId: item.productVariantId,
                       quantity: newQty,
                     })
                   }
