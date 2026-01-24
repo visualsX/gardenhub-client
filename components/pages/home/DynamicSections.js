@@ -11,18 +11,18 @@ export default function DynamicSections({ initialSections }) {
 
   return (
     <>
-      {sections.map((section) => (
-        <ProductGrid
-          key={section.key + section.value[0].categoryId}
-          title={
-            PLACEMENT_AREAS.find((area) => area.value === section.key)?.label +
-            ' - ' +
-            section.value[0].categoryName
-          }
-          products={section.value[0].products}
-          viewAll={`/${section.value[0].categorySlug}`}
-        />
-      ))}
+      {sections.map((section) => {
+        const areaLabel = PLACEMENT_AREAS.find((area) => area.value === section.key)?.label || '';
+
+        return section.value.map((category) => (
+          <ProductGrid
+            key={`${section.key}-${category.categoryId}-${category.id}`}
+            title={category.customTitle || `${areaLabel} - ${category.categoryName}`}
+            products={category.products?.slice(0, 4) || []}
+            viewAll={`/collections/${category.categorySlug}`}
+          />
+        ));
+      })}
     </>
   );
 }
