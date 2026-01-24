@@ -88,40 +88,40 @@ export default function CheckoutPage({ customerProfile }) {
         email: email,
         shippingAddress: defaultShipping
           ? {
-              addressId: defaultShipping.id,
-              firstName: defaultShipping.firstName,
-              lastName: defaultShipping.lastName,
-              phone: defaultShipping.phone,
-              address: defaultShipping.streetAddress,
-              addressLine2: defaultShipping.addressLine2,
-              city: defaultShipping.city,
-              emirate: defaultShipping.emirate || 'Dubai',
-              postalCode: defaultShipping.postalCode,
-              country: defaultShipping.country || 'United Arab Emirates',
-            }
+            addressId: defaultShipping.id,
+            firstName: defaultShipping.firstName,
+            lastName: defaultShipping.lastName,
+            phone: defaultShipping.phone,
+            address: defaultShipping.streetAddress,
+            addressLine2: defaultShipping.addressLine2,
+            city: defaultShipping.city,
+            emirate: defaultShipping.emirate || 'Dubai',
+            postalCode: defaultShipping.postalCode,
+            country: defaultShipping.country || 'United Arab Emirates',
+          }
           : {
-              firstName: firstName,
-              lastName: lastName,
-              country: 'United Arab Emirates',
-            },
+            firstName: firstName,
+            lastName: lastName,
+            country: 'United Arab Emirates',
+          },
         billingAddress: defaultBilling
           ? {
-              addressId: defaultBilling.id,
-              firstName: defaultBilling.firstName,
-              lastName: defaultBilling.lastName,
-              phone: defaultBilling.phone,
-              address: defaultBilling.streetAddress,
-              addressLine2: defaultBilling.addressLine2,
-              city: defaultBilling.city,
-              emirate: defaultBilling.emirate || 'Dubai',
-              postalCode: defaultBilling.postalCode,
-              country: defaultBilling.country || 'United Arab Emirates',
-            }
+            addressId: defaultBilling.id,
+            firstName: defaultBilling.firstName,
+            lastName: defaultBilling.lastName,
+            phone: defaultBilling.phone,
+            address: defaultBilling.streetAddress,
+            addressLine2: defaultBilling.addressLine2,
+            city: defaultBilling.city,
+            emirate: defaultBilling.emirate || 'Dubai',
+            postalCode: defaultBilling.postalCode,
+            country: defaultBilling.country || 'United Arab Emirates',
+          }
           : {
-              firstName: firstName,
-              lastName: lastName,
-              country: 'United Arab Emirates',
-            },
+            firstName: firstName,
+            lastName: lastName,
+            country: 'United Arab Emirates',
+          },
       });
 
       // Only switch to "Different billing address" if we explicitly have a billing address that is different from shipping
@@ -208,16 +208,16 @@ export default function CheckoutPage({ customerProfile }) {
       const billingAddressObj = billingSameAsShipping
         ? { ...shippingAddressObj }
         : {
-            firstName: values.billingAddress.firstName,
-            lastName: values.billingAddress.lastName,
-            phone: values.billingAddress.phone,
-            country: values.billingAddress.country || 'United Arab Emirates',
-            emirate: values.billingAddress.emirate || 'NotSpecified',
-            city: values.billingAddress.city,
-            streetAddress: values.billingAddress.address,
-            addressLine2: values.billingAddress.addressLine2 || '',
-            postalCode: values.billingAddress.postalCode,
-          };
+          firstName: values.billingAddress.firstName,
+          lastName: values.billingAddress.lastName,
+          phone: values.billingAddress.phone,
+          country: values.billingAddress.country || 'United Arab Emirates',
+          emirate: values.billingAddress.emirate || 'NotSpecified',
+          city: values.billingAddress.city,
+          streetAddress: values.billingAddress.address,
+          addressLine2: values.billingAddress.addressLine2 || '',
+          postalCode: values.billingAddress.postalCode,
+        };
 
       const payload = {
         idempotencyKey: crypto.randomUUID(),
@@ -407,10 +407,6 @@ export default function CheckoutPage({ customerProfile }) {
   return (
     <main className="bg-white">
       <div className="min-h-screen">
-        {/* <div className="border-b border-gray-200">
-          <h1 className="mb-1 text-4xl font-bold text-primary max-checkout-layout ">Gardenhub Checkout</h1>
-        </div> */}
-
         <div className="grid grid-cols-1 divide-y divide-gray-200 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
           <section className="flex flex-col items-center px-4 py-5 lg:items-end lg:justify-end lg:pr-10">
             <div className="w-full max-w-[500px]">
@@ -420,7 +416,6 @@ export default function CheckoutPage({ customerProfile }) {
                 </h1>
               </div>
               <Form requiredMark={false} form={form} layout="vertical" onFinish={handlePlaceOrder}>
-                {/* Contact Information */}
                 <CheckoutBox
                   className="relative pb-5"
                   dividers={null}
@@ -568,7 +563,7 @@ export default function CheckoutPage({ customerProfile }) {
                 handleApplyCoupon={handleApplyCoupon}
                 isCartLoading={isCartLoading}
                 cartData={cartData}
-                // showPromoCode={USER_TOKEN || GUEST_TOKEN ? true : false}
+              // showPromoCode={USER_TOKEN || GUEST_TOKEN ? true : false}
               />
 
               <div className="hidden lg:block">
