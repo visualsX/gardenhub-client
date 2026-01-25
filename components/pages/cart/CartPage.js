@@ -95,11 +95,11 @@ export default function CartPage() {
         <div className="space-y-4 lg:col-span-2">
           {items.map((item) => (
             <CartItem
-              key={`page-${item.cartItemId || item.productId || 'b'}-${item.productBundleId || 'nb'}-${item.productVariantId || 'no-v'}`}
+              key={`page-${item.cartItemId || item.id || item.productId || 'b'}-${item.productBundleId || 'nb'}-${item.productVariantId || 'no-v'}`}
               item={item}
               onRemove={() =>
                 removeItem({
-                  cartItemId: item.cartItemId,
+                  cartItemId: item.cartItemId || item.id,
                   productId: item.productId,
                   productVariantId: item.productVariantId,
                   productBundleId: item.productBundleId,
@@ -107,7 +107,7 @@ export default function CartPage() {
               }
               onUpdateQuantity={(newQty) =>
                 updateItemAsync({
-                  cartItemId: item.cartItemId,
+                  cartItemId: item.cartItemId || item.id,
                   productId: item.productId,
                   productVariantId: item.productVariantId,
                   productBundleId: item.productBundleId,

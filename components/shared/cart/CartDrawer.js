@@ -80,7 +80,7 @@ export default function CartDrawer() {
                   compact
                   onRemove={() =>
                     removeItem({
-                      cartItemId: item.cartItemId,
+                      cartItemId: item.cartItemId || item.id,
                       productId: item.productId,
                       productVariantId: item.productVariantId,
                       productBundleId: item.productBundleId,
@@ -88,7 +88,7 @@ export default function CartDrawer() {
                   }
                   onUpdateQuantity={(newQty) =>
                     updateItemAsync({
-                      cartItemId: item.cartItemId,
+                      cartItemId: item.cartItemId || item.id,
                       productId: item.productId,
                       productVariantId: item.productVariantId,
                       productBundleId: item.productBundleId,
