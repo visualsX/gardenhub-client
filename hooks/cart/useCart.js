@@ -6,17 +6,16 @@ import { API_ENDPOINTS } from '@/lib/const/endpoints';
 import useAuth from '@/lib/store/auth';
 import useCartStore from '@/lib/store/cart';
 import { message } from 'antd';
-import { getCookie } from '@/lib/utils/cookies';
+import { USER_TOKEN } from '@/lib/const/global.variables';
 
 export const useCartCount = () => {
-  const { token: authStoreToken, user } = useAuth();
+  const { user } = useAuth();
   const { getItemCount } = useCartStore();
-  const token = authStoreToken || getCookie('token');
 
   return useQuery({
-    queryKey: ['cartCount', !!token, user?.id, !token ? getItemCount() : null],
+    queryKey: ['cartCount', !!USER_TOKEN, user?.id, !USER_TOKEN ? getItemCount() : null],
     queryFn: async () => {
-      if (!token) return { count: getItemCount() };
+      if (!USER_TOKEN) return { count: getItemCount() };
       try {
         // Backend requires customerId for count
         const params = user?.id ? { customerId: user.id } : {};
@@ -29,19 +28,17 @@ export const useCartCount = () => {
     },
     placeholderData: (previousData) => previousData,
     staleTime: 1000 * 60 * 5,
-    enabled: !token || !!user?.id,
+    enabled: !!USER_TOKEN || !!user?.id,
   });
 };
 
 export const useCart = () => {
-  const { token: authStoreToken } = useAuth();
   const { items: localItems } = useCartStore();
-  const token = authStoreToken || getCookie('token');
 
   return useQuery({
-    queryKey: ['cart', !!token, !token ? localItems : null],
+    queryKey: ['cart', !!USER_TOKEN, !USER_TOKEN ? localItems : null],
     queryFn: async () => {
-      if (token) {
+      if (USER_TOKEN) {
         return await client.get(API_ENDPOINTS.CART.GET);
       }
       // For guest, return structure matching backend or consistent one
@@ -66,13 +63,11 @@ export const useCart = () => {
 
 export const useAddToCart = () => {
   const queryClient = useQueryClient();
-  const { token: authStoreToken } = useAuth();
   const { addToCart } = useCartStore();
-  const token = authStoreToken || getCookie('token');
 
   return useMutation({
     mutationFn: async ({ productId, productVariantId, productBundleId, quantity, addons, productInfo }) => {
-      if (token) {
+      if (USER_TOKEN) {
         return await client.post(API_ENDPOINTS.CART.ADD, {
           productId: productId || null,
           productVariantId: productVariantId || null,
@@ -108,13 +103,11 @@ export const useAddToCart = () => {
 
 export const useUpdateCartItem = () => {
   const queryClient = useQueryClient();
-  const { token: authStoreToken } = useAuth();
   const { updateQuantity } = useCartStore();
-  const token = authStoreToken || getCookie('token');
 
   return useMutation({
     mutationFn: async ({ cartItemId, productId, productVariantId, quantity, productBundleId = null }) => {
-      if (token) {
+      if (USER_TOKEN) {
         if (!cartItemId) throw new Error('Cart Item ID is required for updates');
         return await client.put(`${API_ENDPOINTS.CART.ITEMS}/${cartItemId}`, { quantity });
       }
@@ -135,13 +128,11 @@ export const useUpdateCartItem = () => {
 
 export const useRemoveCartItem = () => {
   const queryClient = useQueryClient();
-  const { token: authStoreToken } = useAuth();
   const { removeFromCart } = useCartStore();
-  const token = authStoreToken || getCookie('token');
 
   return useMutation({
     mutationFn: async ({ cartItemId, productId, productVariantId, productBundleId = null }) => {
-      if (token) {
+      if (USER_TOKEN) {
         if (!cartItemId) throw new Error('Cart Item ID is required for removal');
         return await client.delete(`${API_ENDPOINTS.CART.ITEMS}/${cartItemId}`);
       }
@@ -163,13 +154,11 @@ export const useRemoveCartItem = () => {
 
 export const useClearCart = () => {
   const queryClient = useQueryClient();
-  const { token: authStoreToken } = useAuth();
   const { clearCart: clearLocalCart } = useCartStore();
-  const token = authStoreToken || getCookie('token');
 
   return useMutation({
     mutationFn: async () => {
-      if (token) {
+      if (USER_TOKEN) {
         // Assuming Clear endpoint exists as defined in endpoints.js
         return await client.delete(API_ENDPOINTS.CART.CLEAR);
       }
