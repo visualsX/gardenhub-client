@@ -16,7 +16,6 @@ import { useCreateGuest } from '@/hooks/useGuestCheckout';
 import {
   GUEST_CUSTOMER_ID,
   GUEST_EMAIL,
-  GUEST_TOKEN,
   TAX_RATE,
   USER_TOKEN,
 } from '@/lib/const/global.variables';
@@ -246,7 +245,7 @@ export default function CheckoutPage({ customerProfile }) {
         })),
       };
 
-      console.log('Order Payload:', payload);
+      // console.log('Order Payload:', payload);
 
       await placeOrderApi(payload);
 
