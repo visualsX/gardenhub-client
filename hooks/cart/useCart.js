@@ -15,10 +15,15 @@ export const useCartCount = () => {
   return useQuery({
     queryKey: ['cartCount', !!USER_TOKEN, user?.id, !USER_TOKEN ? getItemCount() : null],
     queryFn: async () => {
+      // Guest flow
       if (!USER_TOKEN) return { count: getItemCount() };
+
+      // Authenticated flow - wait for user data if missing
+      if (!user?.id) return { count: 0 };
+
       try {
         // Backend requires customerId for count
-        const params = user?.id ? { customerId: user.id } : {};
+        const params = { customerId: user.id };
         const data = await client.get(API_ENDPOINTS.CART.COUNT, { params });
         return data;
       } catch (error) {
@@ -28,7 +33,7 @@ export const useCartCount = () => {
     },
     placeholderData: (previousData) => previousData,
     staleTime: 1000 * 60 * 5,
-    enabled: !!USER_TOKEN || !!user?.id,
+    enabled: !USER_TOKEN || !!user?.id,
   });
 };
 
