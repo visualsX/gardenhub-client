@@ -22,10 +22,14 @@ import {
 import CheckoutSummary from '@/components/shared/checkout/CheckoutSummary';
 import { CheckoutBox } from '@/components/wrappers/checkout-box';
 import Link from 'next/link';
+import { useStripe, useElements, CardNumberElement } from '@stripe/react-stripe-js';
+import StripeCardForm from '@/components/shared/checkout/StripeCardForm';
 
 const { Option } = Select;
 
 export default function CheckoutPage({ customerProfile }) {
+  const stripe = useStripe();
+  const elements = useElements();
   const router = useRouter();
   const [form] = Form.useForm();
   const { data: cartData, isLoading: isCartLoading } = useCart();
@@ -218,6 +222,38 @@ export default function CheckoutPage({ customerProfile }) {
           postalCode: values.billingAddress.postalCode,
         };
 
+      const selectedMethod = paymentMethodsData?.find((m) => m.id === selectedPaymentMethodId);
+      let paymentToken = 'string'; // Default placeholder
+
+      if (selectedMethod?.code === 'COD') {
+        paymentToken = 'COD_TOKEN';
+      } else {
+        // Stripe Payment Logic
+        if (!stripe || !elements) {
+          message.error('Secure payment system is still loading. Please wait a moment.');
+          return;
+        }
+
+        const cardElement = elements.getElement(CardNumberElement);
+        if (!cardElement) {
+          message.error('Please enter your card details');
+          return;
+        }
+
+        const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
+          type: 'card',
+          card: cardElement,
+        });
+
+        if (stripeError) {
+          console.error('[Stripe Error]', stripeError);
+          message.error(stripeError.message || 'Payment method validation failed');
+          return;
+        }
+
+        paymentToken = paymentMethod.id;
+      }
+
       const payload = {
         idempotencyKey: crypto.randomUUID(),
         customerId: customerId,
@@ -229,7 +265,7 @@ export default function CheckoutPage({ customerProfile }) {
         billingAddress: billingAddressObj,
         shippingRateId: selectedShippingRateId,
         couponCode: couponResponse?.isValid ? couponResponse.couponCode : '',
-        paymentToken: 'string', // Placeholder
+        paymentToken: paymentToken,
         paymentMethodId: selectedPaymentMethodId,
         note: values.note || '',
         items: items.map((item) => ({
@@ -500,22 +536,13 @@ export default function CheckoutPage({ customerProfile }) {
                     />
                   )}
 
-                  {/* Dummy Card Inputs just for visuals if Card payment selected (assuming not COD) */}
+                  {/* Stripe Card Form - Only if Card payment selected (assuming not COD) */}
                   {selectedPaymentMethodId &&
                     paymentMethodsData?.find(
                       (m) => m.id === selectedPaymentMethodId && m.code !== 'COD'
                     ) && (
-                      <div className="mt-6 space-y-4 rounded-xl bg-gray-50 p-4">
-                        <div className="grid grid-cols-1 gap-4">
-                          <Input
-                            placeholder="Card number"
-                            prefix={<span className="text-gray-400">💳</span>}
-                          />
-                          <div className="grid grid-cols-2 gap-4">
-                            <Input className="h-8!" placeholder="MM / YY" />
-                            <Input className="h-8!" placeholder="CVC" />
-                          </div>
-                        </div>
+                      <div className="mt-6">
+                        <StripeCardForm />
                       </div>
                     )}
                 </CheckoutBox>
@@ -546,14 +573,15 @@ export default function CheckoutPage({ customerProfile }) {
                 </CheckoutBox>
 
                 {/* Mobile Place Order */}
-                <div className="mt-6 lg:hidden">
-                  <button
-                    type="submit"
+                <div className="">
+                  <Button
+                    htmlType='submit'
+                    loading={isProcessing}
                     disabled={isProcessing}
-                    className="bg-primary hover:bg-primary-dark w-full rounded-full py-4 font-bold text-white transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
+                    className="bg-primary! hover:bg-primary-dark! w-full rounded-full! h-12! py-4! font-bold! text-white! transition-all! hover:shadow-xl! disabled:cursor-not-allowed! disabled:opacity-50!"
                   >
                     {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
-                  </button>
+                  </Button>
                 </div>
               </div>
             </section>
@@ -574,7 +602,7 @@ export default function CheckoutPage({ customerProfile }) {
                   cartData={cartData}
                 />
 
-                <div className="hidden lg:block">
+                {/* <div className="hidden lg:block">
                   <Button
                     htmlType='submit'
                     loading={isProcessing}
@@ -583,7 +611,7 @@ export default function CheckoutPage({ customerProfile }) {
                   >
                     {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
                   </Button>
-                </div>
+                </div> */}
 
                 <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
