@@ -113,14 +113,14 @@ export const useUpdateCartItem = () => {
   const token = authStoreToken || getCookie('token');
 
   return useMutation({
-    mutationFn: async ({ cartItemId, productId, productVariantId, quantity }) => {
+    mutationFn: async ({ cartItemId, productId, productVariantId, quantity, productBundleId = null }) => {
       if (token) {
         if (!cartItemId) throw new Error('Cart Item ID is required for updates');
         return await client.put(`${API_ENDPOINTS.CART.ITEMS}/${cartItemId}`, { quantity });
       }
 
       // Guest: Update local store
-      updateQuantity(productId, productVariantId, quantity);
+      updateQuantity(productId, productVariantId, quantity, productBundleId);
       return { message: 'Local cart updated' };
     },
     onSuccess: () => {
@@ -140,14 +140,14 @@ export const useRemoveCartItem = () => {
   const token = authStoreToken || getCookie('token');
 
   return useMutation({
-    mutationFn: async ({ cartItemId, productId, productVariantId }) => {
+    mutationFn: async ({ cartItemId, productId, productVariantId, productBundleId = null }) => {
       if (token) {
         if (!cartItemId) throw new Error('Cart Item ID is required for removal');
         return await client.delete(`${API_ENDPOINTS.CART.ITEMS}/${cartItemId}`);
       }
 
       // Guest: Remove from local store
-      removeFromCart(productId, productVariantId);
+      removeFromCart(productId, productVariantId, productBundleId);
       return { message: 'Item removed from local cart' };
     },
     onSuccess: () => {

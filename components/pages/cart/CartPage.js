@@ -95,20 +95,22 @@ export default function CartPage() {
         <div className="space-y-4 lg:col-span-2">
           {items.map((item) => (
             <CartItem
-              key={`page-${item.id || item.productId}-${item.productVariantId || 'no-v'}`}
+              key={`page-${item.cartItemId || item.productId || 'b'}-${item.productBundleId || 'nb'}-${item.productVariantId || 'no-v'}`}
               item={item}
               onRemove={() =>
                 removeItem({
-                  cartItemId: item.cartItemId || item.id || item.productId,
-                  productId: item.productId || item.id,
+                  cartItemId: item.cartItemId,
+                  productId: item.productId,
                   productVariantId: item.productVariantId,
+                  productBundleId: item.productBundleId,
                 })
               }
               onUpdateQuantity={(newQty) =>
                 updateItemAsync({
-                  cartItemId: item.cartItemId || item.id || item.productId,
-                  productId: item.productId || item.id,
+                  cartItemId: item.cartItemId,
+                  productId: item.productId,
                   productVariantId: item.productVariantId,
+                  productBundleId: item.productBundleId,
                   quantity: newQty,
                 })
               }
