@@ -1,6 +1,6 @@
 'use client';
 
-import { Input, Button } from 'antd';
+import { Input, Button, Form } from 'antd';
 import { Box } from '@/components/wrappers/box';
 import { CheckoutBox } from '@/components/wrappers/checkout-box';
 
@@ -70,17 +70,16 @@ export default function CheckoutSummary({
             onClick={
               couponResponse?.isValid
                 ? () => {
-                    setCouponResponse(null);
-                    setCouponCode('');
-                  }
+                  setCouponResponse(null);
+                  setCouponCode('');
+                }
                 : handleApplyCoupon
             }
             disabled={isValidatingCoupon}
-            className={`${
-              couponResponse?.isValid
+            className={`${couponResponse?.isValid
                 ? 'bg-red-50 text-red-600 hover:bg-red-100'
                 : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-            } rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50`}
+              } rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50`}
           >
             {couponResponse?.isValid ? 'Remove' : 'Apply'}
           </Button>
@@ -92,6 +91,18 @@ export default function CheckoutSummary({
             {couponResponse.message}
           </p>
         )}
+      </div>
+
+      {/* Order Note Section */}
+      <div className="border-t border-gray-200 py-4">
+        <label className="mb-2 block text-sm font-semibold text-gray-900">Order Note</label>
+        <Form.Item name="note" className="mb-0!">
+          <Input.TextArea
+            rows={3}
+            placeholder="Special instructions for your delivery (optional)"
+            className="rounded-lg border-gray-300 transition-all hover:border-primary focus:border-primary"
+          />
+        </Form.Item>
       </div>
 
       <div className="space-y-3 border-t border-gray-200 pt-4">

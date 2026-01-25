@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from '@/i18n/navigation';
-import { Form, Input, Select, message, Spin, Skeleton, InputNumber, Space, Tooltip } from 'antd';
+import { Form, Input, Select, message, Spin, Skeleton, InputNumber, Space, Tooltip, Button } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
 import {
   usePaymentMethods,
@@ -232,6 +232,7 @@ export default function CheckoutPage({ customerProfile }) {
         couponCode: couponResponse?.isValid ? couponResponse.couponCode : '',
         paymentToken: 'string', // Placeholder
         paymentMethodId: selectedPaymentMethodId,
+        note: values.note || '',
         items: items.map((item) => ({
           productId: item.productId || null,
           productBundleId: item.productBundleId || null,
@@ -342,36 +343,42 @@ export default function CheckoutPage({ customerProfile }) {
           </Form.Item>
         </div>
 
-        <Form.Item
-          className="mb-0!"
-          label="Phone Number"
-          name={[prefix, 'phone']}
-          rules={[{ required: true, message: 'Required' }]}
-        >
-          <Space.Compact block>
-            <InputNumber type={'number'} className="w-full!" placeholder="+971 50 123 4567" />
-            <Space.Addon className="flex items-center justify-center bg-gray-50 px-3">
-              <Tooltip placement="top" title={'In case we need to contact you about your order'}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-gray-400"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                  <path d="M12 17h.01" />
-                </svg>
-              </Tooltip>
-            </Space.Addon>
-          </Space.Compact>
-        </Form.Item>
+        <div className="relative">
+          <Form.Item
+            className="mb-0!"
+            label="Phone Number"
+            name={[prefix, 'phone']}
+            rules={[{ required: true, message: 'Required' }]}
+          >
+            <InputNumber
+              type={'number'}
+              className="w-full!"
+              placeholder="+971 50 123 4567"
+
+            />
+
+          </Form.Item>
+          <div className="absolute top-0 right-0">
+            <Tooltip placement="top" title={'In case we need to contact you about your order'}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-gray-400"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <path d="M12 17h.01" />
+              </svg>
+            </Tooltip>
+          </div>
+        </div>
 
         <Form.Item
           className="mb-0!"
@@ -408,18 +415,18 @@ export default function CheckoutPage({ customerProfile }) {
   return (
     <main className="bg-white">
       <div className="min-h-screen">
-        <div className="grid grid-cols-1 divide-y divide-gray-200 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
-          <section className="flex flex-col items-center px-4 py-5 lg:items-end lg:justify-end lg:pr-10">
-            <div className="w-full max-w-[500px]">
-              <div className="pb-4 text-center">
-                <Link
-                  href={'/'}
-                  className="text-primary! max-checkout-layout cursor-pointer text-3xl font-bold md:text-5xl"
-                >
-                  Gardenhub
-                </Link>
-              </div>
-              <Form requiredMark={false} form={form} layout="vertical" onFinish={handlePlaceOrder}>
+        <Form requiredMark={false} form={form} layout="vertical" onFinish={handlePlaceOrder}>
+          <div className="grid grid-cols-1 divide-y divide-gray-200 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+            <section className="flex flex-col items-center px-4 py-5 lg:items-end lg:justify-end lg:pr-10">
+              <div className="w-full max-w-[500px]">
+                <div className="pb-4 text-center">
+                  <Link
+                    href={'/'}
+                    className="text-primary! max-checkout-layout cursor-pointer text-3xl font-bold md:text-5xl"
+                  >
+                    Gardenhub
+                  </Link>
+                </div>
                 <CheckoutBox
                   className="relative pb-5"
                   dividers={null}
@@ -549,51 +556,51 @@ export default function CheckoutPage({ customerProfile }) {
                     {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
                   </button>
                 </div>
-              </Form>
-            </div>
-          </section>
-
-          {/* Sidebar */}
-          <section className="bg-gray-100 px-4 py-5 lg:pl-10">
-            <div className="sticky top-5 max-w-[500px] space-y-6">
-              <CheckoutSummary
-                items={items}
-                totals={totals}
-                couponCode={couponCode}
-                setCouponCode={setCouponCode}
-                couponResponse={couponResponse}
-                setCouponResponse={setCouponResponse}
-                isValidatingCoupon={isValidatingCoupon}
-                handleApplyCoupon={handleApplyCoupon}
-                isCartLoading={isCartLoading}
-                cartData={cartData}
-              // showPromoCode={USER_TOKEN || GUEST_TOKEN ? true : false}
-              />
-
-              <div className="hidden lg:block">
-                <button
-                  onClick={() => form.submit()}
-                  disabled={isProcessing}
-                  className="bg-primary hover:bg-primary-dark w-full rounded-full py-4 font-bold text-white transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
-                </button>
               </div>
+            </section>
 
-              <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
-                Secure Checkout
+            {/* Sidebar */}
+            <section className="bg-gray-100 px-4 py-5 lg:pl-10">
+              <div className="sticky top-5 max-w-[500px] space-y-6">
+                <CheckoutSummary
+                  items={items}
+                  totals={totals}
+                  couponCode={couponCode}
+                  setCouponCode={setCouponCode}
+                  couponResponse={couponResponse}
+                  setCouponResponse={setCouponResponse}
+                  isValidatingCoupon={isValidatingCoupon}
+                  handleApplyCoupon={handleApplyCoupon}
+                  isCartLoading={isCartLoading}
+                  cartData={cartData}
+                />
+
+                <div className="hidden lg:block">
+                  <Button
+                    htmlType='submit'
+                    loading={isProcessing}
+                    disabled={isProcessing}
+                    className="bg-primary! hover:bg-primary-dark! w-full rounded-full! h-12! py-4! font-bold! text-white! transition-all! hover:shadow-xl! disabled:cursor-not-allowed! disabled:opacity-50!"
+                  >
+                    {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
+                  </Button>
+                </div>
+
+                <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                  Secure Checkout
+                </div>
               </div>
-            </div>
-          </section>
-        </div>
+            </section>
+          </div>
+        </Form>
       </div>
     </main>
   );
