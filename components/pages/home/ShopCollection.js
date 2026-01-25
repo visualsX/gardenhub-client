@@ -7,7 +7,6 @@ import ArrowRight from '@/public/shared/arrow-right.svg';
 import { useShopCollections } from '@/hooks/useHome';
 export default function ShopCollection({ initialCollections }) {
   const { data: collections } = useShopCollections(initialCollections);
-  console.log(collections);
 
   const scrollRef = useRef(null);
 
