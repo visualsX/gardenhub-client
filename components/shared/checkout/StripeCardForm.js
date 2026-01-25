@@ -28,14 +28,14 @@ export default function StripeCardForm() {
 
     const getWrapperClass = (field) => {
         const isFocused = focused === field;
-        return `px-2 py-1.5 bg-white border rounded-md transition-all duration-200 ${isFocused
+        return `px-2 py-2 bg-white border rounded-md transition-all duration-200 ${isFocused
             ? 'border-primary ring-2 ring-primary/20 shadow-sm'
             : 'border-gray-200 hover:border-gray-300'
             }`;
     };
 
     return (
-        <div className="space-y-5 rounded-2xl p-6 border border-gray-100 bg-white shadow-sm">
+        <div className="space-y-4">
             <div className="space-y-1.5">
                 <label className="block text-sm font-medium text-gray-700 ml-0.5">
                     Card Number

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from '@/i18n/navigation';
 import { Form, Input, Select, message, Spin, Skeleton, InputNumber, Space, Tooltip, Button } from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
+import BagIcon from '@/public/shared/bag.svg';
 import {
   usePaymentMethods,
   useShippingRates,
@@ -337,7 +338,7 @@ export default function CheckoutPage({ customerProfile }) {
           name={[prefix, 'emirate']}
           rules={[{ required: true, message: 'Required' }]}
         >
-          <Select className="h-8!" placeholder="Select emirate">
+          <Select className="h-9!" placeholder="Select emirate">
             {UAE_EMIRATES.map((emirate) => (
               <Option key={emirate.value} value={emirate.value}>
                 {emirate.label}
@@ -352,7 +353,7 @@ export default function CheckoutPage({ customerProfile }) {
             name={[prefix, 'firstName']}
             rules={[{ required: true, message: 'Required' }]}
           >
-            <Input className="h-8!" placeholder="First Name" />
+            <Input className="h-9!" placeholder="First Name" />
           </Form.Item>
           <Form.Item
             className="mb-0!"
@@ -360,7 +361,7 @@ export default function CheckoutPage({ customerProfile }) {
             name={[prefix, 'lastName']}
             rules={[{ required: true, message: 'Required' }]}
           >
-            <Input className="h-8!" placeholder="Last Name" />
+            <Input className="h-9!" placeholder="Last Name" />
           </Form.Item>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -370,11 +371,11 @@ export default function CheckoutPage({ customerProfile }) {
             name={[prefix, 'city']}
             rules={[{ required: true, message: 'Required' }]}
           >
-            <Input className="h-8!" placeholder="City" />
+            <Input className="h-9!" placeholder="City" />
           </Form.Item>
 
           <Form.Item className="mb-0!" label="Postal Code (optional)" name={[prefix, 'postalCode']}>
-            <Input className="h-8!" placeholder="00000" />
+            <Input className="h-9!" placeholder="00000" />
           </Form.Item>
         </div>
 
@@ -387,7 +388,7 @@ export default function CheckoutPage({ customerProfile }) {
           >
             <InputNumber
               type={'number'}
-              className="w-full!"
+              className="w-full! h-9!"
               placeholder="+971 50 123 4567"
 
             />
@@ -429,7 +430,7 @@ export default function CheckoutPage({ customerProfile }) {
           label="Apartment, suite, etc. (optional)"
           name={[prefix, 'addressLine2']}
         >
-          <Input className="h-8!" placeholder="Apt 4B" />
+          <Input className="h-9!" placeholder="Apt 4B" />
         </Form.Item>
 
         <Form.Item
@@ -454,16 +455,19 @@ export default function CheckoutPage({ customerProfile }) {
           <div className="grid grid-cols-1 divide-y divide-gray-200 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
             <section className="flex flex-col items-center px-4 py-5 lg:items-end lg:justify-end lg:pr-10">
               <div className="w-full max-w-[500px]">
-                <div className="pb-4 text-center">
+                <div className="flex items-end justify-between pb-6">
                   <Link
                     href={'/'}
-                    className="text-primary! max-checkout-layout cursor-pointer text-3xl font-bold md:text-5xl"
+                    className="text-primary! cursor-pointer text-3xl font-bold md:text-5xl"
                   >
                     Gardenhub
                   </Link>
+                  <Link href={'/cart'} className="flex items-center gap-2">
+                    <BagIcon className="h-8 w-8 text-primary" />
+                  </Link>
                 </div>
                 <CheckoutBox
-                  className="relative pb-5"
+                  className="relative pb-4"
                   dividers={null}
                   loading={isCartLoading || !cartData}
                 >
@@ -477,7 +481,7 @@ export default function CheckoutPage({ customerProfile }) {
                       </Link>
                     </Tooltip>
                   )}
-                  <p className="pb-2! text-lg font-semibold">Contact</p>
+                  <p className="pb-2! text-xl font-semibold">Contact</p>
                   <Form.Item
                     // label="Email"
                     name="email"
@@ -487,7 +491,7 @@ export default function CheckoutPage({ customerProfile }) {
                       { type: 'email', message: 'Please enter a valid email' },
                     ]}
                   >
-                    <Input className="h-8!" placeholder="email@example.com" />
+                    <Input className="h-9!" placeholder="email@example.com" />
                   </Form.Item>
                 </CheckoutBox>
 
@@ -525,26 +529,25 @@ export default function CheckoutPage({ customerProfile }) {
                       options={paymentMethodsData?.map((method) => ({
                         value: method.id,
                         content: (
-                          <div className="flex items-center gap-3">
-                            <span className="text-2xl leading-none">
-                              {method.code === 'COD' ? '💵' : '💳'}
-                            </span>
-                            <span className="font-medium text-black">{method.name}</span>
+                          <span className="font-medium text-gray-900">{method.name}</span>
+                        ),
+                        rightContent: method.code !== 'COD' && (
+                          <div className="flex items-center gap-1.5">
+                            <img src="/visa.svg" alt="Visa" className="h-6 w-auto" />
+                            <img src="/mastercard.svg" alt="Mastercard" className="h-6 w-auto" />
+                            <img src="/unionpay.svg" alt="UnionPay" className="h-6 w-auto" />
                           </div>
                         ),
+                        expandableContent: method.code === 'COD' ? (
+                          <div className="text-sm leading-relaxed text-gray-500">
+                            Cash on Delivery (COD) is a payment option that allows the buyer to pay when the product is delivered to customer. Once the courier has received the money, only then will he give the parcel to the customer.
+                          </div>
+                        ) : (
+                          <StripeCardForm />
+                        )
                       }))}
                     />
                   )}
-
-                  {/* Stripe Card Form - Only if Card payment selected (assuming not COD) */}
-                  {selectedPaymentMethodId &&
-                    paymentMethodsData?.find(
-                      (m) => m.id === selectedPaymentMethodId && m.code !== 'COD'
-                    ) && (
-                      <div className="mt-6">
-                        <StripeCardForm />
-                      </div>
-                    )}
                 </CheckoutBox>
 
                 {/* Billing Address Toggle and Form */}
@@ -628,7 +631,7 @@ export default function CheckoutPage({ customerProfile }) {
             </section>
           </div>
         </Form>
-      </div>
-    </main>
+      </div >
+    </main >
   );
 }
