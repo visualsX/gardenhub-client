@@ -18,7 +18,7 @@ export const usePaymentMethods = () => {
     queryKey: ['paymentMethods'],
     queryFn: async () => {
       const data = await client.get(API_ENDPOINTS.ORDER.PAYMENT_METHODS);
-      console.log('payment methods: ', data);
+      // console.log('payment methods: ', data);
       return data;
     },
   });
