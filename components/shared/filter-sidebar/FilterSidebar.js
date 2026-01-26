@@ -1,96 +1,36 @@
 'use client';
 
-import { useState } from 'react';
-import { Checkbox, Switch } from 'antd';
-import FilterAccordion from '../../pages/category/FilterAccordion';
-import PriceFilter from './PriceFilter';
+import FilterContent from './FilterContent';
 
 export default function FilterSidebar({ filters = [], filter, onFilterChange }) {
-  const {
-    inStockOnly = true,
-    featuredOnly = false,
-    onSaleOnly = false,
-    filterSlugs = [],
-  } = filter || {};
-
-  const handleInStockChange = (checked) => {
-    onFilterChange?.({ inStockOnly: checked });
-  };
-
-  const handleFeaturedChange = (checked) => {
-    onFilterChange?.({ featuredOnly: checked });
-  };
-
-  const handleOnSaleChange = (checked) => {
-    onFilterChange?.({ onSaleOnly: checked });
-  };
-
-  const handlePriceChange = (range) => {
-    onFilterChange?.({ minPrice: range[0], maxPrice: range[1] });
-  };
-
-  const handleCheckboxChange = (slug, checked) => {
-    const newSlugs = checked ? [...filterSlugs, slug] : filterSlugs.filter((s) => s !== slug);
-    onFilterChange?.({ filterSlugs: newSlugs });
-  };
-
   return (
-    <div className="hidden w-64 shrink-0 space-y-6 lg:block">
-      <div className="space-y-3">
-        <div className="bg-accent-gray flex items-center justify-between rounded-xl px-4 py-3">
-          <span className="text-sm font-bold text-gray-900">In stock only</span>
-          <Switch checked={inStockOnly} onChange={handleInStockChange} className="custom-switch" />
-        </div>
-
-        {/* Featured Toggle */}
-        <div className="bg-accent-gray flex items-center justify-between rounded-xl px-4 py-3">
-          <span className="text-sm font-bold text-gray-900">Featured</span>
-          <Switch
-            checked={featuredOnly}
-            onChange={handleFeaturedChange}
-            className="custom-switch"
-          />
-        </div>
-
-        {/* On Sale Toggle */}
-        <div className="bg-accent-gray flex items-center justify-between rounded-xl px-4 py-3">
-          <span className="text-sm font-bold text-gray-900">On Sale</span>
-          <Switch checked={onSaleOnly} onChange={handleOnSaleChange} className="custom-switch" />
-        </div>
-
-        {/* Price Filter */}
-        <FilterAccordion title="Price" defaultOpen={true}>
-          <PriceFilter
-            onChange={handlePriceChange}
-            min={0}
-            max={5000}
-            initialRange={[filter?.minPrice || 0, filter?.maxPrice || 5000]}
-          />
-        </FilterAccordion>
-
-        {/* Dynamic Filters */}
-        {filters.map((filter) => (
-          <FilterAccordion key={filter.name} title={filter.name}>
-            <div className="space-y-2 pb-2">
-              {filter.options.map((option) => (
-                <div
-                  key={option.slug}
-                  className="flex items-center justify-between text-sm text-gray-600 hover:text-gray-900"
-                >
-                  <Checkbox
-                    className="custom-checkbox"
-                    checked={filterSlugs.includes(option.slug)}
-                    onChange={(e) => handleCheckboxChange(option.slug, e.target.checked)}
-                  >
-                    {option.value}
-                  </Checkbox>
-                  <span className="text-xs text-gray-400">({option.productCount})</span>
-                </div>
-              ))}
-            </div>
-          </FilterAccordion>
-        ))}
+    <div className="sticky top-28 hidden h-[calc(100vh-8rem)] w-64 shrink-0 overflow-y-auto pb-4 lg:block">
+      <div className="mb-6 flex items-center gap-2 text-gray-900">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="4" y1="21" x2="4" y2="14"></line>
+          <line x1="4" y1="10" x2="4" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12" y2="3"></line>
+          <line x1="20" y1="21" x2="20" y2="16"></line>
+          <line x1="20" y1="12" x2="20" y2="3"></line>
+          <line x1="1" y1="14" x2="7" y2="14"></line>
+          <line x1="9" y1="8" x2="15" y2="8"></line>
+          <line x1="17" y1="16" x2="23" y2="16"></line>
+        </svg>
+        <span className="text-base font-semibold">Filters</span>
       </div>
+
+      <FilterContent filters={filters} filter={filter} onFilterChange={onFilterChange} />
     </div>
   );
 }
+
