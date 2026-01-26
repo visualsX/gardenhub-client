@@ -24,7 +24,7 @@ export function RadioCardGroup({ options, value, onChange, className = '' }) {
           <div key={option.value} className="flex flex-col">
             <Radio
               value={option.value}
-              className={`m-0! flex w-full cursor-pointer items-center justify-between p-4! transition-all [&_.ant-radio+*]:w-full ${isSelected ? 'bg-primary/10 ring-1 ring-primary z-10' : 'bg-white'} hover:bg-gray-50`}
+              className={`m-0! flex w-full cursor-pointer items-center justify-between p-4! transition-all [&_.ant-radio+*]:w-full ${isSelected ? 'bg-primary-light ring-1 ring-primary z-10' : 'bg-white'}`}
             >
               <div className="flex w-full items-center justify-between">
                 <div className="min-w-0 font-medium text-gray-900">{option.content}</div>

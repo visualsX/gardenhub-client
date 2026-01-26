@@ -329,8 +329,8 @@ export default function CheckoutPage({ customerProfile }) {
     }
   };
 
-  const renderAddressFields = (prefix, title) => (
-    <CheckoutBox loading={isCartLoading || !cartData} header title={title}>
+  const renderAddressFields = (prefix, title, dividers = 'py-4') => (
+    <CheckoutBox loading={isCartLoading || !cartData} header title={title} dividers={dividers}>
       <main className="flex flex-col gap-y-3">
         <Form.Item
           className="mb-0!"
@@ -563,16 +563,18 @@ export default function CheckoutPage({ customerProfile }) {
                       onChange={(e) => setBillingSameAsShipping(e.target.value)}
                       options={[
                         { value: true, content: 'Same as shipping address' },
-                        { value: false, content: 'Use a different billing address' },
+                        {
+                          value: false,
+                          content: 'Use a different billing address',
+                          expandableContent: (
+                            <div className="pt-2">
+                              {renderAddressFields('billingAddress', 'Billing Address Details', 'py-0')}
+                            </div>
+                          )
+                        },
                       ]}
                     />
                   </Form.Item>
-
-                  {!billingSameAsShipping && (
-                    <div className="mt-6 border-t border-gray-100 pt-6">
-                      {renderAddressFields('billingAddress', 'Billing Address Details')}
-                    </div>
-                  )}
                 </CheckoutBox>
 
                 {/* Mobile Place Order */}
