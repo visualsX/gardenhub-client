@@ -15,24 +15,34 @@ import { UAE_EMIRATES } from '@/lib/const/emirates';
 import { RadioCardGroup } from '@/components/ui/radio-card-group';
 import { useCreateGuest } from '@/hooks/useGuestCheckout';
 import {
-  GUEST_CUSTOMER_ID,
-  GUEST_EMAIL,
   TAX_RATE,
-  USER_TOKEN,
+  getGuestEmail,
+  getGuestCustomerId,
+  getUserToken
 } from '@/lib/const/global.variables';
 import CheckoutSummary from '@/components/shared/checkout/CheckoutSummary';
 import { CheckoutBox } from '@/components/wrappers/checkout-box';
 import Link from 'next/link';
 import { useStripe, useElements, CardNumberElement } from '@stripe/react-stripe-js';
 import StripeCardForm from '@/components/shared/checkout/StripeCardForm';
+import useAuth from '@/lib/store/auth';
 
 const { Option } = Select;
 
 export default function CheckoutPage({ customerProfile }) {
+  // init stripe
   const stripe = useStripe();
   const elements = useElements();
+
+  // Get auth info from cookies
+  const token = getUserToken();
+  const guestEmail = getGuestEmail();
+  const guestCustomerId = getGuestCustomerId();
+
   const router = useRouter();
   const [form] = Form.useForm();
+
+  // API calls
   const { data: cartData, isLoading: isCartLoading } = useCart();
   const { mutateAsync: clearCartApi } = useClearCart();
   const { data: paymentMethodsData, isLoading: isPaymentMethodsLoading } = usePaymentMethods();
@@ -44,6 +54,7 @@ export default function CheckoutPage({ customerProfile }) {
   const { data: shippingRates, isLoading: isShippingRatesLoading } =
     useShippingRates(shippingEmirate);
 
+  // State management
   const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
   const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState(null);
   const [selectedShippingRateId, setSelectedShippingRateId] = useState(null);
@@ -134,9 +145,9 @@ export default function CheckoutPage({ customerProfile }) {
       }
     } else {
       // If not logged in, check for guest email cookie
-      if (GUEST_EMAIL) {
+      if (guestEmail) {
         form.setFieldsValue({
-          email: GUEST_EMAIL,
+          email: guestEmail,
         });
       }
       form.setFieldsValue({
@@ -184,8 +195,8 @@ export default function CheckoutPage({ customerProfile }) {
       if (!customerId) {
         // Check if we already have a guest session
 
-        if (GUEST_CUSTOMER_ID) {
-          customerId = GUEST_CUSTOMER_ID;
+        if (guestCustomerId) {
+          customerId = guestCustomerId;
         } else {
           const guestData = {
             email: values.email,
@@ -317,7 +328,7 @@ export default function CheckoutPage({ customerProfile }) {
         couponCode,
         cartItems,
         orderSubtotal: subtotal,
-        customerId: customerProfile?.id || GUEST_CUSTOMER_ID || null,
+        customerId: customerProfile?.id || (typeof window !== 'undefined' ? getGuestCustomerId() : null) || null,
       });
 
       setCouponResponse(response);
@@ -474,7 +485,7 @@ export default function CheckoutPage({ customerProfile }) {
                   dividers={null}
                   loading={isCartLoading || !cartData}
                 >
-                  {!USER_TOKEN && (
+                  {!token && (
                     <Tooltip placement="top" title="We recommend logging in to continue">
                       <Link
                         className="text-primary! absolute top-0 right-0 z-10 cursor-pointer! underline!"
