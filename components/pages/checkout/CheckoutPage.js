@@ -343,14 +343,14 @@ export default function CheckoutPage({ customerProfile }) {
     }
   };
 
-  const renderAddressFields = (prefix, title, dividers = 'py-4') => (
+  const renderAddressFields = (prefix, title, dividers = 'py-4', isRequired = true) => (
     <CheckoutBox loading={isCartLoading || !cartData} header title={title} dividers={dividers}>
       <main className="flex flex-col gap-y-3">
         <Form.Item
           className="mb-0!"
           label="Region/Emirate"
           name={[prefix, 'emirate']}
-          rules={[{ required: true, message: 'Required' }]}
+          rules={[{ required: isRequired, message: 'Required' }]}
         >
           <Select className="h-9!" placeholder="Select emirate">
             {UAE_EMIRATES.map((emirate) => (
@@ -365,7 +365,7 @@ export default function CheckoutPage({ customerProfile }) {
             className="mb-0!"
             label="First Name"
             name={[prefix, 'firstName']}
-            rules={[{ required: true, message: 'Required' }]}
+            rules={[{ required: isRequired, message: 'Required' }]}
           >
             <Input className="h-9!" placeholder="First Name" />
           </Form.Item>
@@ -373,7 +373,7 @@ export default function CheckoutPage({ customerProfile }) {
             className="mb-0!"
             label="Last Name"
             name={[prefix, 'lastName']}
-            rules={[{ required: true, message: 'Required' }]}
+            rules={[{ required: isRequired, message: 'Required' }]}
           >
             <Input className="h-9!" placeholder="Last Name" />
           </Form.Item>
@@ -383,7 +383,7 @@ export default function CheckoutPage({ customerProfile }) {
             className="mb-0!"
             label="City"
             name={[prefix, 'city']}
-            rules={[{ required: true, message: 'Required' }]}
+            rules={[{ required: isRequired, message: 'Required' }]}
           >
             <Input className="h-9!" placeholder="City" />
           </Form.Item>
@@ -398,7 +398,7 @@ export default function CheckoutPage({ customerProfile }) {
             className="mb-0!"
             label="Phone Number"
             name={[prefix, 'phone']}
-            rules={[{ required: true, message: 'Required' }]}
+            rules={[{ required: isRequired, message: 'Required' }]}
           >
             <InputNumber
               type={'number'}
@@ -434,7 +434,7 @@ export default function CheckoutPage({ customerProfile }) {
           className="mb-0!"
           label="Address"
           name={[prefix, 'address']}
-          rules={[{ required: true, message: 'Required' }]}
+          rules={[{ required: isRequired, message: 'Required' }]}
         >
           <Input.TextArea rows={2} placeholder="Street address" />
         </Form.Item>
@@ -582,7 +582,7 @@ export default function CheckoutPage({ customerProfile }) {
                           content: 'Use a different billing address',
                           expandableContent: (
                             <div className="pt-2">
-                              {renderAddressFields('billingAddress', 'Billing Address Details', 'py-0')}
+                              {renderAddressFields('billingAddress', 'Billing Address Details', 'py-0', !billingSameAsShipping)}
                             </div>
                           )
                         },
