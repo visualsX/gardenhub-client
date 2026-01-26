@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
-export default function MobileModal({ isOpen, onClose, children, className = '' }) {
+export default function AnimatedModal({ isOpen, onClose, children, className = '' }) {
     const [isVisible, setIsVisible] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
 

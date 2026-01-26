@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import MobileModal from '../MobileModal';
+import AnimatedModal from '../../wrappers/animated-modal';
 import FacebookIcon from '../icons/facebook';
 import InstagramIcon from '../icons/instagram';
 import XIcon from '../icons/x';
@@ -36,7 +36,7 @@ export default function MobileMenu({ isOpen, onClose, menuItems = [], staticLink
   };
 
   return (
-    <MobileModal isOpen={isOpen} onClose={onClose} className="min-h-[75vh] sm:min-h-[50vh]">
+    <AnimatedModal isOpen={isOpen} onClose={onClose} className="min-h-[75vh] sm:min-h-[50vh]">
       <div className="flex h-full flex-col py-4">
         {/* Sliding Content Container */}
         <div
@@ -157,7 +157,7 @@ export default function MobileMenu({ isOpen, onClose, menuItems = [], staticLink
           ))}
         </div>
       </div>
-    </MobileModal>
+    </AnimatedModal>
   );
 }
 

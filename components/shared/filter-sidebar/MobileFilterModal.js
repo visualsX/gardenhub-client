@@ -1,7 +1,7 @@
 'use client';
 
 import FilterContent from './FilterContent';
-import MobileModal from '../MobileModal';
+import AnimatedModal from '../../wrappers/animated-modal';
 
 export default function MobileFilterModal({
     isOpen,
@@ -11,7 +11,7 @@ export default function MobileFilterModal({
     onFilterChange,
 }) {
     return (
-        <MobileModal isOpen={isOpen} onClose={onClose} className="max-h-[85vh] flex flex-col">
+        <AnimatedModal isOpen={isOpen} onClose={onClose} className="max-h-[85vh] flex flex-col">
             {/* Header */}
             <div className="mb-4 flex items-center justify-between border-b border-gray-100 p-6 pb-4">
                 <h2 className="text-xl font-bold text-gray-900">Filters</h2>
@@ -35,6 +35,6 @@ export default function MobileFilterModal({
                     Apply Filters
                 </button>
             </div>
-        </MobileModal>
+        </AnimatedModal>
     );
 }
