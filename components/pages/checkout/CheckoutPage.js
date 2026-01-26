@@ -143,6 +143,9 @@ export default function CheckoutPage({ customerProfile }) {
         shippingAddress: {
           emirate: 'Dubai',
         },
+        billingAddress: {
+          emirate: 'Dubai',
+        },
       });
     }
   }, [customerProfile, form]);
@@ -188,7 +191,7 @@ export default function CheckoutPage({ customerProfile }) {
             email: values.email,
             firstName: values.shippingAddress.firstName,
             lastName: values.shippingAddress.lastName,
-            phone: values.shippingAddress.phone,
+            phone: String(values.shippingAddress.phone),
           };
 
           const guestResponse = await createGuestApi(guestData);
@@ -200,7 +203,7 @@ export default function CheckoutPage({ customerProfile }) {
       const shippingAddressObj = {
         firstName: values.shippingAddress.firstName,
         lastName: values.shippingAddress.lastName,
-        phone: values.shippingAddress.phone,
+        phone: String(values.shippingAddress.phone),
         country: values.shippingAddress.country || 'United Arab Emirates',
         emirate: values.shippingAddress.emirate || 'NotSpecified',
         city: values.shippingAddress.city,
@@ -214,7 +217,7 @@ export default function CheckoutPage({ customerProfile }) {
         : {
           firstName: values.billingAddress.firstName,
           lastName: values.billingAddress.lastName,
-          phone: values.billingAddress.phone,
+          phone: String(values.billingAddress.phone),
           country: values.billingAddress.country || 'United Arab Emirates',
           emirate: values.billingAddress.emirate || 'NotSpecified',
           city: values.billingAddress.city,
