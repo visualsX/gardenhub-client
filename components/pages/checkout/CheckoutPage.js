@@ -241,7 +241,7 @@ export default function CheckoutPage({ customerProfile }) {
       let paymentToken = 'string'; // Default placeholder
 
       if (selectedMethod?.code === 'COD') {
-        paymentToken = 'COD_TOKEN';
+        paymentToken = '';
       } else {
         // Stripe Payment Logic
         if (!stripe || !elements) {
