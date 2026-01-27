@@ -67,7 +67,7 @@ export default function FilterContent({ filters = [], filter, onFilterChange }) 
             </FilterAccordion>
 
             {/* Dynamic Filters */}
-            {filters.map((filter) => (
+            {filters?.map((filter) => (
                 <FilterAccordion key={filter.name} title={filter.name}>
                     <div className="space-y-2 pb-2">
                         {filter.options.map((option) => (

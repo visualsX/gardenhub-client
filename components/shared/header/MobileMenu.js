@@ -47,7 +47,7 @@ export default function MobileMenu({ isOpen, onClose, menuItems = [], staticLink
           <div className="flex w-full shrink-0 flex-col px-8">
             <div className="custom-scrollbar flex-1 overflow-y-auto">
               <div className="flex flex-col gap-y-4">
-                {menuItems.map((item) => (
+                {menuItems?.map((item) => (
                   <div key={item.id}>
                     {item.children?.length > 0 ? (
                       <button
@@ -73,7 +73,7 @@ export default function MobileMenu({ isOpen, onClose, menuItems = [], staticLink
                   </div>
                 ))}
 
-                {staticLinks.map((link) => (
+                {staticLinks?.map((link) => (
                   <div key={link.id}>
                     <Link href={link.href} onClick={onClose} className="block">
                       <span className="font-outfit text-lg leading-tight font-black text-[#425d48]">
@@ -112,7 +112,7 @@ export default function MobileMenu({ isOpen, onClose, menuItems = [], staticLink
           </div>
 
           {/* Sub Levels */}
-          {navigationStack.map((stackItem, index) => (
+          {navigationStack?.map((stackItem, index) => (
             <div key={index} className="flex w-full shrink-0 flex-col px-8">
               <div
                 onClick={handleBack}
