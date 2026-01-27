@@ -78,7 +78,6 @@ export default function ProductToolbar({
           style={{ width: 160 }}
           variant="borderless"
           className="custom-select font-medium text-gray-900"
-          popupClassName="rounded-xl!"
           options={[
             { value: 'newest', label: 'Newest' },
             { value: 'name_asc', label: 'Name: A-Z' },
