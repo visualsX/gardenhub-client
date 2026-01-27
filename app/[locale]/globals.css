@@ -84,11 +84,12 @@ body {
 
 /* Custom Scrollbar */
 .slider-scrollbar-thumb ::-webkit-scrollbar {
-  height: 8px;
+  display: block;
+  height: 5px;
 }
 
 .slider-scrollbar-thumb ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: #8fe086;
 }
 
 .slider-scrollbar-thumb ::-webkit-scrollbar-thumb {

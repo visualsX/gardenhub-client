@@ -79,18 +79,18 @@ export default function TestimonialsSection() {
 
         <div className="relative">
           {/* Fade Masks - Increased Width for smoother transition */}
-          <div className="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-48 bg-linear-to-r from-[#FAF7F2] to-transparent"></div>
-          <div className="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-48 bg-linear-to-l from-[#FAF7F2] to-transparent"></div>
+          <div className="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-48 sm:bg-linear-to-r sm:from-background sm:to-transparent"></div>
+          <div className="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-48 sm:bg-linear-to-l sm:from-background sm:to-transparent"></div>
 
           {/* Slider */}
           <div
             ref={scrollRef}
-            className="scrollbar-hide flex snap-x snap-mandatory gap-6 overflow-x-auto px-8 pb-8"
+            className="scrollbar-hide flex snap-x snap-mandatory gap-6 overflow-x-auto sm:px-8 pb-8"
           >
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="w-[380px] shrink-0 snap-center space-y-4 rounded-2xl bg-white p-4 text-left shadow-sm transition-all hover:shadow-md"
+                className="w-full sm:w-[380px] shrink-0 snap-center space-y-4 rounded-2xl bg-white p-4 text-left shadow-sm transition-all hover:shadow-md"
               >
                 <div className="bg-accent-gray rounded-2xl p-4">
                   <div className="mb-4 flex text-yellow-400">
