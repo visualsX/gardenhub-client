@@ -9,8 +9,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <h3 className="mb-4 text-xl font-bold">GardenHub</h3>
             <p className="text-sm text-gray-300">
-              We will add a short description about gardenhub. We will add a short description about
-              gardenhub.
+              Bringing nature to your doorstep. We deliver premium indoor and outdoor plants across the UAE, helping you create beautiful, thriving green spaces.
             </p>
           </div>
 
@@ -19,8 +18,11 @@ export default function Footer() {
             <h4 className="mb-4 font-semibold">Policies</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/faq" className="cursor-pointer text-gray-300! hover:text-white!">
-                  FAQ
+                <Link
+                  href="/shipping-policy"
+                  className="cursor-pointer text-gray-300! hover:text-white!"
+                >
+                  Shipping Policy
                 </Link>
               </li>
               <li>
@@ -40,44 +42,47 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="cursor-pointer text-gray-300! hover:text-white!">
-                  Terms of Services
+                <Link href="/terms-of-service" className="cursor-pointer text-gray-300! hover:text-white!">
+                  Terms of Service
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Shipping */}
+          {/* Quick Links */}
           <div>
-            <h4 className="mb-4 font-semibold">Shipping</h4>
+            <h4 className="mb-4 font-semibold">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/shipping-policy"
+                  href="/shop"
                   className="cursor-pointer text-gray-300! hover:text-white!"
                 >
-                  Shipping policy
+                  Shop All
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/return-policy"
+                  href="/about"
                   className="cursor-pointer text-gray-300! hover:text-white!"
                 >
-                  Return Policy
+                  About Us
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/privacy-policy"
+                  href="/contact"
                   className="cursor-pointer text-gray-300! hover:text-white!"
                 >
-                  Privacy Policy
+                  Contact
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="cursor-pointer text-gray-300! hover:text-white!">
-                  Terms of Services
+                <Link
+                  href="/faq"
+                  className="cursor-pointer text-gray-300! hover:text-white!"
+                >
+                  FAQ
                 </Link>
               </li>
             </ul>
