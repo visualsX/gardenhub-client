@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const metadata = {
     title: 'About Us - GardenHub',
     description:
@@ -130,9 +132,9 @@ export default function AboutPage() {
                     <p className="mb-8 text-gray-600">
                         Explore our collection and find the perfect plants for your space.
                     </p>
-                    <a
+                    <Link
                         href="/shop"
-                        className="inline-flex items-center gap-2 rounded-full bg-[#2d5f3f] px-8 py-3 font-semibold text-white transition-colors hover:bg-[#1e3d2a]"
+                        className="inline-flex items-center gap-2 rounded-full bg-primary! px-8! py-3! font-semibold text-white! transition-colors hover:bg-primary-dark!"
                     >
                         Shop Now
                         <svg
@@ -148,7 +150,7 @@ export default function AboutPage() {
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
-                    </a>
+                    </Link>
                 </section>
             </div>
         </div>

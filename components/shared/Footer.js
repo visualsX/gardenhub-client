@@ -111,6 +111,9 @@ export default function Footer() {
 
         {/* Social Links */}
         <div className="mt-12 flex items-center justify-between border-t border-gray-600 pt-8">
+          <div className="text-center text-sm text-gray-400">
+            © 2026 GardenHub. All rights reserved.
+          </div>
           <div className="flex gap-4">
             <a
               href="#"
