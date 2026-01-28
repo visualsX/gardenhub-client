@@ -2,7 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from '@/i18n/navigation';
-import { Form, Input, Select, message, Spin, Skeleton, InputNumber, Space, Tooltip, Button } from 'antd';
+import {
+  Form,
+  Input,
+  Select,
+  message,
+  Spin,
+  Skeleton,
+  InputNumber,
+  Space,
+  Tooltip,
+  Button,
+} from 'antd';
 import { useCart, useClearCart } from '@/hooks/cart/useCart';
 import BagIcon from '@/public/shared/bag.svg';
 import {
@@ -18,7 +29,7 @@ import {
   TAX_RATE,
   getGuestEmail,
   getGuestCustomerId,
-  getUserToken
+  getUserToken,
 } from '@/lib/const/global.variables';
 import CheckoutSummary from '@/components/shared/checkout/CheckoutSummary';
 import { CheckoutBox } from '@/components/wrappers/checkout-box';
@@ -103,40 +114,40 @@ export default function CheckoutPage({ customerProfile }) {
         email: email,
         shippingAddress: defaultShipping
           ? {
-            addressId: defaultShipping.id,
-            firstName: defaultShipping.firstName,
-            lastName: defaultShipping.lastName,
-            phone: defaultShipping.phone,
-            address: defaultShipping.streetAddress,
-            addressLine2: defaultShipping.addressLine2,
-            city: defaultShipping.city,
-            emirate: defaultShipping.emirate || 'Dubai',
-            postalCode: defaultShipping.postalCode,
-            country: defaultShipping.country || 'United Arab Emirates',
-          }
+              addressId: defaultShipping.id,
+              firstName: defaultShipping.firstName,
+              lastName: defaultShipping.lastName,
+              phone: defaultShipping.phone,
+              address: defaultShipping.streetAddress,
+              addressLine2: defaultShipping.addressLine2,
+              city: defaultShipping.city,
+              emirate: defaultShipping.emirate || 'Dubai',
+              postalCode: defaultShipping.postalCode,
+              country: defaultShipping.country || 'United Arab Emirates',
+            }
           : {
-            firstName: firstName,
-            lastName: lastName,
-            country: 'United Arab Emirates',
-          },
+              firstName: firstName,
+              lastName: lastName,
+              country: 'United Arab Emirates',
+            },
         billingAddress: defaultBilling
           ? {
-            addressId: defaultBilling.id,
-            firstName: defaultBilling.firstName,
-            lastName: defaultBilling.lastName,
-            phone: defaultBilling.phone,
-            address: defaultBilling.streetAddress,
-            addressLine2: defaultBilling.addressLine2,
-            city: defaultBilling.city,
-            emirate: defaultBilling.emirate || 'Dubai',
-            postalCode: defaultBilling.postalCode,
-            country: defaultBilling.country || 'United Arab Emirates',
-          }
+              addressId: defaultBilling.id,
+              firstName: defaultBilling.firstName,
+              lastName: defaultBilling.lastName,
+              phone: defaultBilling.phone,
+              address: defaultBilling.streetAddress,
+              addressLine2: defaultBilling.addressLine2,
+              city: defaultBilling.city,
+              emirate: defaultBilling.emirate || 'Dubai',
+              postalCode: defaultBilling.postalCode,
+              country: defaultBilling.country || 'United Arab Emirates',
+            }
           : {
-            firstName: firstName,
-            lastName: lastName,
-            country: 'United Arab Emirates',
-          },
+              firstName: firstName,
+              lastName: lastName,
+              country: 'United Arab Emirates',
+            },
       });
 
       // Only switch to "Different billing address" if we explicitly have a billing address that is different from shipping
@@ -226,16 +237,16 @@ export default function CheckoutPage({ customerProfile }) {
       const billingAddressObj = billingSameAsShipping
         ? { ...shippingAddressObj }
         : {
-          firstName: values.billingAddress.firstName,
-          lastName: values.billingAddress.lastName,
-          phone: String(values.billingAddress.phone),
-          country: values.billingAddress.country || 'United Arab Emirates',
-          emirate: values.billingAddress.emirate || 'NotSpecified',
-          city: values.billingAddress.city,
-          streetAddress: values.billingAddress.address,
-          addressLine2: values.billingAddress.addressLine2 || '',
-          postalCode: values.billingAddress.postalCode,
-        };
+            firstName: values.billingAddress.firstName,
+            lastName: values.billingAddress.lastName,
+            phone: String(values.billingAddress.phone),
+            country: values.billingAddress.country || 'United Arab Emirates',
+            emirate: values.billingAddress.emirate || 'NotSpecified',
+            city: values.billingAddress.city,
+            streetAddress: values.billingAddress.address,
+            addressLine2: values.billingAddress.addressLine2 || '',
+            postalCode: values.billingAddress.postalCode,
+          };
 
       const selectedMethod = paymentMethodsData?.find((m) => m.id === selectedPaymentMethodId);
       let paymentToken = 'string'; // Default placeholder
@@ -328,7 +339,10 @@ export default function CheckoutPage({ customerProfile }) {
         couponCode,
         cartItems,
         orderSubtotal: subtotal,
-        customerId: customerProfile?.id || (typeof window !== 'undefined' ? getGuestCustomerId() : null) || null,
+        customerId:
+          customerProfile?.id ||
+          (typeof window !== 'undefined' ? getGuestCustomerId() : null) ||
+          null,
       });
 
       setCouponResponse(response);
@@ -400,13 +414,7 @@ export default function CheckoutPage({ customerProfile }) {
             name={[prefix, 'phone']}
             rules={[{ required: isRequired, message: 'Required' }]}
           >
-            <InputNumber
-              type={'number'}
-              className="w-full! h-9!"
-              placeholder="+971 50 123 4567"
-
-            />
-
+            <InputNumber type={'number'} className="h-9! w-full!" placeholder="+971 50 123 4567" />
           </Form.Item>
           <div className="absolute top-0 right-0">
             <Tooltip placement="top" title={'In case we need to contact you about your order'}>
@@ -477,7 +485,7 @@ export default function CheckoutPage({ customerProfile }) {
                     Gardenhub
                   </Link>
                   <Link href={'/cart'} className="flex items-center gap-2">
-                    <BagIcon className="h-8 w-8 text-primary" />
+                    <BagIcon className="text-primary h-8 w-8" />
                   </Link>
                 </div>
                 <CheckoutBox
@@ -542,9 +550,7 @@ export default function CheckoutPage({ customerProfile }) {
                       onChange={(e) => setSelectedPaymentMethodId(e.target.value)}
                       options={paymentMethodsData?.map((method) => ({
                         value: method.id,
-                        content: (
-                          <span className="font-medium text-gray-900">{method.name}</span>
-                        ),
+                        content: <span className="font-medium text-gray-900">{method.name}</span>,
                         rightContent: method.code !== 'COD' && (
                           <div className="flex items-center gap-1.5">
                             <img src="/visa.svg" alt="Visa" className="h-6 w-auto" />
@@ -552,13 +558,16 @@ export default function CheckoutPage({ customerProfile }) {
                             <img src="/unionpay.svg" alt="UnionPay" className="h-6 w-auto" />
                           </div>
                         ),
-                        expandableContent: method.code === 'COD' ? (
-                          <div className="text-sm leading-relaxed text-gray-500">
-                            Cash on Delivery (COD) is a payment option that allows the buyer to pay when the product is delivered to customer. Once the courier has received the money, only then will he give the parcel to the customer.
-                          </div>
-                        ) : (
-                          <StripeCardForm />
-                        )
+                        expandableContent:
+                          method.code === 'COD' ? (
+                            <div className="text-sm leading-relaxed text-gray-500">
+                              Cash on Delivery (COD) is a payment option that allows the buyer to
+                              pay when the product is delivered to customer. Once the courier has
+                              received the money, only then will he give the parcel to the customer.
+                            </div>
+                          ) : (
+                            <StripeCardForm />
+                          ),
                       }))}
                     />
                   )}
@@ -582,9 +591,14 @@ export default function CheckoutPage({ customerProfile }) {
                           content: 'Use a different billing address',
                           expandableContent: (
                             <div className="pt-2">
-                              {renderAddressFields('billingAddress', 'Billing Address Details', 'py-0', !billingSameAsShipping)}
+                              {renderAddressFields(
+                                'billingAddress',
+                                'Billing Address Details',
+                                'py-0',
+                                !billingSameAsShipping
+                              )}
                             </div>
-                          )
+                          ),
                         },
                       ]}
                     />
@@ -594,10 +608,10 @@ export default function CheckoutPage({ customerProfile }) {
                 {/* Mobile Place Order */}
                 <div className="">
                   <Button
-                    htmlType='submit'
+                    htmlType="submit"
                     loading={isProcessing}
                     disabled={isProcessing}
-                    className="bg-primary! hover:bg-primary-dark! w-full rounded-full! h-12! py-4! font-bold! text-white! transition-all! hover:shadow-xl! disabled:cursor-not-allowed! disabled:opacity-50!"
+                    className="bg-primary! hover:bg-primary-dark! h-12! w-full rounded-full! py-4! font-bold! text-white! transition-all! hover:shadow-xl! disabled:cursor-not-allowed! disabled:opacity-50!"
                   >
                     {isProcessing ? 'Processing...' : `Place Order - AED ${totals.total}`}
                   </Button>
@@ -647,7 +661,7 @@ export default function CheckoutPage({ customerProfile }) {
             </section>
           </div>
         </Form>
-      </div >
-    </main >
+      </div>
+    </main>
   );
 }

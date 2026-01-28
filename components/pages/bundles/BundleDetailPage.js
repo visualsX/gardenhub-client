@@ -39,7 +39,7 @@ export default function BundleDetailPage({ bundle }) {
   }, [bundle, addToRecentlyViewed]);
 
   const handleAddToCart = () => {
-    console.log("all bundles: ", bundle)
+    console.log('all bundles: ', bundle);
 
     addToCartMutation.mutate(
       {
@@ -60,7 +60,7 @@ export default function BundleDetailPage({ bundle }) {
           image: bundle.mainImageUrl || '/all/image-placeholder.svg',
           addons: [],
           addonDetails: null,
-        }
+        },
       },
       {
         onSuccess: () => {

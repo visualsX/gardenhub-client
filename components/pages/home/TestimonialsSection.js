@@ -43,7 +43,9 @@ export default function TestimonialsSection({ reviewStats, topReviews }) {
                     : reviewStats.totalReviews}{' '}
                   reviews
                 </div>
-                <div className="text-xs text-gray-500">{reviewStats.totalReviews} happy clients</div>
+                <div className="text-xs text-gray-500">
+                  {reviewStats.totalReviews} happy clients
+                </div>
               </div>
             </div>
           </div>
@@ -51,18 +53,18 @@ export default function TestimonialsSection({ reviewStats, topReviews }) {
 
         <div className="relative">
           {/* Fade Masks - Increased Width for smoother transition */}
-          <div className="pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-48 sm:bg-linear-to-r sm:from-background sm:to-transparent"></div>
-          <div className="pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-48 sm:bg-linear-to-l sm:from-background sm:to-transparent"></div>
+          <div className="sm:from-background pointer-events-none absolute top-0 bottom-0 left-0 z-10 w-48 sm:bg-linear-to-r sm:to-transparent"></div>
+          <div className="sm:from-background pointer-events-none absolute top-0 right-0 bottom-0 z-10 w-48 sm:bg-linear-to-l sm:to-transparent"></div>
 
           {/* Slider */}
           <div
             ref={scrollRef}
-            className="scrollbar-hide flex snap-x snap-mandatory gap-6 overflow-x-auto sm:px-8 pb-8"
+            className="scrollbar-hide flex snap-x snap-mandatory gap-6 overflow-x-auto pb-8 sm:px-8"
           >
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="w-full sm:w-[380px] shrink-0 snap-center space-y-4 rounded-2xl bg-white p-4 text-left shadow-sm transition-all hover:shadow-md"
+                className="w-full shrink-0 snap-center space-y-4 rounded-2xl bg-white p-4 text-left shadow-sm transition-all hover:shadow-md sm:w-[380px]"
               >
                 <div className="bg-accent-gray rounded-2xl p-4">
                   <div className="mb-4 flex text-yellow-400">
@@ -73,13 +75,13 @@ export default function TestimonialsSection({ reviewStats, topReviews }) {
                     ))}
                   </div>
 
-                  <p className="mb-6 text-[15px] leading-relaxed text-gray-600 line-clamp-4">
+                  <p className="mb-6 line-clamp-4 text-[15px] leading-relaxed text-gray-600">
                     {testimonial.description}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 overflow-hidden rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-gray-400 font-bold">
+                  <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-gray-100 bg-gray-50 font-bold text-gray-400">
                     {testimonial.image1Url ? (
                       <img
                         src={testimonial.image1Url}
@@ -91,7 +93,9 @@ export default function TestimonialsSection({ reviewStats, topReviews }) {
                     )}
                   </div>
                   <div>
-                    <h4 className="text-base font-bold text-gray-900">{testimonial.customerName}</h4>
+                    <h4 className="text-base font-bold text-gray-900">
+                      {testimonial.customerName}
+                    </h4>
                     <span className="text-xs text-gray-400">
                       {new Date(testimonial.createdAt).toLocaleDateString(undefined, {
                         year: 'numeric',

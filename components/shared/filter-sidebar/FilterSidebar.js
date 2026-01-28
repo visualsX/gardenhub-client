@@ -33,4 +33,3 @@ export default function FilterSidebar({ filters = [], filter, onFilterChange }) 
     </div>
   );
 }
-

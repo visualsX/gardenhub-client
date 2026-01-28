@@ -70,16 +70,17 @@ export default function CheckoutSummary({
             onClick={
               couponResponse?.isValid
                 ? () => {
-                  setCouponResponse(null);
-                  setCouponCode('');
-                }
+                    setCouponResponse(null);
+                    setCouponCode('');
+                  }
                 : handleApplyCoupon
             }
             disabled={isValidatingCoupon}
-            className={`${couponResponse?.isValid
+            className={`${
+              couponResponse?.isValid
                 ? 'bg-red-50 text-red-600 hover:bg-red-100'
                 : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-              } rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50`}
+            } rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50`}
           >
             {couponResponse?.isValid ? 'Remove' : 'Apply'}
           </Button>
@@ -100,7 +101,7 @@ export default function CheckoutSummary({
           <Input.TextArea
             rows={3}
             placeholder="Special instructions for your delivery (optional)"
-            className="rounded-lg border-gray-300 transition-all hover:border-primary focus:border-primary"
+            className="hover:border-primary focus:border-primary rounded-lg border-gray-300 transition-all"
           />
         </Form.Item>
       </div>

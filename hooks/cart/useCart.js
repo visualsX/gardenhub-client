@@ -74,7 +74,14 @@ export const useAddToCart = () => {
   const token = getUserToken();
 
   return useMutation({
-    mutationFn: async ({ productId, productVariantId, productBundleId, quantity, addons, productInfo }) => {
+    mutationFn: async ({
+      productId,
+      productVariantId,
+      productBundleId,
+      quantity,
+      addons,
+      productInfo,
+    }) => {
       if (token) {
         return await client.post(API_ENDPOINTS.CART.ADD, {
           productId: productId || null,
@@ -115,7 +122,13 @@ export const useUpdateCartItem = () => {
   const token = getUserToken();
 
   return useMutation({
-    mutationFn: async ({ cartItemId, productId, productVariantId, quantity, productBundleId = null }) => {
+    mutationFn: async ({
+      cartItemId,
+      productId,
+      productVariantId,
+      quantity,
+      productBundleId = null,
+    }) => {
       if (token) {
         if (!cartItemId) throw new Error('Cart Item ID is required for updates');
         return await client.put(`${API_ENDPOINTS.CART.ITEMS}/${cartItemId}`, { quantity });

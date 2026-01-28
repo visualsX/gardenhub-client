@@ -2,7 +2,6 @@
 
 import { Select } from 'antd';
 
-
 export default function ProductToolbar({
   activeFilters,
   availableFilters,

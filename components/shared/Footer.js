@@ -7,10 +7,11 @@ export default function Footer() {
       <div className="bg-primary-dark rounded-2xl px-4 py-12 text-white">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand Section */}
-          <div className="md:col-span-1 flex flex-col items-start justify-start gap-y-4">
+          <div className="flex flex-col items-start justify-start gap-y-4 md:col-span-1">
             <Image width={122} height={40} src="/white.svg" alt="gardenhub-logo" />
             <p className="text-sm text-gray-300">
-              Bringing nature to your doorstep. We deliver premium indoor and outdoor plants across the UAE, helping you create beautiful, thriving green spaces.
+              Bringing nature to your doorstep. We deliver premium indoor and outdoor plants across
+              the UAE, helping you create beautiful, thriving green spaces.
             </p>
           </div>
 
@@ -43,7 +44,10 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/terms-of-service" className="cursor-pointer text-gray-300! hover:text-white!">
+                <Link
+                  href="/terms-of-service"
+                  className="cursor-pointer text-gray-300! hover:text-white!"
+                >
                   Terms of Service
                 </Link>
               </li>
@@ -55,34 +59,22 @@ export default function Footer() {
             <h4 className="mb-4 font-semibold">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link
-                  href="/shop"
-                  className="cursor-pointer text-gray-300! hover:text-white!"
-                >
+                <Link href="/shop" className="cursor-pointer text-gray-300! hover:text-white!">
                   Shop All
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/about"
-                  className="cursor-pointer text-gray-300! hover:text-white!"
-                >
+                <Link href="/about" className="cursor-pointer text-gray-300! hover:text-white!">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/contact"
-                  className="cursor-pointer text-gray-300! hover:text-white!"
-                >
+                <Link href="/contact" className="cursor-pointer text-gray-300! hover:text-white!">
                   Contact
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/faq"
-                  className="cursor-pointer text-gray-300! hover:text-white!"
-                >
+                <Link href="/faq" className="cursor-pointer text-gray-300! hover:text-white!">
                   FAQ
                 </Link>
               </li>

@@ -36,7 +36,6 @@ export default function CartPage() {
         <Spin size="large" />
       </div>
     );
-
   }
 
   if (items.length === 0) {

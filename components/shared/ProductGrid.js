@@ -12,8 +12,10 @@ export default function ProductGrid({
     <section className={`pt-10 pb-5 sm:py-12 md:py-16 ${parentClassName}`}>
       <div className="max-layout overflow-hidden">
         {/* Section Header: Title + View All */}
-        <div className="mb-6 flex items-center justify-between gap-4 sm:mb-12 ">
-          <h2 className={`font-outfit text-2xl font-black text-[#2d5f3f] sm:text-5xl ${titleClassName}`}>
+        <div className="mb-6 flex items-center justify-between gap-4 sm:mb-12">
+          <h2
+            className={`font-outfit text-2xl font-black text-[#2d5f3f] sm:text-5xl ${titleClassName}`}
+          >
             {title}
           </h2>
           {viewAll && (
@@ -21,7 +23,7 @@ export default function ProductGrid({
               href={viewAll.startsWith('/') ? viewAll : `/collections/${viewAll}`}
               className="group flex items-center gap-2"
             >
-              <button className="flex items-center gap-2 rounded-full border border-gray-200 bg-white/50 p-2 text-sm font-bold text-gray-700 backdrop-blur-sm transition-all hover:bg-[#2d5f3f] hover:text-white group-hover:bg-[#2d5f3f] group-hover:text-white sm:px-6 sm:py-2.5">
+              <button className="flex items-center gap-2 rounded-full border border-gray-200 bg-white/50 p-2 text-sm font-bold text-gray-700 backdrop-blur-sm transition-all group-hover:bg-[#2d5f3f] group-hover:text-white hover:bg-[#2d5f3f] hover:text-white sm:px-6 sm:py-2.5">
                 <span className="hidden sm:block">View All</span>
                 <svg
                   width="16"
@@ -44,9 +46,12 @@ export default function ProductGrid({
 
         {/* Product Grid - Horizontal Scroll on Mobile, Grid on Desktop */}
         <div className="slider-scrollbar-thumb -mx-4 px-4 sm:mx-0 sm:px-0">
-          <div className="flex gap-4 overflow-x-auto pb-6 snap-x snap-mandatory scroll-smooth lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:pb-0">
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-6 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:pb-0">
             {products?.map((product, index) => (
-              <div key={index} className="w-[75vw] max-w-[320px] shrink-0 snap-start sm:w-[40vw] sm:max-w-[320px] lg:w-auto lg:max-w-none">
+              <div
+                key={index}
+                className="w-[75vw] max-w-[320px] shrink-0 snap-start sm:w-[40vw] sm:max-w-[320px] lg:w-auto lg:max-w-none"
+              >
                 <ProductCard product={product} />
               </div>
             ))}

@@ -19,9 +19,9 @@ export default function CategoryClientPage({
   // Format slug for title (e.g., "indoor-plants" -> "Indoor Plants")
   const title = currentSlug
     ? currentSlug
-      .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ')
+        .split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
     : '';
 
   const [filter, setFilter] = useState({
@@ -59,7 +59,7 @@ export default function CategoryClientPage({
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   return (
-    <div className="min-h-screen pt-32 pb-20 relative">
+    <div className="relative min-h-screen pt-32 pb-20">
       <div className="max-layout">
         {/* Title and Search Section */}
         <section className="mb-12 flex flex-col items-center gap-y-6">
@@ -70,7 +70,7 @@ export default function CategoryClientPage({
               onSearchChange={(value) => setFilter((prev) => ({ ...prev, searchQuery: value }))}
               defaultValue={filter.searchQuery}
               allowClear
-              className="custom-search h-12 w-full rounded-2xl! shadow-sm hover:shadow-md transition-shadow"
+              className="custom-search h-12 w-full rounded-2xl! shadow-sm transition-shadow hover:shadow-md"
             />
           </div>
         </section>

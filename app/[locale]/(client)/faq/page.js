@@ -134,7 +134,7 @@ export default function FAQPage() {
                 <span className="text-gray-900">{categoryIcons[idx]}</span>
                 <h2 className="text-lg font-bold text-gray-900">{cat.title}</h2>
               </div>
-              <div className="space-y-0 divide-y divide-gray-200 rounded-2xl bg-accent-gray">
+              <div className="bg-accent-gray space-y-0 divide-y divide-gray-200 rounded-2xl">
                 {cat.questions.map((faq, i) => (
                   <Collapse key={i} title={faq.q}>
                     {faq.a}

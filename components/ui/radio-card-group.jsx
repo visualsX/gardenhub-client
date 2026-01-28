@@ -19,12 +19,12 @@ export function RadioCardGroup({ options, value, onChange, className = '' }) {
     >
       {options?.map((option) => {
         const isSelected = value === option.value;
-        
+
         return (
           <div key={option.value} className="flex flex-col">
             <Radio
               value={option.value}
-              className={`m-0! flex w-full cursor-pointer items-center justify-between p-4! transition-all [&_.ant-radio+*]:w-full ${isSelected ? 'bg-primary-light ring-1 ring-primary z-10' : 'bg-white'}`}
+              className={`m-0! flex w-full cursor-pointer items-center justify-between p-4! transition-all [&_.ant-radio+*]:w-full ${isSelected ? 'bg-primary-light ring-primary z-10 ring-1' : 'bg-white'}`}
             >
               <div className="flex w-full items-center justify-between">
                 <div className="min-w-0 font-medium text-gray-900">{option.content}</div>
@@ -34,9 +34,9 @@ export function RadioCardGroup({ options, value, onChange, className = '' }) {
                 )}
               </div>
             </Radio>
-            
+
             {option.expandableContent && (
-              <div 
+              <div
                 className={`grid transition-all duration-300 ease-in-out ${isSelected ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
               >
                 <div className="overflow-hidden">

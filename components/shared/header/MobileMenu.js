@@ -60,11 +60,7 @@ export default function MobileMenu({ isOpen, onClose, menuItems = [], staticLink
                         <ChevronRight />
                       </button>
                     ) : (
-                      <Link
-                        href={`/collections/${item.slug}`}
-                        onClick={onClose}
-                        className="block"
-                      >
+                      <Link href={`/collections/${item.slug}`} onClick={onClose} className="block">
                         <span className="font-outfit text-lg leading-tight font-black text-[#425d48]">
                           {item.name}
                         </span>

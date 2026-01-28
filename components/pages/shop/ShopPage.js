@@ -63,7 +63,7 @@ export default function ShopPage({ initialProducts, initialFilters, initialTotal
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   return (
-    <div className="min-h-screen pt-32 pb-20 relative">
+    <div className="relative min-h-screen pt-32 pb-20">
       <div className="max-layout">
         {/* Title and Search Section */}
         <section className="mb-12 flex flex-col items-center gap-y-6">
@@ -74,7 +74,7 @@ export default function ShopPage({ initialProducts, initialFilters, initialTotal
               onSearchChange={(value) => setFilter((prev) => ({ ...prev, searchQuery: value }))}
               defaultValue={filter.searchQuery}
               allowClear
-              className="custom-search h-12 w-full rounded-2xl! shadow-sm hover:shadow-md transition-shadow"
+              className="custom-search h-12 w-full rounded-2xl! shadow-sm transition-shadow hover:shadow-md"
             />
           </div>
         </section>
