@@ -20,18 +20,23 @@ import {
 
 export default async function Home() {
   // Fetch Initial Data
-  const featuredSectionsData = await fetchFeaturedProducts();
+  const landingPageData = await fetchFeaturedProducts();
   const activeBanners = await fetchActiveBanners();
   const shopCollections = await fetchShopCollections();
+
+  const sections = landingPageData?.sections || [];
+  const reviewStats = landingPageData?.reviewStats || null;
+  const topReviews = landingPageData?.topReviews || [];
+
   return (
     <div className="min-h-screen">
       <HomeBanner initialBanners={activeBanners} />
 
-      <DynamicSections initialSections={featuredSectionsData} />
+      <DynamicSections initialSections={sections} />
 
       <ShopCollection initialCollections={shopCollections} />
       <StatsSection />
-      <TestimonialsSection />
+      <TestimonialsSection reviewStats={reviewStats} topReviews={topReviews} />
     </div>
   );
 }
