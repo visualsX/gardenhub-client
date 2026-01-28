@@ -22,6 +22,7 @@ import SearchOverlay from './SearchOverlay';
 import MobileMenu from './MobileMenu';
 import { useState, useEffect } from 'react';
 import { MenuOutlined } from '@ant-design/icons';
+import Image from 'next/image';
 
 export default function Header({ initialMenuData }) {
   const pathname = usePathname();
@@ -96,7 +97,7 @@ export default function Header({ initialMenuData }) {
             href="/"
             className={`text-2xl font-bold ${isHomePage ? 'text-gray-900!' : 'text-white!'}`}
           >
-            {isHomePage ? <img className='h-10 w-auto' src="/green.svg" alt="" /> : <img className='h-10 w-auto' src="/white.svg" alt="" />}
+            {isHomePage ? <Image width={122} height={40} src="/light-green.svg" alt="gardenhub-logo" /> : <Image width={122} height={40} src="/white.svg" alt="gardenhub-logo" />}
           </Link>
 
           {/* Navigation Links */}
