@@ -1,3 +1,5 @@
+import PolicySection, { PolicyList, PolicySteps, PolicyGrid, PolicyContact } from '@/components/shared/PolicySection';
+
 export const metadata = {
     title: 'Return Policy - GardenHub',
     description:
@@ -12,157 +14,180 @@ export const metadata = {
 
 export default function ReturnPolicyPage() {
     return (
-        <div className="max-layout min-h-screen pt-32 pb-20">
-            <div className="mx-auto max-w-4xl">
-                <h1 className="mb-4 text-center text-4xl font-bold text-gray-900">
-                    Return Policy
-                </h1>
-                <p className="mb-12 text-center text-sm text-gray-500">
-                    Last updated: January 28, 2026
-                </p>
+        <div className="min-h-screen bg-gray-50 pt-32 pb-20">
+            <div className="max-layout">
+                {/* Header Section */}
+                <div className="mb-16 text-center">
+                    {/* Badge */}
+                    <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span>Return Policy</span>
+                    </div>
 
-                <div className="prose prose-gray max-w-none">
-                    {/* Introduction */}
-                    <section className="mb-12">
-                        <p className="text-base leading-relaxed text-gray-600">
-                            At GardenHub, we want you to be completely satisfied with your purchase. If you're not happy with your order, we're here to help with our straightforward return and refund policy.
-                        </p>
-                    </section>
+                    {/* Title */}
+                    <h1 className="mb-4 text-5xl font-bold text-gray-900 sm:text-6xl">
+                        Easy <span className="text-primary">Returns</span> & Refunds
+                    </h1>
 
-                    {/* Return Window */}
-                    <section className="mb-12">
-                        <h2 className="mb-4 flex items-center gap-3 text-2xl font-bold text-gray-900">
-                            <span className="text-primary">⏰</span>
-                            14-Day Return Window
-                        </h2>
-                        <div className="bg-accent-gray space-y-4 rounded-2xl p-6">
-                            <p className="text-base leading-relaxed text-gray-600">
+                    {/* Subtitle */}
+                    <p className="mx-auto mb-3 max-w-2xl text-lg leading-relaxed text-gray-600">
+                        We want you to be completely satisfied with your purchase. Our straightforward return policy makes it easy.
+                    </p>
+
+                    {/* Last Updated */}
+                    <p className="text-sm text-gray-500">
+                        Last updated: January 28, 2026
+                    </p>
+                </div>
+
+                <div className="mx-auto max-w-4xl">
+                    <div className="space-y-6">
+                        {/* Return Window */}
+                        <PolicySection
+                            icon={
+                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            }
+                            title="14-Day Return Window"
+                        >
+                            <p className="mb-4 text-base leading-relaxed">
                                 You have 14 days from the date of delivery to return eligible items. To be eligible for a return, items must be:
                             </p>
-                            <ul className="ml-6 list-disc space-y-2 text-gray-600">
-                                <li>In their original condition</li>
-                                <li>Unused and undamaged</li>
-                                <li>In original packaging (for accessories and pots)</li>
-                                <li>Accompanied by proof of purchase</li>
-                            </ul>
-                        </div>
-                    </section>
+                            <PolicyList items={[
+                                'In their original condition',
+                                'Unused and undamaged',
+                                'In original packaging (for accessories and pots)',
+                                'Accompanied by proof of purchase'
+                            ]} />
+                        </PolicySection>
 
-                    {/* What Can Be Returned */}
-                    <section className="mb-12">
-                        <h2 className="mb-4 flex items-center gap-3 text-2xl font-bold text-gray-900">
-                            <span className="text-primary">✅</span>
-                            What Can Be Returned
-                        </h2>
-                        <div className="bg-accent-gray space-y-4 rounded-2xl p-6">
-                            <div className="space-y-4">
-                                <div>
-                                    <h3 className="mb-2 text-lg font-semibold text-gray-900">Eligible for Return:</h3>
-                                    <ul className="ml-6 list-disc space-y-2 text-gray-600">
-                                        <li>Pots and planters (unused, in original packaging)</li>
-                                        <li>Gardening tools and accessories</li>
-                                        <li>Seeds (unopened packages only)</li>
-                                        <li>Fertilizers and soil (unopened)</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 className="mb-2 text-lg font-semibold text-gray-900">Not Eligible for Return:</h3>
-                                    <ul className="ml-6 list-disc space-y-2 text-gray-600">
-                                        <li>Live plants (except in cases of damage or quality issues)</li>
-                                        <li>Opened seed packages</li>
-                                        <li>Used or opened fertilizers and soil</li>
-                                        <li>Custom or personalized items</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                        {/* What Can Be Returned */}
+                        <PolicySection
+                            icon={
+                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            }
+                            title="What Can Be Returned"
+                        >
+                            <PolicyGrid columns={[
+                                {
+                                    title: 'Eligible for Return:',
+                                    highlight: true,
+                                    items: [
+                                        'Pots and planters (unused, in original packaging)',
+                                        'Gardening tools and accessories',
+                                        'Seeds (unopened packages only)',
+                                        'Fertilizers and soil (unopened)'
+                                    ]
+                                },
+                                {
+                                    title: 'Not Eligible for Return:',
+                                    highlight: false,
+                                    items: [
+                                        'Live plants (except in cases of damage or quality issues)',
+                                        'Opened seed packages',
+                                        'Used or opened fertilizers and soil',
+                                        'Custom or personalized items'
+                                    ]
+                                }
+                            ]} />
+                        </PolicySection>
 
-                    {/* Plant Guarantee */}
-                    <section className="mb-12">
-                        <h2 className="mb-4 flex items-center gap-3 text-2xl font-bold text-gray-900">
-                            <span className="text-primary">🌿</span>
-                            Plant Health Guarantee
-                        </h2>
-                        <div className="bg-accent-gray space-y-4 rounded-2xl p-6">
-                            <p className="text-base leading-relaxed text-gray-600">
+                        {/* Plant Guarantee */}
+                        <PolicySection
+                            icon={
+                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                </svg>
+                            }
+                            title="Plant Health Guarantee"
+                        >
+                            <p className="mb-4 text-base leading-relaxed">
                                 While live plants are generally not eligible for return, we guarantee that your plants will arrive healthy and in good condition. If your plant arrives damaged or unhealthy:
                             </p>
-                            <ul className="ml-6 list-disc space-y-2 text-gray-600">
-                                <li>Contact us within 48 hours of delivery with photos</li>
-                                <li>We will offer a replacement or full refund</li>
-                                <li>No need to return the damaged plant</li>
-                            </ul>
-                        </div>
-                    </section>
+                            <PolicyList items={[
+                                'Contact us within 48 hours of delivery with photos',
+                                'We will offer a replacement or full refund',
+                                'No need to return the damaged plant'
+                            ]} />
+                        </PolicySection>
 
-                    {/* Return Process */}
-                    <section className="mb-12">
-                        <h2 className="mb-4 flex items-center gap-3 text-2xl font-bold text-gray-900">
-                            <span className="text-primary">🔄</span>
-                            How to Return
-                        </h2>
-                        <div className="bg-accent-gray space-y-4 rounded-2xl p-6">
-                            <p className="text-base leading-relaxed text-gray-600">
+                        {/* Return Process */}
+                        <PolicySection
+                            icon={
+                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            }
+                            title="How to Return"
+                        >
+                            <p className="mb-4 text-base leading-relaxed">
                                 To initiate a return, please follow these steps:
                             </p>
-                            <ol className="ml-6 list-decimal space-y-2 text-gray-600">
-                                <li>Contact our customer service team via email or phone</li>
-                                <li>Provide your order number and reason for return</li>
-                                <li>Receive return authorization and instructions</li>
-                                <li>Pack the item securely in its original packaging</li>
-                                <li>Ship the item back to us or schedule a pickup</li>
-                            </ol>
-                        </div>
-                    </section>
+                            <PolicySteps steps={[
+                                'Contact our customer service team via email or phone',
+                                'Provide your order number and reason for return',
+                                'Receive return authorization and instructions',
+                                'Pack the item securely in its original packaging',
+                                'Ship the item back to us or schedule a pickup'
+                            ]} />
+                        </PolicySection>
 
-                    {/* Refunds */}
-                    <section className="mb-12">
-                        <h2 className="mb-4 flex items-center gap-3 text-2xl font-bold text-gray-900">
-                            <span className="text-primary">💳</span>
-                            Refunds
-                        </h2>
-                        <div className="bg-accent-gray space-y-4 rounded-2xl p-6">
-                            <p className="text-base leading-relaxed text-gray-600">
+                        {/* Refunds */}
+                        <PolicySection
+                            icon={
+                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                </svg>
+                            }
+                            title="Refunds"
+                        >
+                            <p className="mb-4 text-base leading-relaxed">
                                 Once we receive and inspect your return, we will process your refund within 5-7 business days. Refunds will be issued to your original payment method. Please note:
                             </p>
-                            <ul className="ml-6 list-disc space-y-2 text-gray-600">
-                                <li>Original shipping costs are non-refundable</li>
-                                <li>Return shipping costs are the customer's responsibility (unless the item was damaged or defective)</li>
-                                <li>It may take additional time for your bank to process the refund</li>
-                            </ul>
-                        </div>
-                    </section>
+                            <PolicyList items={[
+                                'Original shipping costs are non-refundable',
+                                'Return shipping costs are the customer\'s responsibility (unless the item was damaged or defective)',
+                                'It may take additional time for your bank to process the refund'
+                            ]} />
+                        </PolicySection>
 
-                    {/* Exchanges */}
-                    <section className="mb-12">
-                        <h2 className="mb-4 flex items-center gap-3 text-2xl font-bold text-gray-900">
-                            <span className="text-primary">🔁</span>
-                            Exchanges
-                        </h2>
-                        <div className="bg-accent-gray space-y-4 rounded-2xl p-6">
-                            <p className="text-base leading-relaxed text-gray-600">
+                        {/* Exchanges */}
+                        <PolicySection
+                            icon={
+                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                </svg>
+                            }
+                            title="Exchanges"
+                        >
+                            <p className="text-base leading-relaxed">
                                 We currently do not offer direct exchanges. If you need a different item, please return the original item for a refund and place a new order for the item you want.
                             </p>
-                        </div>
-                    </section>
+                        </PolicySection>
 
-                    {/* Contact */}
-                    <section className="mb-12">
-                        <h2 className="mb-4 flex items-center gap-3 text-2xl font-bold text-gray-900">
-                            <span className="text-primary">📧</span>
-                            Contact Us
-                        </h2>
-                        <div className="bg-accent-gray space-y-4 rounded-2xl p-6">
-                            <p className="text-base leading-relaxed text-gray-600">
+                        {/* Contact */}
+                        <PolicySection
+                            icon={
+                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            }
+                            title="Contact Us"
+                        >
+                            <p className="mb-4 text-base leading-relaxed">
                                 If you have any questions about returns or refunds, please contact us:
                             </p>
-                            <div className="mt-4 space-y-2 text-gray-600">
-                                <p><strong>Email:</strong> returns@gardenhub.ae</p>
-                                <p><strong>Phone:</strong> +971 XX XXX XXXX</p>
-                            </div>
-                        </div>
-                    </section>
+                            <PolicyContact contacts={[
+                                { label: 'Email', value: 'returns@gardenhub.ae' },
+                                { label: 'Phone', value: '+971 XX XXX XXXX' }
+                            ]} />
+                        </PolicySection>
+                    </div>
                 </div>
             </div>
         </div>
