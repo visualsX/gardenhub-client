@@ -1,4 +1,5 @@
 import PolicySection, { PolicyList, PolicyContact } from '@/components/shared/PolicySection';
+import PolicyPageHeader from '@/components/shared/PolicyPageHeader';
 
 export const metadata = {
     title: 'Terms of Service - GardenHub',
@@ -17,31 +18,18 @@ export default function TermsOfServicePage() {
     return (
         <div className="min-h-screen bg-gray-50 pt-32 pb-20">
             <div className="max-layout">
-                {/* Header Section */}
-                <div className="mb-16 text-center">
-                    {/* Badge */}
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                <PolicyPageHeader
+                    icon={
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        <span>Terms of Service</span>
-                    </div>
-
-                    {/* Title */}
-                    <h1 className="mb-4 text-5xl font-bold text-gray-900 sm:text-6xl">
-                        Our <span className="text-primary">Terms</span> & Conditions
-                    </h1>
-
-                    {/* Subtitle */}
-                    <p className="mx-auto mb-3 max-w-2xl text-lg leading-relaxed text-gray-600">
-                        Please read these terms carefully before using our website and services.
-                    </p>
-
-                    {/* Last Updated */}
-                    <p className="text-sm text-gray-500">
-                        Last updated: January 28, 2026
-                    </p>
-                </div>
+                    }
+                    badge="Terms of Service"
+                    title="Our"
+                    titleAccent="Terms"
+                    subtitle="Please read these terms carefully before using our website and services."
+                    lastUpdated="January 28, 2026"
+                />
 
                 <div className="mx-auto max-w-4xl">
                     <div className="space-y-6">

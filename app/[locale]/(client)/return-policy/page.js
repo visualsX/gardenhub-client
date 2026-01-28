@@ -1,4 +1,5 @@
 import PolicySection, { PolicyList, PolicySteps, PolicyGrid, PolicyContact } from '@/components/shared/PolicySection';
+import PolicyPageHeader from '@/components/shared/PolicyPageHeader';
 
 export const metadata = {
     title: 'Return Policy - GardenHub',
@@ -17,31 +18,18 @@ export default function ReturnPolicyPage() {
     return (
         <div className="min-h-screen bg-gray-50 pt-32 pb-20">
             <div className="max-layout">
-                {/* Header Section */}
-                <div className="mb-16 text-center">
-                    {/* Badge */}
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                <PolicyPageHeader
+                    icon={
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                         </svg>
-                        <span>Return Policy</span>
-                    </div>
-
-                    {/* Title */}
-                    <h1 className="mb-4 text-5xl font-bold text-gray-900 sm:text-6xl">
-                        Easy <span className="text-primary">Returns</span> & Refunds
-                    </h1>
-
-                    {/* Subtitle */}
-                    <p className="mx-auto mb-3 max-w-2xl text-lg leading-relaxed text-gray-600">
-                        We want you to be completely satisfied with your purchase. Our straightforward return policy makes it easy.
-                    </p>
-
-                    {/* Last Updated */}
-                    <p className="text-sm text-gray-500">
-                        Last updated: January 28, 2026
-                    </p>
-                </div>
+                    }
+                    badge="Return Policy"
+                    title="Easy"
+                    titleAccent="Returns"
+                    subtitle="We want you to be completely satisfied with your purchase. Our straightforward return policy makes it easy."
+                    lastUpdated="January 28, 2026"
+                />
 
                 <div className="mx-auto max-w-4xl">
                     <div className="space-y-6">

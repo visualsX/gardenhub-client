@@ -1,4 +1,5 @@
 import PolicySection, { PolicyList, PolicyContact } from '@/components/shared/PolicySection';
+import PolicyPageHeader from '@/components/shared/PolicyPageHeader';
 
 export const metadata = {
     title: 'Privacy Policy - GardenHub',
@@ -17,31 +18,18 @@ export default function PrivacyPolicyPage() {
     return (
         <div className="min-h-screen bg-gray-50 pt-32 pb-20">
             <div className="max-layout">
-                {/* Header Section */}
-                <div className="mb-16 text-center">
-                    {/* Badge */}
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                <PolicyPageHeader
+                    icon={
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
-                        <span>Privacy Policy</span>
-                    </div>
-
-                    {/* Title */}
-                    <h1 className="mb-4 text-5xl font-bold text-gray-900 sm:text-6xl">
-                        Your <span className="text-primary">Privacy</span> Matters
-                    </h1>
-
-                    {/* Subtitle */}
-                    <p className="mx-auto mb-3 max-w-2xl text-lg leading-relaxed text-gray-600">
-                        Learn how we collect, use, and protect your personal information when you visit our site.
-                    </p>
-
-                    {/* Last Updated */}
-                    <p className="text-sm text-gray-500">
-                        Last updated: January 28, 2026
-                    </p>
-                </div>
+                    }
+                    badge="Privacy Policy"
+                    title="Your"
+                    titleAccent="Privacy"
+                    subtitle="Learn how we collect, use, and protect your personal information when you visit our site."
+                    lastUpdated="January 28, 2026"
+                />
 
                 <div className="mx-auto max-w-4xl">
                     <div className="space-y-6">
