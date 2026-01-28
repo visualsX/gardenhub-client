@@ -5,10 +5,11 @@ export const metadata = {
     description:
         'Read GardenHub Terms of Service. Learn about the terms and conditions that govern your use of our website and services.',
     openGraph: {
-        title: 'Terms of Service | GardenHub',
+        title: 'Our Terms & Conditions | GardenHub',
         description:
             'Read GardenHub Terms of Service. Learn about the terms and conditions that govern your use of our website and services.',
         type: 'website',
+        images: ['/og-terms-of-service.png'],
     },
 };
 

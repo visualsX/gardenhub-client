@@ -5,10 +5,11 @@ export const metadata = {
     description:
         'Learn how GardenHub collects, uses, and protects your personal information when you visit our site or make a purchase.',
     openGraph: {
-        title: 'Privacy Policy | GardenHub',
+        title: 'Your Privacy Matters | GardenHub',
         description:
             'Learn how GardenHub collects, uses, and protects your personal information when you visit our site or make a purchase.',
         type: 'website',
+        images: ['/og-privacy-policy.png'],
     },
 };
 

@@ -5,10 +5,11 @@ export const metadata = {
     description:
         'Learn about GardenHub return and refund policy. We offer 14-day returns on eligible items with easy processes.',
     openGraph: {
-        title: 'Return Policy | GardenHub',
+        title: 'Easy Returns & Refunds | GardenHub',
         description:
             'Learn about GardenHub return and refund policy. We offer 14-day returns on eligible items with easy processes.',
         type: 'website',
+        images: ['/og-return-policy.png'],
     },
 };
 

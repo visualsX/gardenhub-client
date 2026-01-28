@@ -1,5 +1,16 @@
 import PolicySection, { PolicyList, PolicyContact } from '@/components/shared/PolicySection';
 
+export const metadata = {
+    title: 'Shipping Policy - GardenHub',
+    description: 'We take great care in packaging and shipping your plants to ensure they arrive healthy and thriving.',
+    openGraph: {
+        title: 'Fast & Reliable Delivery | GardenHub',
+        description: 'We take great care in packaging and shipping your plants to ensure they arrive healthy and thriving.',
+        type: 'website',
+        images: ['/og-shipping-policy.png'],
+    },
+};
+
 export default function ShippingPolicyPage() {
     return (
         <div className="min-h-screen bg-gray-50 pt-32 pb-20">
