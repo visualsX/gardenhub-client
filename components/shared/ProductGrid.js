@@ -10,9 +10,9 @@ export default function ProductGrid({
 }) {
   return (
     <section className={`pt-10 pb-5 sm:py-12 md:py-16 ${parentClassName}`}>
-      <div className="max-layout">
+      <div className="max-layout overflow-hidden">
         {/* Section Header: Title + View All */}
-        <div className="mb-6 flex items-center justify-between gap-4 sm:mb-12">
+        <div className="mb-6 flex items-center justify-between gap-4 sm:mb-12 ">
           <h2 className={`font-outfit text-2xl font-black text-[#2d5f3f] sm:text-5xl ${titleClassName}`}>
             {title}
           </h2>
