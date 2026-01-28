@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import SearchIcon from '@/public/shared/search.svg';
 import UserIcon from '@/public/shared/user.svg';
 import BagIcon from '@/public/shared/bag.svg';
+import Logo from '@/public/white.svg';
+import LogoDark from '@/public/green.svg';
 import SearchWhiteIcon from '@/public/shared/search-white.svg';
 import UserWhiteIcon from '@/public/shared/user-white.svg';
 import BagWhiteIcon from '@/public/shared/bag-white.svg';
@@ -60,9 +62,8 @@ export default function Header({ initialMenuData }) {
       <Link
         key={category.id}
         href={`/collections/${category.slug}`}
-        className={`text-sm! font-medium! transition-colors ${
-          isHomePage ? 'hover:text-primary! text-gray-700!' : 'text-white/90! hover:text-white!'
-        }`}
+        className={`text-sm! font-medium! transition-colors ${isHomePage ? 'hover:text-primary! text-gray-700!' : 'text-white/90! hover:text-white!'
+          }`}
       >
         {category.name}
       </Link>
@@ -95,7 +96,7 @@ export default function Header({ initialMenuData }) {
             href="/"
             className={`text-2xl font-bold ${isHomePage ? 'text-gray-900!' : 'text-white!'}`}
           >
-            GardenHub
+            {isHomePage ? <img className='h-10 w-auto' src="/green.svg" alt="" /> : <img className='h-10 w-auto' src="/white.svg" alt="" />}
           </Link>
 
           {/* Navigation Links */}
@@ -112,11 +113,10 @@ export default function Header({ initialMenuData }) {
               <li key={link.id}>
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${
-                    isHomePage
-                      ? 'hover:text-primary! text-gray-700!'
-                      : 'text-white/90! hover:text-white!'
-                  }`}
+                  className={`text-sm font-medium transition-colors ${isHomePage
+                    ? 'hover:text-primary! text-gray-700!'
+                    : 'text-white/90! hover:text-white!'
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -127,9 +127,8 @@ export default function Header({ initialMenuData }) {
           {/* Action Icons */}
           <div className="flex items-center gap-4 md:gap-6">
             <button
-              className={`hover:text-primary cursor-pointer transition-colors lg:hidden ${
-                isHomePage ? 'text-gray-700!' : 'text-white!'
-              }`}
+              className={`hover:text-primary cursor-pointer transition-colors lg:hidden ${isHomePage ? 'text-gray-700!' : 'text-white!'
+                }`}
               aria-label="Menu"
               onClick={() => setIsMobileMenuOpen(true)}
             >

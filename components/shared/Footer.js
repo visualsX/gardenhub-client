@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand Section */}
           <div className="md:col-span-1">
-            <h3 className="mb-4 text-xl font-bold">GardenHub</h3>
+            <img className='h-12 w-auto' src="/white.svg" alt="" />
             <p className="text-sm text-gray-300">
               Bringing nature to your doorstep. We deliver premium indoor and outdoor plants across the UAE, helping you create beautiful, thriving green spaces.
             </p>
