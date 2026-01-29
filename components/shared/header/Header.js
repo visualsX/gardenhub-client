@@ -63,9 +63,8 @@ export default function Header({ initialMenuData }) {
       <Link
         key={category.id}
         href={`/collections/${category.slug}`}
-        className={`text-sm! font-medium! transition-colors ${
-          isHomePage ? 'hover:text-primary! text-gray-700!' : 'text-white/90! hover:text-white!'
-        }`}
+        className={`text-sm! font-medium! transition-colors ${isHomePage ? 'hover:text-primary! text-gray-700!' : 'text-white/90! hover:text-white!'
+          }`}
       >
         {category.name}
       </Link>
@@ -74,7 +73,7 @@ export default function Header({ initialMenuData }) {
 
   const staticLinks = [
     { label: 'Bundles', href: '/bundles', id: 'bundles' },
-    { label: 'Contact Us', href: '/contact', id: 'contact' },
+    { label: 'Shop', href: '/shop', id: 'shop' },
   ];
 
   return (
@@ -119,11 +118,10 @@ export default function Header({ initialMenuData }) {
               <li key={link.id}>
                 <Link
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${
-                    isHomePage
+                  className={`text-sm font-medium transition-colors ${isHomePage
                       ? 'hover:text-primary! text-gray-700!'
                       : 'text-white/90! hover:text-white!'
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -134,9 +132,8 @@ export default function Header({ initialMenuData }) {
           {/* Action Icons */}
           <div className="flex items-center gap-4 md:gap-6">
             <button
-              className={`hover:text-primary cursor-pointer transition-colors lg:hidden ${
-                isHomePage ? 'text-gray-700!' : 'text-white!'
-              }`}
+              className={`hover:text-primary cursor-pointer transition-colors lg:hidden ${isHomePage ? 'text-gray-700!' : 'text-white!'
+                }`}
               aria-label="Menu"
               onClick={() => setIsMobileMenuOpen(true)}
             >

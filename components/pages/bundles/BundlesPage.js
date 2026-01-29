@@ -41,30 +41,15 @@ export default function BundlesPage({ initialBundles, initialTotalCount }) {
 
   // Use initial bundles if no client data has loaded yet
   const displayBundles = data ? bundles : initialBundles;
-  const displayTotalCount = data?.pages?.[0]?.totalCount ?? initialTotalCount;
 
   return (
     <div className="min-h-screen pt-32 pb-20">
       <div className="max-layout">
-        {/* Window for ProductToolbar - Un-integrated as requested */}
-        <ProductToolbar
-          title="Shop All Bundles"
-          totalCount={displayTotalCount}
-          // Placeholder values for now
-          sortBy="newest"
-          searchQuery=""
-          onSortChange={() => {}}
-          onSearch={() => {}}
-        />
-
+        {/* Title and Search Section */}
+        <section className="mb-12 flex flex-col items-center gap-y-6">
+          <h1 className="text-center text-4xl font-bold text-gray-900">Shop All Bundles</h1>
+        </section>
         <div className="flex gap-12">
-          {/* Sidebar - Window for FilterSidebar - Un-integrated as requested */}
-          <FilterSidebar
-            filters={[]} // Placeholder
-            filter={{}} // Placeholder
-            onFilterChange={() => {}}
-          />
-
           {/* Bundle Grid */}
           <div className="flex-1">
             {isLoading ? (
