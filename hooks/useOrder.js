@@ -47,3 +47,23 @@ export const usePlaceOrder = () => {
     },
   });
 };
+
+export const useOrderDetails = (id) => {
+  return useQuery({
+    queryKey: ['orderDetails', id],
+    queryFn: async () => {
+      const data = await graphqlClient.request(ORDERS_QUERIES.GET_ORDERS_ID, { id: +id });
+      return data.customerOrderById;
+    },
+    enabled: !!id,
+  });
+};
+
+export const useAddOrderNote = () => {
+  return useMutation({
+    mutationFn: async ({ id, data }) => {
+      const response = await client.post(API_ENDPOINTS.ORDER.NOTES(id), data);
+      return response.data;
+    },
+  });
+};
