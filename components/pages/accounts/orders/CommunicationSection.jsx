@@ -90,7 +90,9 @@ const CommunicationSection = ({ order, isLoading, refetch }) => {
 
                     {!isCustomer && (
                       <div className="mb-0.5 text-[11px] font-bold tracking-tight text-[#075e54] uppercase opacity-80">
-                        {note.createdBy === 'admin' ? 'Support Team' : note.createdBy?.split('@')[0]}
+                        {note.createdBy === 'admin'
+                          ? 'Support Team'
+                          : note.createdBy?.split('@')[0]}
                       </div>
                     )}
 
@@ -113,7 +115,9 @@ const CommunicationSection = ({ order, isLoading, refetch }) => {
             })
           ) : (
             <div className="flex h-1/2 flex-col items-center justify-center text-white">
-              <span className="text-sm font-medium bg-white/20 p-2 rounded-lg">No messages yet. Send a note to our team below.</span>
+              <span className="rounded-lg bg-white/20 p-2 text-sm font-medium">
+                No messages yet. Send a note to our team below.
+              </span>
             </div>
           )}
           <div ref={messagesEndRef} />

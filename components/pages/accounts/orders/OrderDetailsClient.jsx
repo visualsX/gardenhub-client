@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useOrderDetails } from '@/hooks/useOrder';
 import CommunicationSection from './CommunicationSection';
 
-
 export default function OrderDetailsClient({ initialOrder, id }) {
   const { data: order = initialOrder, isLoading, refetch } = useOrderDetails(id);
 
@@ -68,9 +67,12 @@ export default function OrderDetailsClient({ initialOrder, id }) {
             </div>
             <div className="divide-y divide-gray-50">
               {order.items.map((item, idx) => (
-                <div key={idx} className="flex flex-col gap-4 p-6 transition-colors hover:bg-gray-50/50">
-                   <div className="flex gap-6">
-                    <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-gray-50 ring-1 ring-gray-100 shadow-sm">
+                <div
+                  key={idx}
+                  className="flex flex-col gap-4 p-6 transition-colors hover:bg-gray-50/50"
+                >
+                  <div className="flex gap-6">
+                    <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-gray-50 shadow-sm ring-1 ring-gray-100">
                       <img
                         src={item.imageUrl || '/shared/placeholder.png'}
                         alt={item.productName}
@@ -80,8 +82,10 @@ export default function OrderDetailsClient({ initialOrder, id }) {
                     <div className="flex flex-1 flex-col justify-between py-1">
                       <div className="flex items-start justify-between">
                         <div>
-                          <h4 className="line-clamp-1 font-bold text-gray-900">{item.productName}</h4>
-                           {item.variantAttributes && (
+                          <h4 className="line-clamp-1 font-bold text-gray-900">
+                            {item.productName}
+                          </h4>
+                          {item.variantAttributes && (
                             <p className="mt-1 text-xs font-medium text-gray-400 capitalize">
                               {item.variantAttributes}
                             </p>
@@ -100,18 +104,18 @@ export default function OrderDetailsClient({ initialOrder, id }) {
                         </p>
                       </div>
                     </div>
-                   </div>
+                  </div>
 
                   {/* Addons Section */}
                   {item.addons?.length > 0 && (
-                    <div className="mt-2 space-y-3 rounded-2xl bg-gray-50/50 p-4 ring-1 ring-gray-100/50 border border-gray-100">
+                    <div className="mt-2 space-y-3 rounded-2xl border border-gray-100 bg-gray-50/50 p-4 ring-1 ring-gray-100/50">
                       <p className="text-[10px] font-black tracking-widest text-gray-400 uppercase">
                         Product Customizations / Addons
                       </p>
                       <div className="space-y-3">
                         {item.addons.map((addon) => (
                           <div key={addon.id} className="flex items-center gap-3">
-                            <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-white ring-1 ring-gray-100 shadow-sm">
+                            <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-100">
                               <img
                                 src={addon.imageUrl || '/shared/placeholder.png'}
                                 alt={addon.addonName}
@@ -120,9 +124,7 @@ export default function OrderDetailsClient({ initialOrder, id }) {
                             </div>
                             <div className="flex flex-1 items-center justify-between">
                               <div>
-                                <p className="text-xs font-bold text-gray-900">
-                                  {addon.addonName}
-                                </p>
+                                <p className="text-xs font-bold text-gray-900">{addon.addonName}</p>
                                 <p className="text-[10px] font-medium text-gray-400 capitalize">
                                   {addon.optionName}
                                 </p>
@@ -292,7 +294,7 @@ export default function OrderDetailsClient({ initialOrder, id }) {
       </div>
     </div>
   );
-};
+}
 
 // Native date formatter
 const formatDate = (dateString) => {
@@ -314,7 +316,6 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-
 const formatPaymentMethod = (method) => {
   if (!method) return 'N/A';
   const clean = method.includes('.') ? method.split('.').pop() : method;
@@ -324,7 +325,6 @@ const formatPaymentMethod = (method) => {
     .trim()
     .toUpperCase();
 };
-
 
 const STATUS_CONFIG = {
   PENDING: { color: 'text-amber-700 bg-amber-50 ring-amber-600/10', dot: 'bg-amber-500' },
